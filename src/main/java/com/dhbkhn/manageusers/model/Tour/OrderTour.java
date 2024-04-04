@@ -22,7 +22,7 @@ public class OrderTour {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "status", nullable = false)
-    private String status;
+    private int status;
 
     @Column(name = "payment_method")
     private String paymentMethod;
@@ -50,7 +50,7 @@ public class OrderTour {
     public OrderTour() {
     }
 
-    public OrderTour(int id, String status, String paymentMethod, Date startTime, int quantity, int tourId, int userId,
+    public OrderTour(int id, int status, String paymentMethod, Date startTime, int quantity, int tourId, int userId,
             BigDecimal price, Date createdAt) {
         super();
         this.id = id;
@@ -72,11 +72,11 @@ public class OrderTour {
         this.id = id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

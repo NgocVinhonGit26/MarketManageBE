@@ -58,8 +58,10 @@ public class SecurityConfig {
                                                                 .hasAuthority(Role.ADMIN.name())
                                                                 .requestMatchers("/merchant/**")
                                                                 .hasAuthority(Role.MERCHANT.name())
-                                                                .requestMatchers("/").permitAll() // Thêm permitAll() ở
-                                                                                                  // đây
+                                                                .requestMatchers("/").permitAll() // Thêm
+                                                                // permitAll()
+                                                                // ở
+                                                                // đây
                                                                 .anyRequest()
                                                                 .authenticated())
                                 .userDetailsService(userDetailsServiceImp)

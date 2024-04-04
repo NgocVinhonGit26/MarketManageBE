@@ -19,6 +19,7 @@ public class Tour {
     private String slug;
     private String startTime;
     private String startLocation;
+    private String duration;
     private String description;
     private BigDecimal price;
     private String avatar;
@@ -63,6 +64,14 @@ public class Tour {
 
     public void setStartLocation(String startLocation) {
         this.startLocation = startLocation;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public String getDescription() {

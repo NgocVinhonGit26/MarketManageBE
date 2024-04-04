@@ -24,8 +24,9 @@ public class AuthenticationController {
 
     @GetMapping("/")
     public String index() {
-        return "index"; // Trả về tên của file index.html (không cần đuôi .html nếu đã cấu hình
-                        // thymeleaf hoặc template engine tương tự)
+        return "index"; // Trả về tên của file index.html (không cần đuôi .html nếu
+        // đã cấu hình
+        // thymeleaf hoặc template engine tương tự)
     }
 
     @PostMapping("/signup")

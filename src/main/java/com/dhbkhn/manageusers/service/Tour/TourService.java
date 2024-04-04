@@ -6,6 +6,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.dhbkhn.manageusers.model.Tour.Tour;
 
 public interface TourService {
@@ -13,6 +16,9 @@ public interface TourService {
 
     public Optional<Tour> getTourBySlug(String slug);
 
-    public void insertOrder(String status, String paymentMethod, Date date, int quantity, int tourId,
-            int userId, BigDecimal price, Timestamp createAt);
+    public void insertOrder(int status, String paymentMethod, Date date, int quantity, int tourId,
+            int userId, Timestamp createAt);
+
+    public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
+
 }
