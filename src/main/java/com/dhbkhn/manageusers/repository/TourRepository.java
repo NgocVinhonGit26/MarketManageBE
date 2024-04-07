@@ -27,13 +27,14 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
         // create order tour
         @Transactional
         @Modifying
-        @Query(value = "INSERT INTO order_tour (status, payment_method, start_time, quantity, tour_id, user_id, created_at) "
-                        + "VALUES (:status, :paymentMethod, :startTime, :quantity, :tourId, :userId, :createAt)", nativeQuery = true)
+        @Query(value = "INSERT INTO order_tour (status, payment_method, start_time, quantity, tour_id, tour_name, user_id, created_at) "
+                        + "VALUES (:status, :paymentMethod, :startTime, :quantity, :tourId, :tourName, :userId, :createAt)", nativeQuery = true)
         void insertOrder(@Param("status") int status,
                         @Param("paymentMethod") String paymentMethod,
                         @Param("startTime") Date startTime,
                         @Param("quantity") int quantity,
                         @Param("tourId") int tourId,
+                        @Param("tourName") String tourName,
                         @Param("userId") int userId,
                         @Param("createAt") Timestamp createAt);
 

@@ -7,12 +7,14 @@ public class AuthenticationResponse {
     private String token;
     private String message;
     private Role role;
+    private int id;
 
-    public AuthenticationResponse(String token, String message, Role role, String name) {
+    public AuthenticationResponse(String token, String message, Role role, String name, int id) {
         this.token = token;
         this.message = message;
         this.role = role;
         this.name = name;
+        this.id = id;
     }
 
     public String getToken() {
@@ -29,5 +31,9 @@ public class AuthenticationResponse {
 
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
     }
 }

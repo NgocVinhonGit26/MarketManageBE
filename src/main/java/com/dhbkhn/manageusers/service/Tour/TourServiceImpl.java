@@ -40,10 +40,10 @@ public class TourServiceImpl implements TourService {
 
     // insert order
     @Override
-    public void insertOrder(int status, String paymentMethod, Date startTime, int quantity, int tourId,
+    public void insertOrder(int status, String paymentMethod, Date startTime, int quantity, int tourId, String tourName,
             int userId, Timestamp createAt) {
         // TODO Auto-generated method stub
-        tourRepository.insertOrder(status, paymentMethod, startTime, quantity, tourId, userId, createAt);
+        tourRepository.insertOrder(status, paymentMethod, startTime, quantity, tourId, tourName, userId, createAt);
     }
 
     // search order tour

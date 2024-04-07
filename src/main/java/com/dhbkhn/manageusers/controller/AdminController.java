@@ -112,7 +112,9 @@ public class AdminController {
         for (Object[] row : pageResult.getContent()) {
             System.out.println("rosss: " + row[1] + " " + row[2] + " " + row[3] + " " +
                     row[4] + " " + row[5] + " "
-                    + row[6] + " " + row[7] + " " + row[8] + " " + row[9] + " " + row[10]);
+                    + row[6] + " " + row[7] + " " + row[8] + " " + row[9] + " " + row[10] + " " + row[11] + " "
+                    + row[12] + " " + row[13] + " " + row[14] + " " + row[15] + " " + row[16] + " "
+                    + row[17] + " " + row[18] + " " + row[19]);
             OrderTourDTO orderTourDTO = new OrderTourDTO();
             orderTourDTO.setId((int) row[0]);
             orderTourDTO.setStatus((int) row[1]);
@@ -120,19 +122,20 @@ public class AdminController {
             orderTourDTO.setStartTime((Date) row[3]);
             orderTourDTO.setQuantity((int) row[4]);
             orderTourDTO.setTourId((int) row[5]);
-            orderTourDTO.setUserId((int) row[6]);
-            orderTourDTO.setPrice((BigDecimal) row[7]);
-            orderTourDTO.setCreateAt((Date) row[8]);
-            orderTourDTO.setUserName((String) row[9]);
-            orderTourDTO.setUserUName((String) row[10]);
-            orderTourDTO.setUserAddress((String) row[11]);
-            orderTourDTO.setUserNumberPhone((String) row[12]);
-            orderTourDTO.setTourName((String) row[13]);
-            orderTourDTO.setTourPrice((BigDecimal) row[14]);
-            orderTourDTO.setTransport((String) row[15]);
-            orderTourDTO.setAvatar((String) row[16]);
-            orderTourDTO.setStartLocation((String) row[17]);
-            orderTourDTO.setDuration((String) row[18]);
+            orderTourDTO.setTourName((String) row[6]);
+            orderTourDTO.setUserId((int) row[7]);
+            orderTourDTO.setPrice((BigDecimal) row[8]);
+            orderTourDTO.setCreateAt((Date) row[9]);
+            orderTourDTO.setUserName((String) row[10]);
+            orderTourDTO.setUserUName((String) row[11]);
+            orderTourDTO.setUserAddress((String) row[12]);
+            orderTourDTO.setUserNumberPhone((String) row[13]);
+            orderTourDTO.setTourName((String) row[14]);
+            orderTourDTO.setTourPrice((BigDecimal) row[15]);
+            orderTourDTO.setTransport((String) row[16]);
+            orderTourDTO.setAvatar((String) row[17]);
+            orderTourDTO.setStartLocation((String) row[18]);
+            orderTourDTO.setDuration((String) row[19]);
             listOrderTourDTOs.add(orderTourDTO);
         }
         return listOrderTourDTOs;

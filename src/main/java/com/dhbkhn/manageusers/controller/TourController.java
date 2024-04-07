@@ -57,6 +57,7 @@ public class TourController {
                     request.getStartTime(),
                     request.getQuantity(),
                     request.getTourId(),
+                    request.getTourName(),
                     request.getUserId(),
                     new Timestamp(System.currentTimeMillis()));
             return new ResponseEntity<>("Order created successfully", HttpStatus.CREATED);

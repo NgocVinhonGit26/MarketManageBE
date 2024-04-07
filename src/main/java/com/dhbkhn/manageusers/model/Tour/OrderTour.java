@@ -37,6 +37,9 @@ public class OrderTour {
     @JoinColumn(name = "tour_id", nullable = false)
     private int tourId;
 
+    @Column(name = "tour_name")
+    private String tourName;
+
     // @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private int userId;
@@ -110,6 +113,14 @@ public class OrderTour {
 
     public void setTourId(int tourId) {
         this.tourId = tourId;
+    }
+
+    public String getTourName() {
+        return tourName;
+    }
+
+    public void setTourName(String tourName) {
+        this.tourName = tourName;
     }
 
     public int getUserId() {
