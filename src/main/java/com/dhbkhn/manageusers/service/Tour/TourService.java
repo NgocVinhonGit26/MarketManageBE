@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
 
 public interface TourService {
@@ -20,5 +21,10 @@ public interface TourService {
             int userId, Timestamp createAt);
 
     public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
+
+    // get order tour by id
+    public OrderTour getOrderTourById(int id);
+
+    public String updateStatusOrder(int status, int orderId);
 
 }

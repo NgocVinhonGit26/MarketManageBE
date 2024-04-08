@@ -6,12 +6,15 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import javax.print.DocFlavor.STRING;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
 import com.dhbkhn.manageusers.repository.TourRepository;
 
@@ -57,6 +60,25 @@ public class TourServiceImpl implements TourService {
             System.out.println("tat ca chi la giac mo hehe");
             e.printStackTrace();
             return Page.empty();
+        }
+    }
+
+    // get order tour by id
+    @Override
+    public OrderTour getOrderTourById(int id) {
+        return tourRepository.getOrderTourById(id);
+    }
+
+    // update status order
+    @Override
+    public String updateStatusOrder(int status, int orderId) {
+        // TODO Auto-generated method stub
+        try {
+            tourRepository.updateStatusOrder(status, orderId);
+            return "Update status successfully!";
+        } catch (Exception e) {
+            System.out.println("Shopboat: update status failed!");
+            return "Update status failed!";
         }
     }
 

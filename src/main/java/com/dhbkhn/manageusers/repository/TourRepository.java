@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
 
 public interface TourRepository extends JpaRepository<Tour, Integer> {
@@ -23,6 +24,11 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
 
         // get tour by slug
         Optional<Tour> findBySlug(String slug);
+
+        // get order tour by id
+
+        @Query(value = "SELECT ot FROM OrderTour ot WHERE ot.id = :id")
+        public OrderTour getOrderTourById(@Param("id") int id);
 
         // create order tour
         @Transactional
@@ -52,10 +58,17 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         "(:userName IS NULL OR u.name = :userName) AND " +
                         "(:tourName IS NULL OR t.name = :tourName) AND " +
                         "(:status IS NULL OR ot.status = :status) ", nativeQuery = true)
+
         public Page<Object[]> searchOrderTour(
                         @Param("userName") String userName,
                         @Param("tourName") String tourName,
                         @Param("status") Integer status,
                         Pageable pageable);
+
+        // update status order tour
+        @Transactional
+        @Modifying
+        @Query(value = "UPDATE order_tour SET status = :status WHERE id = :id", nativeQuery = true)
+        void updateStatusOrder(@Param("status") int status, @Param("id") int id);
 
 }

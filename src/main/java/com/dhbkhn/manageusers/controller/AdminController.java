@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dhbkhn.manageusers.DTO.OrderTourDTO;
 import com.dhbkhn.manageusers.DTO.ShopBoatDTO;
 import com.dhbkhn.manageusers.model.ShopBoat;
+import com.dhbkhn.manageusers.model.Tour.OrderTour;
+import com.dhbkhn.manageusers.model.Tour.Tour;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 import com.dhbkhn.manageusers.service.Tour.TourService;
 
@@ -150,6 +152,24 @@ public class AdminController {
         Page<Object[]> pageResult = tourService.searchOrderTour(userName, tourName, status, page);
         return pageResult.getTotalPages();
         // return pageResult;
+    }
+
+    @GetMapping("/getOrderTourById/{id}")
+    public OrderTour getOrderTourById(@PathVariable int id) {
+        return tourService.getOrderTourById(id);
+    }
+
+    // update status order
+    @PostMapping("/updateStatusOrderById/{id}")
+    public ResponseEntity<OrderTour> updateStatusOrderById(@PathVariable int id, @RequestBody OrderTour orderTour) {
+        tourService.updateStatusOrder(orderTour.getStatus(), id);
+        OrderTour updatedOrderTour = tourService.getOrderTourById(id);
+        if (updatedOrderTour != null) {
+            System.out.println("Shopboat: update status successfully!");
+            return ResponseEntity.ok(updatedOrderTour);
+        }
+        System.out.println("Shopboat: update status failed!");
+        return ResponseEntity.notFound().build();
     }
 
 }
