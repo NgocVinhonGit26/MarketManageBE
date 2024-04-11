@@ -22,6 +22,10 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
         // get all tour
         List<Tour> findAll();
 
+        // get all tour with pagination
+        @Query(value = "SELECT * FROM tour", nativeQuery = true)
+        Page<Object[]> findAllTourCC(Pageable pageable);
+
         // get tour by slug
         Optional<Tour> findBySlug(String slug);
 

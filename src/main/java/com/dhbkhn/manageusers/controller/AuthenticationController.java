@@ -22,13 +22,6 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
-    @GetMapping("/")
-    public String index() {
-        return "index"; // Trả về tên của file index.html (không cần đuôi .html nếu
-        // đã cấu hình
-        // thymeleaf hoặc template engine tương tự)
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody User request) {
