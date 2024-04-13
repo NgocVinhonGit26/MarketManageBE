@@ -23,8 +23,8 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
         List<Tour> findAll();
 
         // get all tour with pagination
-        @Query(value = "SELECT * FROM tour", nativeQuery = true)
-        Page<Object[]> findAllTourCC(Pageable pageable);
+        // @Query(value = "SELECT * FROM tour", nativeQuery = true)
+        // Page<Object[]> findAllTourCC(Pageable pageable);
 
         // get tour by slug
         Optional<Tour> findBySlug(String slug);
@@ -70,9 +70,26 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         Pageable pageable);
 
         // update status order tour
-        @Transactional
+        // @Transactional
         @Modifying
         @Query(value = "UPDATE order_tour SET status = :status WHERE id = :id", nativeQuery = true)
         void updateStatusOrder(@Param("status") int status, @Param("id") int id);
+
+        // search Tour by name, price, transport, start_location, tour_duration
+        @Query(value = "SELECT t FROM Tour t WHERE " +
+                        "(:name IS NULL OR t.name = :name) AND " +
+                        "(:priceFrom IS NULL OR t.price >= :priceFrom) AND " +
+                        "(:priceTo IS NULL OR t.price <= :priceTo) AND " +
+                        "(:transport IS NULL OR t.transport like :transport) AND " +
+                        "(:startLocation IS NULL OR t.startLocation = :startLocation) AND " +
+                        "(:tourDuration IS NULL OR t.tourDuration = :tourDuration)")
+        public Page<Tour> searchTour(
+                        @Param("name") String name,
+                        @Param("priceFrom") BigDecimal priceFrom,
+                        @Param("priceTo") BigDecimal priceTo,
+                        @Param("transport") String transport,
+                        @Param("startLocation") String startLocation,
+                        @Param("tourDuration") String tourDuration,
+                        Pageable pageable);
 
 }

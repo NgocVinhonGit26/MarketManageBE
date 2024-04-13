@@ -13,18 +13,29 @@ import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
 
 public interface TourService {
-    public List<Tour> getAllTour();
+        public List<Tour> getAllTour();
 
-    public Optional<Tour> getTourBySlug(String slug);
+        // public Page<Object[]> getAllTourWithPagination(int page);
 
-    public void insertOrder(int status, String paymentMethod, Date date, int quantity, int tourId, String tourName,
-            int userId, Timestamp createAt);
+        public Optional<Tour> getTourBySlug(String slug);
 
-    public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
+        public void insertOrder(int status, String paymentMethod, Date date, int quantity, int tourId, String tourName,
+                        int userId, Timestamp createAt);
 
-    // get order tour by id
-    public OrderTour getOrderTourById(int id);
+        public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
 
-    public String updateStatusOrder(int status, int orderId);
+        // get order tour by id
+        public OrderTour getOrderTourById(int id);
+
+        public Page<Tour> searchTour(
+                        String name,
+                        BigDecimal priceFrom,
+                        BigDecimal priceTo,
+                        String transport,
+                        String startLocation,
+                        String tourDuration,
+                        int page);
+
+        public String updateStatusOrder(int status, int orderId);
 
 }

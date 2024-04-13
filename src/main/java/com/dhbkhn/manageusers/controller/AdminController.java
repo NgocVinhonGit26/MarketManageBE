@@ -154,6 +154,50 @@ public class AdminController {
         // return pageResult;
     }
 
+    @GetMapping("/getListTour/{page}")
+    public List<Tour> searchTour(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) BigDecimal priceFrom,
+            @RequestParam(required = false) BigDecimal priceTo,
+            @RequestParam(required = false) String transport,
+            @RequestParam(required = false) String startLocation,
+            @RequestParam(required = false) String tourDuration,
+            @PathVariable int page) {
+        Page<Tour> pageResult = tourService.searchTour(name, priceFrom, priceTo, transport,
+                startLocation, tourDuration, page);
+        List<Tour> listTour = new ArrayList<>();
+        for (Tour row : pageResult.getContent()) {
+            Tour tour = new Tour();
+            tour.setId(row.getId());
+            tour.setName(row.getName());
+            tour.setSlug(row.getSlug());
+            tour.setPrice(row.getPrice());
+            tour.setTransport(row.getTransport());
+            tour.setStartLocation(row.getStartLocation());
+            tour.setStartTime(row.getStartTime());
+            tour.setDescription(row.getDescription());
+            tour.setTourInformation(row.getTourInformation());
+            tour.setTourDuration(row.getTourDuration());
+            tour.setAvatar(row.getAvatar());
+            listTour.add(tour);
+        }
+        return listTour;
+    }
+
+    @GetMapping("/getTotalPageTour/{page}")
+    public int getTotalPageTour(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) BigDecimal priceFrom,
+            @RequestParam(required = false) BigDecimal priceTo,
+            @RequestParam(required = false) String transport,
+            @RequestParam(required = false) String startLocation,
+            @RequestParam(required = false) String tourDuration,
+            @PathVariable int page) {
+        Page<Tour> pageResult = tourService.searchTour(name, priceFrom, priceTo, transport,
+                startLocation, tourDuration, page);
+        return pageResult.getTotalPages();
+    }
+
     @GetMapping("/getOrderTourById/{id}")
     public OrderTour getOrderTourById(@PathVariable int id) {
         return tourService.getOrderTourById(id);

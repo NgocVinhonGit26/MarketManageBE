@@ -19,9 +19,13 @@ public class Tour {
     private String name;
     private String slug;
     private String startTime;
+
+    @Column(name = "start_location", nullable = false)
     private String startLocation;
+
     @Column(name = "tour_duration", nullable = false)
-    private String duration;
+    private String tourDuration;
+
     private String description;
     private BigDecimal price;
     private String avatar;
@@ -68,12 +72,12 @@ public class Tour {
         this.startLocation = startLocation;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getTourDuration() {
+        return tourDuration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setTourDuration(String tourDuration) {
+        this.tourDuration = tourDuration;
     }
 
     public String getDescription() {
