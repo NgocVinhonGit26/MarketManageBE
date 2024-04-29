@@ -22,4 +22,7 @@ public interface ShopBoatService {
 
     public void updateShopBoatById(String name, String description, String type, String avatar, int id);
 
+    // get shop boat by id user
+    public ShopBoat getShopBoatByIdUser(int idUser);
+
 }

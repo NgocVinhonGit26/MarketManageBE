@@ -70,7 +70,7 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         Pageable pageable);
 
         // update status order tour
-        // @Transactional
+        @Transactional
         @Modifying
         @Query(value = "UPDATE order_tour SET status = :status WHERE id = :id", nativeQuery = true)
         void updateStatusOrder(@Param("status") int status, @Param("id") int id);
@@ -91,5 +91,22 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         @Param("startLocation") String startLocation,
                         @Param("tourDuration") String tourDuration,
                         Pageable pageable);
+
+        // update tour by id
+        @Transactional
+        @Modifying
+        @Query("UPDATE Tour t SET t.name = :name, t.slug = :slug, t.startTime = :startTime, t.startLocation = :startLocation, t.tourDuration = :tourDuration, t.description = :description, t.price = :price, t.avatar = :avatar, t.transport = :transport, t.tourInformation = :tourInformation WHERE t.id = :id")
+        public void updateTourById(
+                        @Param("name") String name,
+                        @Param("slug") String slug,
+                        @Param("startTime") String startTime,
+                        @Param("startLocation") String startLocation,
+                        @Param("tourDuration") String tourDuration,
+                        @Param("description") String description,
+                        @Param("price") BigDecimal price,
+                        @Param("avatar") String avatar,
+                        @Param("transport") String transport,
+                        @Param("tourInformation") String tourInformation,
+                        @Param("id") int id);
 
 }

@@ -74,4 +74,8 @@ public interface ShopBoatRepository
                         @Param("avatar") String avatar,
                         @Param("id") int id);
 
+        // get shop boat by id user
+        @Query(value = "SELECT * FROM ShopBoat WHERE owner = :id", nativeQuery = true)
+        public ShopBoat getShopBoatByIdUser(@Param("id") int id);
+
 }

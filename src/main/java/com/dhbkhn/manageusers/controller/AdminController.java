@@ -203,6 +203,21 @@ public class AdminController {
         return tourService.getOrderTourById(id);
     }
 
+    // updateTourById
+    @PostMapping("/updateTourById/{id}")
+    public ResponseEntity<Tour> updateTourById(@PathVariable int id, @RequestBody Tour tour) {
+        tourService.updateTourById(tour.getName(), tour.getSlug(), tour.getStartTime(), tour.getStartLocation(),
+                tour.getTourDuration(), tour.getDescription(), tour.getPrice(), tour.getAvatar(), tour.getTransport(),
+                tour.getTourInformation(), id);
+        Tour updatedTour = tourService.getTourBySlug(tour.getSlug()).get();
+        if (updatedTour != null) {
+            System.out.println("Tour: update successfully!");
+            return ResponseEntity.ok(updatedTour);
+        }
+        System.out.println("Tour: update failed!");
+        return ResponseEntity.notFound().build();
+    }
+
     // update status order
     @PostMapping("/updateStatusOrderById/{id}")
     public ResponseEntity<OrderTour> updateStatusOrderById(@PathVariable int id, @RequestBody OrderTour orderTour) {

@@ -1,5 +1,7 @@
 package com.dhbkhn.manageusers.controller;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dhbkhn.manageusers.DTO.OrderItemDTO;
+import com.dhbkhn.manageusers.DTO.OrderProductDTO;
 import com.dhbkhn.manageusers.DTO.ShopBoatDTO;
 import com.dhbkhn.manageusers.model.ShopBoat;
+import com.dhbkhn.manageusers.model.Product.OrderProduct;
+import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,9 +32,11 @@ import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 public class ShopBoatController {
     @Autowired
     private ShopBoatService shopBoatService;
+    private ProductService productService;
 
-    public ShopBoatController(ShopBoatService shopBoatService) {
+    public ShopBoatController(ShopBoatService shopBoatService, ProductService productService) {
         this.shopBoatService = shopBoatService;
+        this.productService = productService;
     }
 
     // get all shop boats
@@ -133,5 +141,86 @@ public class ShopBoatController {
         }
         System.out.println("Shopboat: update failed!");
         return ResponseEntity.notFound().build();
+    }
+
+    // get all order product
+    @GetMapping("/getAllListOrderProduct/{page}")
+    public List<OrderProductDTO> getAllListOrderProduct(@RequestParam int shopBoatId, @PathVariable int page) {
+        Page<Object[]> pageResult = productService.getAllListOrderProduct(shopBoatId, page);
+        List<OrderProductDTO> listOrderProductDTO = new ArrayList<>();
+        for (Object[] objects : pageResult.getContent()) {
+            OrderProductDTO orderProductDTO = new OrderProductDTO();
+            orderProductDTO.setId((int) objects[0]);
+            orderProductDTO.setStatus((String) objects[1]);
+            orderProductDTO.setPaymentMethod((String) objects[2]);
+            orderProductDTO.setTotal((java.math.BigDecimal) objects[3]);
+            orderProductDTO.setShopBoatId((int) objects[4]);
+            orderProductDTO.setCustomer((int) objects[5]);
+            orderProductDTO.setCreatedAt((java.sql.Timestamp) objects[6]);
+            orderProductDTO.setUpdatedAt((java.sql.Timestamp) objects[7]);
+            orderProductDTO.setUserName((String) objects[8]);
+            orderProductDTO.setUserNumberPhone((String) objects[9]);
+            orderProductDTO.setUserAddress((String) objects[10]);
+            listOrderProductDTO.add(orderProductDTO);
+        }
+        return listOrderProductDTO;
+    }
+
+    // get order item by order product id
+    @GetMapping("/getOrderItemByOrderProductId/{orderProductId}")
+    public List<OrderItemDTO> getOrderItemByOrderProductId(@PathVariable int orderProductId) {
+        List<OrderItemDTO> listOrderItemDTO = new ArrayList<>();
+        List<Object[]> orderItemData = productService.getOrderItemByOrderProductId(orderProductId);
+        for (Object[] row : orderItemData) {
+            OrderItemDTO orderItemDTO = new OrderItemDTO();
+            orderItemDTO.setId((int) row[0]);
+            orderItemDTO.setProductId((int) row[1]);
+            orderItemDTO.setOrderProductId((int) row[2]);
+            orderItemDTO.setQuantity((int) row[3]);
+            orderItemDTO.setPrice((java.math.BigDecimal) row[4]);
+            orderItemDTO.setSale((java.math.BigDecimal) row[5]);
+            orderItemDTO.setProductName((String) row[6]);
+            orderItemDTO.setProductAvatar((String) row[7]);
+            listOrderItemDTO.add(orderItemDTO);
+        }
+        return listOrderItemDTO;
+    }
+
+    // get total page order product
+    @GetMapping("/getTotalPageOrderProduct/{page}")
+    public int getTotalPageOrderProduct(@RequestParam int shopBoatId, @PathVariable int page) {
+        Page<Object[]> pageResult = productService.getAllListOrderProduct(shopBoatId, page);
+        return pageResult.getTotalPages();
+    }
+
+    // get shop boat by id user
+    @GetMapping("/getShopBoatByIdUser/{idUser}")
+    public ShopBoat getShopBoatByIdUser(@PathVariable int idUser) {
+        return shopBoatService.getShopBoatByIdUser(idUser);
+    }
+
+    // update status order product by id
+    @PostMapping("/updateStatusOrderProductById/{id}")
+    public ResponseEntity<OrderProductDTO> updateStatusOrderProductById(@RequestBody OrderProduct orderProduct,
+            @PathVariable int id) {
+        productService.updateStatusOrderProductById(orderProduct.getStatus(), id);
+        List<Object[]> orderProductData = productService.getOrderProductById(id);
+        OrderProductDTO orderProductDTO = new OrderProductDTO();
+        for (Object[] row : orderProductData) {
+            orderProductDTO.setId((int) row[0]);
+            orderProductDTO.setStatus((String) row[1]);
+            orderProductDTO.setPaymentMethod((String) row[2]);
+            orderProductDTO.setTotal((BigDecimal) row[3]);
+            orderProductDTO.setShopBoatId((int) row[4]);
+            orderProductDTO.setCustomer((int) row[5]);
+            orderProductDTO.setCreatedAt((Timestamp) row[6]);
+            orderProductDTO.setUpdatedAt((Timestamp) row[7]);
+            orderProductDTO.setUserName((String) row[8]);
+            orderProductDTO.setUserNumberPhone((String) row[9]);
+            orderProductDTO.setUserAddress((String) row[10]);
+        }
+
+        return ResponseEntity.ok(orderProductDTO);
+
     }
 }

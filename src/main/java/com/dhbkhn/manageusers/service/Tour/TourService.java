@@ -19,14 +19,6 @@ public interface TourService {
 
         public Optional<Tour> getTourBySlug(String slug);
 
-        public void insertOrder(int status, String paymentMethod, Date date, int quantity, int tourId, String tourName,
-                        int userId, Timestamp createAt);
-
-        public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
-
-        // get order tour by id
-        public OrderTour getOrderTourById(int id);
-
         public Page<Tour> searchTour(
                         String name,
                         BigDecimal priceFrom,
@@ -35,6 +27,19 @@ public interface TourService {
                         String startLocation,
                         String tourDuration,
                         int page);
+
+        public void updateTourById(String name, String slug, String startTime, String startLocation,
+                        String tourDuration, String description, BigDecimal price, String avatar, String transport,
+                        String tourInformation, int id);
+
+        // order tour
+        // get order tour by id
+        public OrderTour getOrderTourById(int id);
+
+        public void insertOrder(int status, String paymentMethod, Date date, int quantity, int tourId, String tourName,
+                        int userId, Timestamp createAt);
+
+        public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
 
         public String updateStatusOrder(int status, int orderId);
 

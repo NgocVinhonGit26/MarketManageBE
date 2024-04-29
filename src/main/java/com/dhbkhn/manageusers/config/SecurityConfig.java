@@ -52,13 +52,15 @@ public class SecurityConfig {
                 return http
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(
-                                                req -> req.requestMatchers("/signin/**", "/signup/**")
+                                                req -> req.requestMatchers("/signin/**", "/signup/**",
+                                                                "/tour/**", "/product/**")
                                                                 .permitAll()
                                                                 .requestMatchers("/admin/**")
                                                                 .hasAuthority(Role.ADMIN.name())
                                                                 .requestMatchers("/merchant/**")
                                                                 .hasAuthority(Role.MERCHANT.name())
-                                                                .requestMatchers("/").permitAll() // Thêm
+                                                                .requestMatchers("/")
+                                                                .permitAll() // Thêm
                                                                 // permitAll()
                                                                 // ở
                                                                 // đây

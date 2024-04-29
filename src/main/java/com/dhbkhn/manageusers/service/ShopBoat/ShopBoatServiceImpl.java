@@ -89,4 +89,10 @@ public class ShopBoatServiceImpl implements ShopBoatService {
         shopBoatRepository.updateShopBoatById(name, description, type, avatar, id);
     }
 
+    // get shop boat by id user
+    @Override
+    public ShopBoat getShopBoatByIdUser(int idUser) {
+        return shopBoatRepository.getShopBoatByIdUser(idUser);
+    }
+
 }

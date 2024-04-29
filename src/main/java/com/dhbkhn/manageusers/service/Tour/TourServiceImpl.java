@@ -53,6 +53,34 @@ public class TourServiceImpl implements TourService {
         return tourRepository.findBySlug(slug);
     }
 
+    // search tour
+    @Override
+    public Page<Tour> searchTour(String name, BigDecimal priceFrom, BigDecimal priceTo, String transport,
+            String startLocation, String tourDuration, int page) {
+        int pageSize = 5;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            System.out.println("TourServiceImpl: " + name + " " + priceFrom + " " + priceTo + " " + transport + " "
+                    + startLocation + " " + tourDuration + " " + page);
+            return tourRepository.searchTour(name, priceFrom, priceTo, transport, startLocation, tourDuration,
+                    pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
+    // updateTourById
+    @Override
+    public void updateTourById(String name, String slug, String startTime, String startLocation, String tourDuration,
+            String description, BigDecimal price, String avatar, String transport, String tourInformation, int id) {
+        // TODO Auto-generated method stub
+        tourRepository.updateTourById(name, slug, startTime, startLocation, tourDuration, description, price, avatar,
+                transport, tourInformation, id);
+    }
+
+    // ---------------ORDER TOUR
+
     // insert order
     @Override
     public void insertOrder(int status, String paymentMethod, Date startTime, int quantity, int tourId, String tourName,
@@ -79,23 +107,6 @@ public class TourServiceImpl implements TourService {
     @Override
     public OrderTour getOrderTourById(int id) {
         return tourRepository.getOrderTourById(id);
-    }
-
-    // search tour
-    @Override
-    public Page<Tour> searchTour(String name, BigDecimal priceFrom, BigDecimal priceTo, String transport,
-            String startLocation, String tourDuration, int page) {
-        int pageSize = 5;
-        try {
-            Pageable pageable = PageRequest.of(page, pageSize);
-            System.out.println("TourServiceImpl: " + name + " " + priceFrom + " " + priceTo + " " + transport + " "
-                    + startLocation + " " + tourDuration + " " + page);
-            return tourRepository.searchTour(name, priceFrom, priceTo, transport, startLocation, tourDuration,
-                    pageable);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Page.empty();
-        }
     }
 
     // update status order
