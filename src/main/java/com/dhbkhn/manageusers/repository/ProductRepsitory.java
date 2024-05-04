@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dhbkhn.manageusers.model.OrderItemSum;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 
@@ -40,18 +41,25 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get product by slug
         Product findBySlug(String slug);
 
+        // get order product by id shopboat and id order item
+        @Query(value = "SELECT DISTINCT op.*, u.name, u.phone_number, u.address " +
+                        "FROM order_product op " +
+                        "JOIN order_item oi ON op.id = oi.order_product_id " +
+                        "JOIN User u ON op.customer = u.id " +
+                        "WHERE oi.shop_boat_id = :shopBoatId", nativeQuery = true)
+        Page<Object[]> getAllListOrderProduct(@Param("shopBoatId") int shopBoatId, Pageable pageable);
+
         // ORDER PRODUCT---------------------------------------------
         // insert order product
 
         @Modifying
-        @Query(value = "INSERT INTO order_product (status, payment_method, total, shop_boat_id, customer, created_at, updated_at) "
+        @Query(value = "INSERT INTO order_product (status, payment_method, total, customer, created_at, updated_at) "
                         +
-                        "VALUES (:status, :paymentMethod, :total, :shopBoatId, :customer, :createdAt, :updatedAt)", nativeQuery = true)
+                        "VALUES (:status, :paymentMethod, :total, :customer, :createdAt, :updatedAt)", nativeQuery = true)
         void createOrderProduct(
                         @Param("status") String status,
                         @Param("paymentMethod") String paymentMethod,
                         @Param("total") BigDecimal total,
-                        @Param("shopBoatId") int shopBoatId,
                         @Param("customer") int customer,
                         @Param("createdAt") Timestamp createdAt,
                         @Param("updatedAt") Timestamp updatedAt);
@@ -62,26 +70,30 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
 
         // insert order item
         @Modifying
-        @Query(value = "INSERT INTO order_item (product_id, order_product_id, quantity, price, sale) VALUES (:productId, :orderProductId, :quantity, :price, :sale)", nativeQuery = true)
-        void insertOrderItem(@Param("productId") int productId,
+        @Query(value = "INSERT INTO order_item (status, product_id, order_product_id, shop_boat_id, quantity, price, sale) VALUES (:status, :productId, :orderProductId, :shopBoatId, :quantity, :price, :sale)", nativeQuery = true)
+        void insertOrderItem(
+                        @Param("status") String status,
+                        @Param("productId") int productId,
                         @Param("orderProductId") int orderProductId,
+                        @Param("shopBoatId") int shopBoatId,
                         @Param("quantity") int quantity,
                         @Param("price") BigDecimal price,
                         @Param("sale") BigDecimal sale);
 
-        // get all order product by shop_boat_id
-        @Query(value = "SELECT op.* , u.name, u.phone_number, u.address " +
-                        "FROM order_product AS op " +
+        // get all order item by shop_boat_id
+        @Query(value = "SELECT oi.*, u.name, u.phone_number, u.address " +
+                        "FROM order_item AS oi " +
+                        "JOIN order_product AS op ON oi.order_product_id = op.id " +
                         "JOIN User AS u ON op.customer = u.id " +
-                        "WHERE shop_boat_id = :shopBoatId", nativeQuery = true)
-        Page<Object[]> getAllListOrderProduct(
+                        "WHERE oi.shop_boat_id = :shopBoatId", nativeQuery = true)
+        Page<Object[]> getAllListOrderItem(
                         @Param("shopBoatId") int shopBoatId,
                         Pageable pageable);
 
-        // get order product by id
-        @Query(value = "SELECT op.*, u.name, u.phone_number, u.address " +
-                        "FROM order_product AS op " +
-                        "JOIN User AS u ON op.customer = u.id " +
+        // get order item by id shop
+        @Query(value = "SELECT ot.*, u.name, u.phone_number, u.address " +
+                        "FROM item AS ot " +
+                        "JOIN User AS u ON ot.customer = u.id " +
                         "WHERE op.id = :orderId", nativeQuery = true)
         List<Object[]> getOrderProductById(@Param("orderId") int orderId);
 
@@ -95,4 +107,104 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "JOIN product AS p ON oi.product_id = p.id " +
                         "WHERE oi.order_product_id = :orderProductId", nativeQuery = true)
         List<Object[]> getOrderItemByOrderProductId(@Param("orderProductId") int orderProductId);
+
+        // get total order item by order product id and shop boat id in today
+        @Query(value = "SELECT COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount " +
+                        "FROM order_item oi " +
+                        "JOIN order_product op ON oi.order_product_id = op.id " +
+                        "WHERE oi.shop_boat_id = :shopBoatId AND DATE(op.created_at) = CURDATE() ", nativeQuery = true)
+        Object getTotalOrderItemByShopBoatId(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in 0h-3h,
+        // 3h-6h,....
+        @Query(value = "SELECT "
+                        + "CONCAT( "
+                        + "CASE "
+                        + "WHEN HOUR(op.created_at) BETWEEN 0 AND 2 THEN '0h-3h' "
+                        + "WHEN HOUR(op.created_at) BETWEEN 3 AND 5 THEN '3h-6h' "
+                        + "WHEN HOUR(op.created_at) BETWEEN 6 AND 8 THEN '6h-9h' "
+                        + "WHEN HOUR(op.created_at) BETWEEN 9 AND 11 THEN '9h-12h' "
+                        + "WHEN HOUR(op.created_at) BETWEEN 12 AND 14 THEN '12h-15h' "
+                        + "WHEN HOUR(op.created_at) BETWEEN 15 AND 17 THEN '15h-18h' "
+                        + "WHEN HOUR(op.created_at) BETWEEN 18 AND 20 THEN '18h-21h' "
+                        + "ElSE '21h-24h' "
+                        + "END "
+                        + ") AS time_slot, "
+                        + "COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount "
+                        + "FROM order_item oi "
+                        + "JOIN order_product op ON oi.order_product_id = op.id "
+                        + "WHERE HOUR(op.created_at) BETWEEN 0 AND 23 "
+                        + "AND DATE(op.created_at) = CURDATE() "
+                        + "AND oi.shop_boat_id = :shopBoatId "
+                        + "GROUP BY time_slot "
+                        + "ORDER BY time_slot", nativeQuery = true)
+        List<Object[]> getTotalOrderItemByShopBoatIdInTimeSlot(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in week
+        @Query(value = "SELECT COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount " +
+                        "FROM order_item oi " +
+                        "JOIN order_product op ON oi.order_product_id = op.id " +
+                        "WHERE oi.shop_boat_id = :shopBoatId AND WEEK(op.created_at) = WEEK(CURDATE())", nativeQuery = true)
+        Object getTotalOrderItemByShopBoatIdInWeek(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in thứ 2, thứ 3,
+        // thứ 4, thứ 5, thứ 6, thứ 7, chủ nhật
+        @Query(value = "SELECT "
+                        + "CASE DAYOFWEEK(op.created_at) "
+                        + "WHEN 2 THEN 'Thứ 2' "
+                        + "WHEN 3 THEN 'Thứ 3' "
+                        + "WHEN 4 THEN 'Thứ 4' "
+                        + "WHEN 5 THEN 'Thứ 5' "
+                        + "WHEN 6 THEN 'Thứ 6' "
+                        + "WHEN 7 THEN 'Thứ 7' "
+                        + "ELSE 'Chủ nhật' "
+                        + "END AS day_of_week, "
+                        + "COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount "
+                        + "FROM order_item oi "
+                        + "INNER JOIN order_product op ON oi.order_product_id = op.id "
+                        + "WHERE  oi.shop_boat_id = 2 AND WEEK(op.created_at) = WEEK(CURDATE()) "
+                        + "GROUP BY day_of_week "
+                        + "ORDER BY day_of_week", nativeQuery = true)
+        List<Object[]> getTotalOrderItemByShopBoatIdInDayOfWeek(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in month
+        @Query(value = "SELECT COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount " +
+                        "FROM order_item oi " +
+                        "JOIN order_product op ON oi.order_product_id = op.id " +
+                        "WHERE oi.shop_boat_id = :shopBoatId AND MONTH(op.created_at) = MONTH(CURDATE()) AND YEAR(op.created_at) = YEAR(CURDATE())", nativeQuery = true)
+        Object getTotalOrderItemByShopBoatIdInMonth(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in tuần 1, tuần 2,
+        // tuần 3, tuần 4, tuần 5
+        @Query(value = "SELECT "
+                        + "CONCAT('Tuần ', WEEK(op.created_at) - WEEK(DATE_SUB(op.created_at, INTERVAL DAYOFMONTH(op.created_at) - 1 DAY)) + 1) AS week_of_month, "
+                        + "COUNT(oi.id) AS total_orders, "
+                        + "SUM(oi.price) AS total_revenue "
+                        + "FROM order_item oi "
+                        + "INNER JOIN order_product op ON oi.order_product_id = op.id "
+                        + "WHERE oi.shop_boat_id = 2 AND MONTH(op.created_at) = MONTH(CURDATE()) AND YEAR(op.created_at) = YEAR(CURDATE()) "
+                        + "GROUP BY week_of_month "
+                        + "ORDER BY week_of_month", nativeQuery = true)
+        List<Object[]> getTotalOrderItemByShopBoatIdInWeekOfMonth(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in year
+        @Query(value = "SELECT COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount " +
+                        "FROM order_item oi " +
+                        "JOIN order_product op ON oi.order_product_id = op.id " +
+                        "WHERE oi.shop_boat_id = :shopBoatId AND YEAR(op.created_at) = YEAR(CURDATE())", nativeQuery = true)
+        Object getTotalOrderItemByShopBoatIdInYear(@Param("shopBoatId") int shopBoatId);
+
+        // get total order item by order product id and shop boat id in tháng 1, tháng
+        // 2,...
+        @Query(value = "SELECT "
+                        + "CONCAT('T', MONTH(op.created_at)) AS month, "
+                        + "COUNT(oi.id) AS total_orders, "
+                        + "SUM(oi.price) AS total_revenue "
+                        + "FROM order_item oi "
+                        + "INNER JOIN order_product op ON oi.order_product_id = op.id "
+                        + "WHERE oi.shop_boat_id = 2 AND YEAR(op.created_at) = YEAR(CURDATE()) "
+                        + "GROUP BY month "
+                        + "ORDER BY month", nativeQuery = true)
+        List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(@Param("shopBoatId") int shopBoatId);
+
 }

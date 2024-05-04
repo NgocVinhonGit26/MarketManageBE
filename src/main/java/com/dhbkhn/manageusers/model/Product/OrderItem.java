@@ -17,11 +17,17 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
     @Column(name = "product_id", nullable = false)
     private int productId;
 
     @Column(name = "order_product_id", nullable = false)
     private int orderProductId;
+
+    @Column(name = "shop_boat_id", nullable = false)
+    private int shopBoatId;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -40,6 +46,14 @@ public class OrderItem {
         this.id = id;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public int getProductId() {
         return productId;
     }
@@ -54,6 +68,14 @@ public class OrderItem {
 
     public void setOrderProductId(int orderProductId) {
         this.orderProductId = orderProductId;
+    }
+
+    public int getShopBoatId() {
+        return shopBoatId;
+    }
+
+    public void setShopBoatId(int shopBoatId) {
+        this.shopBoatId = shopBoatId;
     }
 
     public Integer getQuantity() {

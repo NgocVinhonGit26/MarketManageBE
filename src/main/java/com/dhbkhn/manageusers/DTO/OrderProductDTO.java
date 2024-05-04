@@ -8,7 +8,6 @@ public class OrderProductDTO {
     private String status;
     private String paymentMethod;
     private BigDecimal total;
-    private int shopBoatId;
     private int customer;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -19,13 +18,12 @@ public class OrderProductDTO {
     public OrderProductDTO() {
     }
 
-    public OrderProductDTO(int id, String status, String paymentMethod, BigDecimal total, int shopBoatId, int customer,
+    public OrderProductDTO(int id, String status, String paymentMethod, BigDecimal total, int customer,
             Timestamp createdAt, Timestamp updatedAt, String userName, String userNumberPhone, String userAddress) {
         this.id = id;
         this.status = status;
         this.paymentMethod = paymentMethod;
         this.total = total;
-        this.shopBoatId = shopBoatId;
         this.customer = customer;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -64,14 +62,6 @@ public class OrderProductDTO {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
-    }
-
-    public int getShopBoatId() {
-        return shopBoatId;
-    }
-
-    public void setShopBoatId(int shopBoatId) {
-        this.shopBoatId = shopBoatId;
     }
 
     public int getCustomer() {

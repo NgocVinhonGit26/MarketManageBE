@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dhbkhn.manageusers.model.OrderItemSum;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 import com.dhbkhn.manageusers.repository.ProductRepsitory;
@@ -61,9 +62,9 @@ public class ProductServiceImpl implements ProductService {
     // insert order product
     @Transactional
     @Override
-    public void createOrderProduct(String status, String paymentMethod, BigDecimal total,
-            int shopBoatId, int customer, Timestamp createdAt, Timestamp updatedAt) {
-        productRepsitory.createOrderProduct(status, paymentMethod, total, shopBoatId, customer, createdAt, updatedAt);
+    public void createOrderProduct(String status, String paymentMethod, BigDecimal total, int customer,
+            Timestamp createdAt, Timestamp updatedAt) {
+        productRepsitory.createOrderProduct(status, paymentMethod, total, customer, createdAt, updatedAt);
     }
 
     // get last order product by id customer
@@ -72,20 +73,38 @@ public class ProductServiceImpl implements ProductService {
         return productRepsitory.getLastOrderProduct(userId);
     }
 
-    // insert order item
-    @Transactional
-    @Override
-    public void insertOrderItem(int productId, int orderProductId, int quantity, BigDecimal price, BigDecimal sale) {
-        productRepsitory.insertOrderItem(productId, orderProductId, quantity, price, sale);
-    }
-
-    // get all order product
+    // get order product by id shopboat and id order item
     @Override
     public Page<Object[]> getAllListOrderProduct(int shopBoatId, int page) {
         int pageSize = 5;
         try {
             Pageable pageable = PageRequest.of(page, pageSize);
             Page<Object[]> pageResult = productRepsitory.getAllListOrderProduct(shopBoatId, pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
+    // ORDER ITEM---------------------------------------------
+
+    // insert order item
+    @Transactional
+    @Override
+    public void insertOrderItem(String status, int productId, int orderProductId, int shopBoatId, int quantity,
+            BigDecimal price,
+            BigDecimal sale) {
+        productRepsitory.insertOrderItem(status, productId, orderProductId, shopBoatId, quantity, price, sale);
+    }
+
+    // get all order product
+    @Override
+    public Page<Object[]> getAllListOrderItem(int shopBoatId, int page) {
+        int pageSize = 5;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Object[]> pageResult = productRepsitory.getAllListOrderItem(shopBoatId, pageable);
             return pageResult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,4 +130,57 @@ public class ProductServiceImpl implements ProductService {
     public List<Object[]> getOrderItemByOrderProductId(int orderProductId) {
         return productRepsitory.getOrderItemByOrderProductId(orderProductId);
     }
+
+    // get total order item by shop boat id in today
+    @Override
+    public Object getTotalOrderItemByShopBoatId(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatId(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in 0h-3h,
+    // 3h-6h,....
+    @Override
+    public List<Object[]> getTotalOrderItemByShopBoatIdInTimeSlot(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInTimeSlot(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in week
+    @Override
+    public Object getTotalOrderItemByShopBoatIdInWeek(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInWeek(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in thứ 2, thứ 3,
+    // thứ 4, thứ 5, thứ 6, thứ 7, chủ nhật
+    @Override
+    public List<Object[]> getTotalOrderItemByShopBoatIdInDayOfWeek(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInDayOfWeek(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in month
+    @Override
+    public Object getTotalOrderItemByShopBoatIdInMonth(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInMonth(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in tuần 1, tuần 2,
+    // tuần 3, tuần 4, tuần 5
+    @Override
+    public List<Object[]> getTotalOrderItemByShopBoatIdInWeekOfMonth(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInWeekOfMonth(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in year
+    @Override
+    public Object getTotalOrderItemByShopBoatIdInYear(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInYear(shopBoatId);
+    }
+
+    // get total order item by order product id and shop boat id in tháng 1, tháng
+    // 2,...
+    @Override
+    public List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(int shopBoatId) {
+        return productRepsitory.getTotalOrderItemByShopBoatIdInMonthOfYear(shopBoatId);
+    }
+
 }

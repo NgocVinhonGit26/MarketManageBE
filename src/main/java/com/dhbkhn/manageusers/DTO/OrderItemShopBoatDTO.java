@@ -2,7 +2,7 @@ package com.dhbkhn.manageusers.DTO;
 
 import java.math.BigDecimal;
 
-public class OrderItemDTO {
+public class OrderItemShopBoatDTO {
     private int id;
     private String status;
     private int productId;
@@ -11,15 +11,16 @@ public class OrderItemDTO {
     private int quantity;
     private BigDecimal price;
     private BigDecimal sale;
-    private String productAvatar;
-    private String productName;
+    private String userName;
+    private String userNumberPhone;
+    private String userAddress;
 
-    public OrderItemDTO() {
+    public OrderItemShopBoatDTO() {
     }
 
-    public OrderItemDTO(int id, String status, int productId, int orderProductId, int shopBoatId, int quantity,
+    public OrderItemShopBoatDTO(int id, String status, int productId, int orderProductId, int shopBoatId, int quantity,
             BigDecimal price,
-            BigDecimal sale, String productAvatar, String productName) {
+            BigDecimal sale, String userName, String userNumberPhone, String userAddress) {
         this.id = id;
         this.status = status;
         this.productId = productId;
@@ -28,8 +29,9 @@ public class OrderItemDTO {
         this.quantity = quantity;
         this.price = price;
         this.sale = sale;
-        this.productAvatar = productAvatar;
-        this.productName = productName;
+        this.userName = userName;
+        this.userNumberPhone = userNumberPhone;
+        this.userAddress = userAddress;
     }
 
     public int getId() {
@@ -96,19 +98,28 @@ public class OrderItemDTO {
         this.sale = sale;
     }
 
-    public String getProductAvatar() {
-        return productAvatar;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setProductAvatar(String productAvatar) {
-        this.productAvatar = productAvatar;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getUserNumberPhone() {
+        return userNumberPhone;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setUserNumberPhone(String userNumberPhone) {
+        this.userNumberPhone = userNumberPhone;
     }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
 }

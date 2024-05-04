@@ -29,9 +29,6 @@ public class OrderProduct {
     @Column(name = "total", nullable = false)
     private BigDecimal total;
 
-    @Column(name = "shop_boat_id", nullable = false)
-    private int shopBoatId;
-
     @Column(name = "customer", nullable = false)
     private int customer;
 
@@ -73,14 +70,6 @@ public class OrderProduct {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
-    }
-
-    public int getShopBoatId() {
-        return shopBoatId;
-    }
-
-    public void setShopBoatId(int shopBoatId) {
-        this.shopBoatId = shopBoatId;
     }
 
     public int getCustomer() {

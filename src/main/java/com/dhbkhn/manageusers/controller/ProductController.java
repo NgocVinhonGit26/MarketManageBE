@@ -91,13 +91,14 @@ public class ProductController {
         return productService.findBySlug(slug);
     }
 
+    // ORDER ITEM---------------------------------------------
+
     // insert order product
     @PostMapping("/createOrderProduct")
     public ResponseEntity<String> createOrderProduct(@RequestBody OrderProduct orderProduct) {
         productService.createOrderProduct(orderProduct.getStatus(), orderProduct.getPaymentMethod(),
-                orderProduct.getTotal(), orderProduct.getShopBoatId(), orderProduct.getCustomer(),
-                orderProduct.getCreatedAt(),
-                orderProduct.getUpdatedAt());
+                orderProduct.getTotal(), orderProduct.getCustomer(),
+                orderProduct.getCreatedAt(), orderProduct.getUpdatedAt());
         return ResponseEntity.ok("Order product created successfully!");
 
     }
@@ -111,8 +112,8 @@ public class ProductController {
     // insert order item
     @PostMapping("/insertOrderItem")
     public ResponseEntity<String> insertOrderItem(@RequestBody OrderItem orderItem) {
-        productService.insertOrderItem(orderItem.getProductId(), orderItem.getOrderProductId(), orderItem.getQuantity(),
-                orderItem.getPrice(), orderItem.getSale());
+        productService.insertOrderItem(orderItem.getStatus(), orderItem.getProductId(), orderItem.getOrderProductId(),
+                orderItem.getShopBoatId(), orderItem.getQuantity(), orderItem.getPrice(), orderItem.getSale());
         return ResponseEntity.ok("Order item inserted successfully!");
     }
 
