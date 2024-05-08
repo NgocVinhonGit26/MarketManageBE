@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dhbkhn.manageusers.DTO.OrderTourDTO;
 import com.dhbkhn.manageusers.DTO.ShopBoatDTO;
+import com.dhbkhn.manageusers.enums.Role;
 import com.dhbkhn.manageusers.model.ShopBoat;
+import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 import com.dhbkhn.manageusers.service.Tour.TourService;
+import com.dhbkhn.manageusers.service.User.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,16 +35,57 @@ public class AdminController {
 
     private ShopBoatService shopBoatService;
     private TourService tourService;
+    private UserService userService;
 
     @Autowired
-    public AdminController(ShopBoatService shopBoatService, TourService tourService) {
+    public AdminController(ShopBoatService shopBoatService, TourService tourService, UserService userService) {
         this.shopBoatService = shopBoatService;
         this.tourService = tourService;
+        this.userService = userService;
     }
 
     @GetMapping("/admin_only")
     public ResponseEntity<String> adminOnly() {
         return ResponseEntity.ok("Hello from admin only url");
+    }
+
+    @GetMapping("/searchUser/{page}")
+    public List<User> searchUser(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String phone_number,
+            @RequestParam(required = false) Role role,
+            @PathVariable int page) {
+        Page<User> pageResult = userService.searchUser(name, username, address, phone_number, role, page);
+        List<User> listUser = new ArrayList<>();
+        for (User row : pageResult.getContent()) {
+            User user = new User();
+            user.setId(row.getId());
+            user.setName(row.getName());
+            user.setAvatar(row.getAvatar());
+            user.setAddress(row.getAddress());
+            user.setPhoneNumber(row.getPhoneNumber());
+            user.setUsername(row.getUsername());
+            user.setPassword("");
+            user.setRole(row.getRole());
+            user.setIsdeleted(row.isIsdeleted());
+            listUser.add(user);
+        }
+        return listUser;
+    }
+
+    // get total page of user
+    @GetMapping("/getTotalPageUser/{page}")
+    public int getTotalPageUser(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String phone_number,
+            @RequestParam(required = false) Role role,
+            @PathVariable int page) {
+        Page<User> pageResult = userService.searchUser(name, username, address, phone_number, role, page);
+        return pageResult.getTotalPages();
     }
 
     // update status by id

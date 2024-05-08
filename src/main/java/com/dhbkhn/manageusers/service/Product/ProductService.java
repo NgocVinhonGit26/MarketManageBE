@@ -15,6 +15,11 @@ public interface ProductService {
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
         public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Integer countInStock,
+                        String category, Double sale, int page, int shopBoatId);
+
+        // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale for
+        // user
+        public Page<Product> searchProductForUser(String name, Double priceFrom, Double priceTo, Integer countInStock,
                         String category, Double sale, int page);
 
         public List<Product> findAllByOrderByCategory();
@@ -46,10 +51,10 @@ public interface ProductService {
         public List<Object[]> getOrderProductById(int id);
 
         // update status order product by id
-        public void updateStatusOrderProductById(String status, int id);
+        public void updateStatusOrderItemById(String status, int id);
 
         // get order item by order product id
-        public List<Object[]> getOrderItemByOrderProductId(int orderProductId);
+        public List<Object[]> getOrderItemByOrderProductId(int shopBoatId, int orderProductId);
 
         // get total order item by shop boat id in today
         public Object getTotalOrderItemByShopBoatId(int shopBoatId);

@@ -3,6 +3,8 @@ package com.dhbkhn.manageusers.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,38 +19,54 @@ import com.dhbkhn.manageusers.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    // add user
-    public User save(User user);
+        // add user
+        public User save(User user);
 
-    @Query("SELECT u FROM User u WHERE u.id = ?1")
-    public User findById(int id);
+        @Query("SELECT u FROM User u WHERE u.id = ?1")
+        public User findById(int id);
 
-    @Query("SELECT u FROM User u WHERE u.name = ?1")
-    public User findByName(String name);
+        @Query("SELECT u FROM User u WHERE u.name = ?1")
+        public User findByName(String name);
 
-    // update user
-    @Transactional
-    @Modifying
-    // @Query("UPDATE User u SET u.name = ?1, u.address = ?2, u.password = ?3
-    // WHERE
-    // u.id = ?4")
-    @Query("UPDATE User u SET u.name = :name, u.address = :address WHERE u.id = :id")
-    public void updateUserById(
-            @Param("name") String name,
-            @Param("address") String address,
-            @Param("id") int id);
+        // update user
+        @Transactional
+        @Modifying
+        // @Query("UPDATE User u SET u.name = ?1, u.address = ?2, u.password = ?3
+        // WHERE
+        // u.id = ?4")
+        @Query("UPDATE User u SET u.name = :name, u.address = :address WHERE u.id = :id")
+        public void updateUserById(
+                        @Param("name") String name,
+                        @Param("address") String address,
+                        @Param("id") int id);
 
-    // login by name and password use Optional
-    Optional<User> findByNameAndPassword(String name, String password);
+        // login by name and password use Optional
+        Optional<User> findByNameAndPassword(String name, String password);
 
-    // get shop boat by user id
-    @Query(value = "SELECT * FROM ShopBoat WHERE owner = :id", nativeQuery = true)
-    public List<Object[]> getShopBoatByUserId(@Param("id") Integer id);
+        // get shop boat by user id
+        @Query(value = "SELECT * FROM ShopBoat WHERE owner = :id", nativeQuery = true)
+        public List<Object[]> getShopBoatByUserId(@Param("id") Integer id);
 
-    // public Optional<User> findByUsername(String Username);
+        // public Optional<User> findByUsername(String Username);
 
-    public User findByRole(Role role);
+        public User findByRole(Role role);
 
-    Optional<User> findByUsername(String username);
+        Optional<User> findByUsername(String username);
+
+        // search user by name, username,address, phone_number,role
+        @Query("SELECT u FROM User u " +
+                        "WHERE " +
+                        "(:name IS NULL OR u.name = :name) AND " +
+                        "(:username IS NULL OR u.username = :username) AND " +
+                        "(:address IS NULL OR u.address = :address) AND " +
+                        "(:phone_number IS NULL OR u.phone_number = :phone_number) AND " +
+                        "(:role IS NULL OR u.role = :role)")
+        Page<User> searchUser(
+                        @Param("name") String name,
+                        @Param("username") String username,
+                        @Param("address") String address,
+                        @Param("phone_number") String phone_number,
+                        @Param("role") Role role,
+                        Pageable pageable);
 
 }

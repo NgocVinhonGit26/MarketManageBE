@@ -34,18 +34,35 @@ public class ProductServiceImpl implements ProductService {
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
     @Override
     public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Integer countInStock,
-            String category, Double sale, int page) {
+            String category, Double sale, int page, int shopBoatId) {
         int pageSize = 5;
         try {
             Pageable pageable = PageRequest.of(page, pageSize);
             Page<Product> pageResult = productRepsitory.searchProduct(name, priceFrom, priceTo, countInStock, category,
-                    sale, pageable);
+                    sale, pageable, shopBoatId);
             return pageResult;
         } catch (Exception e) {
             e.printStackTrace();
             return Page.empty();
         }
 
+    }
+
+    // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale for
+    // user
+    @Override
+    public Page<Product> searchProductForUser(String name, Double priceFrom, Double priceTo, Integer countInStock,
+            String category, Double sale, int page) {
+        int pageSize = 8;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Product> pageResult = productRepsitory.searchProductForUser(name, priceFrom, priceTo, countInStock,
+                    category, sale, pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
     }
 
     @Override
@@ -121,14 +138,14 @@ public class ProductServiceImpl implements ProductService {
     // update status order product by id
     @Override
     @Transactional
-    public void updateStatusOrderProductById(String status, int id) {
-        productRepsitory.updateStatusOrderProductById(status, id);
+    public void updateStatusOrderItemById(String status, int id) {
+        productRepsitory.updateStatusOrderItemById(status, id);
     }
 
     // get order item by order product id
     @Override
-    public List<Object[]> getOrderItemByOrderProductId(int orderProductId) {
-        return productRepsitory.getOrderItemByOrderProductId(orderProductId);
+    public List<Object[]> getOrderItemByOrderProductId(int shopBoatId, int orderProductId) {
+        return productRepsitory.getOrderItemByOrderProductId(shopBoatId, orderProductId);
     }
 
     // get total order item by shop boat id in today

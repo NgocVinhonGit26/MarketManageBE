@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dhbkhn.manageusers.enums.Role;
 import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.repository.UserRepository;
@@ -126,6 +130,20 @@ public class UserServiceImpl implements UserService {
                                 username));
             }
         };
+    }
+
+    @Override
+    public Page<User> searchUser(String name, String username, String address, String phone_number, Role role,
+            int page) {
+        int pageSize = 5;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            return userRepository.searchUser(name, username, address, phone_number, role, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+
     }
 
 }

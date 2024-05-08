@@ -24,7 +24,9 @@ import com.dhbkhn.manageusers.DTO.OrderProductDTO;
 import com.dhbkhn.manageusers.DTO.ShopBoatDTO;
 import com.dhbkhn.manageusers.model.OrderItemSum;
 import com.dhbkhn.manageusers.model.ShopBoat;
+import com.dhbkhn.manageusers.model.Product.OrderItem;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
+import com.dhbkhn.manageusers.model.Product.Product;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 
@@ -145,6 +147,39 @@ public class ShopBoatController {
         return ResponseEntity.notFound().build();
     }
 
+    // manage product
+    // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
+    @GetMapping("/searchProduct/{page}/{shopBoatId}")
+    public List<Product> searchProduct(
+            @PathVariable int page,
+            @PathVariable int shopBoatId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double priceFrom,
+            @RequestParam(required = false) Double priceTo,
+            @RequestParam(required = false) Integer countInStock,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Double sale) {
+        Page<Product> pageResult = productService.searchProduct(name, priceFrom, priceTo, countInStock, category, sale,
+                page, shopBoatId);
+        return pageResult.getContent();
+    }
+
+    // get total page
+    @GetMapping("/getTotalPage/{page}/{shopBoatId}")
+    public int getTotalPage(
+            @PathVariable int shopBoatId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double priceFrom,
+            @RequestParam(required = false) Double priceTo,
+            @RequestParam(required = false) Integer countInStock,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Double sale,
+            @PathVariable int page) {
+        Page<Product> pageResult = productService.searchProduct(name, priceFrom, priceTo, countInStock, category,
+                sale, page, shopBoatId);
+        return pageResult.getTotalPages();
+    }
+
     // get all order product
     @GetMapping("/getAllListOrderItem/{page}")
     public List<OrderItemShopBoatDTO> getAllListOrderItem(@RequestParam int shopBoatId, @PathVariable int page) {
@@ -169,10 +204,11 @@ public class ShopBoatController {
     }
 
     // get order item by order product id
-    @GetMapping("/getOrderItemByOrderProductId/{orderProductId}")
-    public List<OrderItemDTO> getOrderItemByOrderProductId(@PathVariable int orderProductId) {
+    @GetMapping("/getOrderItemByOrderProductId/{shopBoatId}/{orderProductId}")
+    public List<OrderItemDTO> getOrderItemByOrderProductId(@PathVariable int shopBoatId,
+            @PathVariable int orderProductId) {
         List<OrderItemDTO> listOrderItemDTO = new ArrayList<>();
-        List<Object[]> orderItemData = productService.getOrderItemByOrderProductId(orderProductId);
+        List<Object[]> orderItemData = productService.getOrderItemByOrderProductId(shopBoatId, orderProductId);
         for (Object[] row : orderItemData) {
             OrderItemDTO orderItemDTO = new OrderItemDTO();
             orderItemDTO.setId((int) row[0]);
@@ -204,27 +240,12 @@ public class ShopBoatController {
     }
 
     // update status order product by id
-    @PostMapping("/updateStatusOrderProductById/{id}")
-    public ResponseEntity<OrderProductDTO> updateStatusOrderProductById(@RequestBody OrderProduct orderProduct,
+    @PostMapping("/updateStatusOrderItemById/{id}")
+    public ResponseEntity<String> updateStatusOrderItemById(
+            @RequestBody OrderItem orderItem,
             @PathVariable int id) {
-        productService.updateStatusOrderProductById(orderProduct.getStatus(), id);
-        List<Object[]> orderProductData = productService.getOrderProductById(id);
-        OrderProductDTO orderProductDTO = new OrderProductDTO();
-        for (Object[] row : orderProductData) {
-            orderProductDTO.setId((int) row[0]);
-            orderProductDTO.setStatus((String) row[1]);
-            orderProductDTO.setPaymentMethod((String) row[2]);
-            orderProductDTO.setTotal((BigDecimal) row[3]);
-            orderProductDTO.setCustomer((int) row[4]);
-            orderProductDTO.setCreatedAt((Timestamp) row[5]);
-            orderProductDTO.setUpdatedAt((Timestamp) row[6]);
-            orderProductDTO.setUserName((String) row[7]);
-            orderProductDTO.setUserNumberPhone((String) row[8]);
-            orderProductDTO.setUserAddress((String) row[9]);
-        }
-
-        return ResponseEntity.ok(orderProductDTO);
-
+        productService.updateStatusOrderItemById(orderItem.getStatus(), id);
+        return ResponseEntity.ok("Update status successfully!");
     }
 
     // get order product by id shopboat and id order item

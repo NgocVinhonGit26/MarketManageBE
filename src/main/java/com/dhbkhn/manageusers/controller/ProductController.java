@@ -33,30 +33,10 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // get all products
-    @GetMapping("/getAllProduct")
-    public List<Product> getAllProduct() {
-        return productService.getAllProduct();
-    }
-
-    // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
-    @GetMapping("/searchProduct/{page}")
-    public List<Product> searchProduct(
-            @PathVariable int page,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Double priceFrom,
-            @RequestParam(required = false) Double priceTo,
-            @RequestParam(required = false) Integer countInStock,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) Double sale) {
-        Page<Product> pageResult = productService.searchProduct(name, priceFrom, priceTo, countInStock, category, sale,
-                page);
-        return pageResult.getContent();
-    }
-
-    // get total page
-    @GetMapping("/getTotalPage/{page}")
-    public int getTotalPage(
+    // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale for
+    // user
+    @GetMapping("/searchProductForUser/{page}")
+    public Page<Product> searchProductForUser(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Double priceFrom,
             @RequestParam(required = false) Double priceTo,
@@ -64,9 +44,13 @@ public class ProductController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Double sale,
             @PathVariable int page) {
-        Page<Product> pageResult = productService.searchProduct(name, priceFrom, priceTo, countInStock, category,
-                sale, page);
-        return pageResult.getTotalPages();
+        return productService.searchProductForUser(name, priceFrom, priceTo, countInStock, category, sale, page);
+    }
+
+    // get all products
+    @GetMapping("/getAllProduct")
+    public List<Product> getAllProduct() {
+        return productService.getAllProduct();
     }
 
     // get all products order by category

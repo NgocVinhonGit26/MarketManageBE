@@ -3,8 +3,10 @@ package com.dhbkhn.manageusers.service.User;
 import java.util.List;
 
 import org.aspectj.apache.bcel.classfile.Module.Uses;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.dhbkhn.manageusers.enums.Role;
 import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 
@@ -30,4 +32,7 @@ public interface UserService {
     public List<ShopBoat> getShopBoatByUserId(int userId);
 
     public UserDetailsService userDetailsService();
+
+    public Page<User> searchUser(String name, String username, String address, String phone_number, Role role,
+            int page);
 }

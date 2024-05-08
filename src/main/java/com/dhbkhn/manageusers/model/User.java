@@ -22,11 +22,14 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @Column(name = "address")
     private String address;
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    private String phone_number;
 
     @Column(name = "username")
     private String username;
@@ -36,6 +39,9 @@ public class User implements UserDetails {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Column(name = "isdeleted")
+    private boolean isdeleted;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
@@ -65,11 +71,11 @@ public class User implements UserDetails {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return phone_number;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phone_number = phoneNumber;
     }
 
     public String getUsername() {
@@ -132,6 +138,22 @@ public class User implements UserDetails {
     public static Object withDefaultPasswordEncoder() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'withDefaultPasswordEncoder'");
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public boolean isIsdeleted() {
+        return isdeleted;
+    }
+
+    public void setIsdeleted(boolean isdeleted) {
+        this.isdeleted = isdeleted;
     }
 }
 

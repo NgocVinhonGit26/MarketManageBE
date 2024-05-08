@@ -56,8 +56,8 @@ public class Product {
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "shopBoat_id", nullable = false)
-    @Column(name = "shopBoat_id", nullable = false)
-    private int shopBoatId;
+    @Column(name = "shop_boat_id", nullable = false)
+    private int shop_boat_id;
 
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp created_at;
@@ -81,7 +81,7 @@ public class Product {
         this.image = image;
         this.unit = unit;
         this.category = category;
-        this.shopBoatId = shopBoatId;
+        this.shop_boat_id = shopBoatId;
     }
 
     public Product(int id, String name, String slug, String description, BigDecimal price, BigDecimal sale,
@@ -97,7 +97,7 @@ public class Product {
         this.image = image;
         this.unit = unit;
         this.category = category;
-        this.shopBoatId = shopBoatId;
+        this.shop_boat_id = shopBoatId;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -175,11 +175,11 @@ public class Product {
     }
 
     public int getShopBoatId() {
-        return shopBoatId;
+        return shop_boat_id;
     }
 
     public void setShopBoatId(int shopBoatId) {
-        this.shopBoatId = shopBoatId;
+        this.shop_boat_id = shopBoatId;
     }
 
     public Timestamp getCreated_at() {
