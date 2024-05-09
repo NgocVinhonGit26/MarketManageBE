@@ -88,6 +88,18 @@ public class AdminController {
         return pageResult.getTotalPages();
     }
 
+    // delete user by id
+    @PostMapping("/deleteUserById/{id}")
+    public int deleteUserById(@PathVariable int id) {
+        userService.deleteByUserId(id);
+        User deletedUser = userService.findById(id);
+        if (deletedUser.isIsdeleted() == true) {
+            return id;
+        }
+        System.out.println("User: delete failed!");
+        return 0;
+    }
+
     // update status by id
     @PostMapping("/updateStatusById/{id}")
     public ResponseEntity<ShopBoat> updateStatusById(@PathVariable int id, @RequestBody ShopBoat shopBoat) {

@@ -35,4 +35,7 @@ public interface UserService {
 
     public Page<User> searchUser(String name, String username, String address, String phone_number, Role role,
             int page);
+
+    // delete user by id
+    public void deleteByUserId(int id);
 }
