@@ -84,4 +84,7 @@ public interface ProductService {
         // 2,...
         public List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(int shopBoatId);
 
+        // search prodct by name
+        public Page<Product> searchProductByName(String name, int page);
+
 }

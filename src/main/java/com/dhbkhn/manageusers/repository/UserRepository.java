@@ -57,9 +57,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         @Query("SELECT u FROM User u " +
                         "WHERE " +
                         "u.isdeleted = FALSE AND " +
-                        "(:name IS NULL OR u.name = :name) AND " +
+                        "(:name IS NULL OR u.name like %:name%) AND " +
                         "(:username IS NULL OR u.username = :username) AND " +
-                        "(:address IS NULL OR u.address = :address) AND " +
+                        "(:address IS NULL OR u.address like %:address%) AND " +
                         "(:phone_number IS NULL OR u.phone_number = :phone_number) AND " +
                         "(:role IS NULL OR u.role = :role)")
         Page<User> searchUser(
@@ -75,5 +75,19 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         @Modifying
         @Query("UPDATE User u SET u.isdeleted = TRUE WHERE u.id = :id")
         public void deleteByUserId(@Param("id") int id);
+
+        // get user by id
+        @Query("SELECT u FROM User u WHERE u.id = :id")
+        public User getUserById(@Param("id") int id);
+
+        // update user by id
+        @Transactional
+        @Modifying
+        @Query("UPDATE User u SET u.name = :name, u.address = :address, u.phone_number = :phone_number WHERE u.id = :id")
+        public void updateUserById(
+                        @Param("name") String name,
+                        @Param("address") String address,
+                        @Param("phone_number") String phone_number,
+                        @Param("id") int id);
 
 }

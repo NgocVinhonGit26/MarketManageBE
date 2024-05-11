@@ -101,4 +101,19 @@ public class ProductController {
         return ResponseEntity.ok("Order item inserted successfully!");
     }
 
+    @GetMapping("/searchProductByName/{page}")
+    public List<Product> searchProductByName(
+            @RequestParam(name = "name", required = false) String name,
+            @PathVariable int page) {
+        return productService.searchProductByName(name, page).getContent();
+    }
+
+    // get total
+    @GetMapping("/getTotalPageSearchProductByName/{page}")
+    public int getTotalPageSearchProductByName(
+            @RequestParam(name = "name", required = false) String name,
+            @PathVariable int page) {
+        return productService.searchProductByName(name, page).getTotalPages();
+    }
+
 }

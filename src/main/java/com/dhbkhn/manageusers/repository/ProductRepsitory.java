@@ -235,4 +235,8 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "ORDER BY month", nativeQuery = true)
         List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(@Param("shopBoatId") int shopBoatId);
 
+        // search product by name
+        @Query("SELECT p FROM Product p WHERE :name IS NULL OR p.name LIKE %:name%")
+        Page<Product> searchProductByName(@Param("name") String name, Pageable pageable);
+
 }

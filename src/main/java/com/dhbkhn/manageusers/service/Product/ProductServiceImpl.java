@@ -200,4 +200,18 @@ public class ProductServiceImpl implements ProductService {
         return productRepsitory.getTotalOrderItemByShopBoatIdInMonthOfYear(shopBoatId);
     }
 
+    // seach product by name
+    @Override
+    public Page<Product> searchProductByName(String name, int page) {
+        int pageSize = 8;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Product> pageResult = productRepsitory.searchProductByName(name, pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
 }

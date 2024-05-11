@@ -38,4 +38,7 @@ public interface UserService {
 
     // delete user by id
     public void deleteByUserId(int id);
+
+    // get user by id
+    public User getUserById(int id);
 }

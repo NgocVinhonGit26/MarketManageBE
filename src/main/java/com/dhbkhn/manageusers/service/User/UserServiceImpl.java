@@ -153,4 +153,10 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteByUserId(id);
     }
 
+    @Override
+    public User getUserById(int id) {
+        // TODO Auto-generated method stub
+        return userRepository.getUserById(id);
+    }
+
 }
