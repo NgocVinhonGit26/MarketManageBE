@@ -34,10 +34,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // @Query("UPDATE User u SET u.name = ?1, u.address = ?2, u.password = ?3
         // WHERE
         // u.id = ?4")
-        @Query("UPDATE User u SET u.name = :name, u.address = :address WHERE u.id = :id")
+        @Query("UPDATE User u SET u.name = :name, u.avatar = :avatar, u.phone_number = :phone_number WHERE u.id = :id")
         public void updateUserById(
                         @Param("name") String name,
-                        @Param("address") String address,
+                        @Param("avatar") String avatar,
+                        @Param("phone_number") String phone_number,
                         @Param("id") int id);
 
         // login by name and password use Optional
@@ -79,15 +80,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // get user by id
         @Query("SELECT u FROM User u WHERE u.id = :id")
         public User getUserById(@Param("id") int id);
-
-        // update user by id
-        @Transactional
-        @Modifying
-        @Query("UPDATE User u SET u.name = :name, u.address = :address, u.phone_number = :phone_number WHERE u.id = :id")
-        public void updateUserById(
-                        @Param("name") String name,
-                        @Param("address") String address,
-                        @Param("phone_number") String phone_number,
-                        @Param("id") int id);
-
 }

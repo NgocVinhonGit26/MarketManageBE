@@ -57,9 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(String name, String address, int id) {
+    public void updateUserById(String name, String avatar, String phone_number, int id) {
         // TODO Auto-generated method stub
-        userRepository.updateUserById(name, address, id);
+        userRepository.updateUserById(name, avatar, phone_number, id);
     }
 
     @Override
@@ -158,5 +158,4 @@ public class UserServiceImpl implements UserService {
         // TODO Auto-generated method stub
         return userRepository.getUserById(id);
     }
-
 }

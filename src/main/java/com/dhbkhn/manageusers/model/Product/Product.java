@@ -42,7 +42,7 @@ public class Product {
     private BigDecimal sale = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private int countInStock = 0;
+    private int count_in_stock = 0;
 
     @Column(length = 255)
     private String image;
@@ -65,19 +65,22 @@ public class Product {
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp updated_at;
 
+    @Column(name = "video_infor", nullable = true)
+    private String video_infor;
+
     // Getters và Setters
 
     public Product() {
     }
 
-    public Product(String name, String slug, String description, BigDecimal price, BigDecimal sale, int countInStock,
+    public Product(String name, String slug, String description, BigDecimal price, BigDecimal sale, int count_in_stock,
             String image, String unit, String category, int shopBoatId) {
         this.name = name;
         this.slug = slug;
         this.description = description;
         this.price = price;
         this.sale = sale;
-        this.countInStock = countInStock;
+        this.count_in_stock = count_in_stock;
         this.image = image;
         this.unit = unit;
         this.category = category;
@@ -85,21 +88,22 @@ public class Product {
     }
 
     public Product(int id, String name, String slug, String description, BigDecimal price, BigDecimal sale,
-            int countInStock, String image, String unit, String category, int shopBoatId, Timestamp created_at,
-            Timestamp updated_at) {
+            int count_in_stock, String image, String unit, String category, int shopBoatId, Timestamp created_at,
+            Timestamp updated_at, String videoInfor) {
         this.id = id;
         this.name = name;
         this.slug = slug;
         this.description = description;
         this.price = price;
         this.sale = sale;
-        this.countInStock = countInStock;
+        this.count_in_stock = count_in_stock;
         this.image = image;
         this.unit = unit;
         this.category = category;
         this.shop_boat_id = shopBoatId;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.video_infor = videoInfor;
     }
 
     public int getId() {
@@ -151,11 +155,11 @@ public class Product {
     }
 
     public int getCountInStock() {
-        return countInStock;
+        return count_in_stock;
     }
 
-    public void setCountInStock(int countInStock) {
-        this.countInStock = countInStock;
+    public void setCountInStock(int count_in_stock) {
+        this.count_in_stock = count_in_stock;
     }
 
     public String getImage() {
@@ -204,6 +208,14 @@ public class Product {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getVideoInfor() {
+        return video_infor;
+    }
+
+    public void setVideoInfor(String videoInfor) {
+        this.video_infor = videoInfor;
     }
 
 }

@@ -18,9 +18,6 @@ public interface UserService {
     // delete user
     public void deleteUser(int id);
 
-    // update user
-    public void updateUser(String name, String address, int id);
-
     public User findById(int id);
 
     public User findByName(String name);
@@ -41,4 +38,7 @@ public interface UserService {
 
     // get user by id
     public User getUserById(int id);
+
+    // update user by id
+    public void updateUserById(String name, String avatar, String phone_number, int id);
 }

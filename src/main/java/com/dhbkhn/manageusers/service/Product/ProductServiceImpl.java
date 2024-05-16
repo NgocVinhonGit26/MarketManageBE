@@ -21,6 +21,16 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepsitory productRepsitory;
 
+    // create new product
+    @Override
+    @Transactional
+    public void createNewProduct(String name, String slug, String description, BigDecimal price, BigDecimal sale,
+            int countInStock, String image, String unit, String category, int shopBoatId, Timestamp createdAt,
+            Timestamp updatedAt, String videoInfor) {
+        productRepsitory.createNewProduct(name, slug, description, price, sale, countInStock, image, unit, category,
+                shopBoatId, createdAt, updatedAt, videoInfor);
+    }
+
     @Autowired
     public ProductServiceImpl(ProductRepsitory productRepsitory) {
         this.productRepsitory = productRepsitory;

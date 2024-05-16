@@ -12,11 +12,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dhbkhn.manageusers.model.OrderItemSum;
-import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 
 public interface ProductRepsitory extends JpaRepository<Product, Integer> {
+
+        // create a new product
+        @Transactional
+        @Modifying
+        @Query("INSERT INTO Product (name, slug, description, price, sale, count_in_stock, image, unit, category, shop_boat_id, created_at, updated_at, video_infor) "
+                        +
+                        "VALUES (:name, :slug, :description, :price, :sale, :countInStock, :image, :unit, :category, :shopBoatId, :createdAt, :updatedAt, :videoInfor)")
+        void createNewProduct(@Param("name") String name, @Param("slug") String slug,
+                        @Param("description") String description,
+                        @Param("price") BigDecimal price, @Param("sale") BigDecimal sale,
+                        @Param("countInStock") int countInStock,
+                        @Param("image") String image, @Param("unit") String unit, @Param("category") String category,
+                        @Param("shopBoatId") int shopBoatId, @Param("createdAt") Timestamp createdAt,
+                        @Param("updatedAt") Timestamp updatedAt,
+                        @Param("videoInfor") String videoInfor);
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
         @Query(value = "SELECT p FROM Product p "
@@ -25,7 +38,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "(:name IS NULL OR p.name LIKE %:name%) "
                         + "AND (:priceFrom IS NULL OR p.price >= :priceFrom) "
                         + "AND (:priceTo IS NULL OR p.price <= :priceTo) "
-                        + "AND (:countInStock IS NULL OR p.countInStock = :countInStock) "
+                        + "AND (:countInStock IS NULL OR p.count_in_stock = :countInStock) "
                         + "AND (:category IS NULL OR p.category = :category) "
                         + "AND (:sale IS NULL OR p.sale = :sale)")
         Page<Product> searchProduct(
@@ -45,7 +58,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "(:name IS NULL OR p.name LIKE %:name%) "
                         + "AND (:priceFrom IS NULL OR p.price >= :priceFrom) "
                         + "AND (:priceTo IS NULL OR p.price <= :priceTo) "
-                        + "AND (:countInStock IS NULL OR p.countInStock = :countInStock) "
+                        + "AND (:countInStock IS NULL OR p.count_in_stock = :countInStock) "
                         + "AND (:category IS NULL OR p.category = :category) "
                         + "AND (:sale IS NULL OR p.sale = :sale)")
         Page<Product> searchProductForUser(

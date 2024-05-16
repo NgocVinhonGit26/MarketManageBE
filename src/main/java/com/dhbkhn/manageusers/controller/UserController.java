@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.model.Product.Product;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.User.UserService;
+
+import jakarta.websocket.server.PathParam;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -50,12 +53,6 @@ public class UserController {
     public String deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
         return "User deleted successfully";
-    }
-
-    @PostMapping("/updateUser/{id}")
-    public String updateUser(@RequestBody User user, @PathVariable int id) {
-        userService.updateUser(user.getName(), user.getAddress(), id);
-        return "User updated successfully";
     }
 
     @GetMapping("/getUserById/{id}")
@@ -96,6 +93,26 @@ public class UserController {
     @GetMapping("/{id}/shopboat")
     public List<ShopBoat> getShopBoatByUserId(@PathVariable int id) {
         return userService.getShopBoatByUserId(id);
+    }
+
+    @PostMapping("/updateUserById/{id}")
+    public ResponseEntity<User> updateUserById(
+            @RequestParam String name,
+            @RequestParam String avatar,
+            @RequestParam String phone_number,
+            @PathVariable int id) {
+        userService.updateUserById(name, avatar, phone_number, id);
+        User user = userService.getUserById(id);
+        User userResult = new User();
+        userResult.setId(user.getId());
+        userResult.setName(user.getName());
+        userResult.setAddress(user.getAddress());
+        userResult.setAvatar(user.getAvatar());
+        userResult.setPhoneNumber(user.getPhoneNumber());
+        userResult.setUsername(user.getUsername());
+        userResult.setRole(user.getRole());
+        return ResponseEntity.ok(userResult);
+
     }
 
 }

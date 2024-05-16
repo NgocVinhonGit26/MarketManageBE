@@ -147,7 +147,24 @@ public class ShopBoatController {
         return ResponseEntity.notFound().build();
     }
 
-    // manage product
+    // ---------------------- MANAGE PRODUCT----------------------------
+
+    // create new product
+    @PostMapping("/createNewProduct")
+    public ResponseEntity<Product> createNewProduct(@RequestBody Product product) {
+        productService.createNewProduct(product.getName(), product.getSlug(), product.getDescription(),
+                product.getPrice(), product.getSale(), product.getCountInStock(), product.getImage(), product.getUnit(),
+                product.getCategory(), product.getShopBoatId(), product.getCreated_at(), product.getUpdated_at(),
+                product.getVideoInfor());
+        Product newProduct = productService.findBySlug(product.getSlug());
+        if (newProduct != null) {
+            System.out.println("Product: create successfully!");
+            return ResponseEntity.ok(newProduct);
+        }
+        System.out.println("Product: create failed!");
+        return ResponseEntity.notFound().build();
+    }
+
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
     @GetMapping("/searchProduct/{page}/{shopBoatId}")
     public List<Product> searchProduct(

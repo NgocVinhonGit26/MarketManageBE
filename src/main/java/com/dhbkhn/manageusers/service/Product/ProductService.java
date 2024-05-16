@@ -5,12 +5,19 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 
 import com.dhbkhn.manageusers.model.OrderItemSum;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 
 public interface ProductService {
+
+        // create new product
+        public void createNewProduct(String name, String slug, String description, BigDecimal price, BigDecimal sale,
+                        int countInStock, String image, String unit, String category, int shopBoatId,
+                        Timestamp createdAt, Timestamp updatedAt, String videoInfor);
+
         public List<Product> getAllProduct();
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
