@@ -165,6 +165,21 @@ public class ShopBoatController {
         return ResponseEntity.notFound().build();
     }
 
+    // update a product by id
+    @PostMapping("/updateProductById/{id}")
+    public ResponseEntity<Product> updateProductById(@PathVariable int id, @RequestBody Product product) {
+        productService.updateProductById(product.getName(), product.getSlug(), product.getDescription(),
+                product.getPrice(), product.getSale(), product.getCountInStock(), product.getImage(), product.getUnit(),
+                product.getCategory(), product.getUpdated_at(), product.getVideoInfor(), id);
+        Product updatedProduct = productService.findBySlug(product.getSlug());
+        if (updatedProduct != null) {
+            System.out.println("Product: update successfully!");
+            return ResponseEntity.ok(updatedProduct);
+        }
+        System.out.println("Product: update failed!");
+        return ResponseEntity.notFound().build();
+    }
+
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
     @GetMapping("/searchProduct/{page}/{shopBoatId}")
     public List<Product> searchProduct(

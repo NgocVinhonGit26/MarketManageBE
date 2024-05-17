@@ -31,6 +31,21 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("updatedAt") Timestamp updatedAt,
                         @Param("videoInfor") String videoInfor);
 
+        // update a product by id
+        @Transactional
+        @Modifying
+        @Query("UPDATE Product SET name = :name, slug = :slug, description = :description, price = :price, sale = :sale, count_in_stock = :countInStock, image = :image, unit = :unit, "
+                        +
+                        "category = :category, updated_at = :updatedAt, video_infor = :videoInfor WHERE id = :id")
+        void updateProductById(@Param("name") String name, @Param("slug") String slug,
+                        @Param("description") String description,
+                        @Param("price") BigDecimal price, @Param("sale") BigDecimal sale,
+                        @Param("countInStock") int countInStock,
+                        @Param("image") String image, @Param("unit") String unit, @Param("category") String category,
+                        @Param("updatedAt") Timestamp updatedAt,
+                        @Param("videoInfor") String videoInfor,
+                        @Param("id") int id);
+
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
         @Query(value = "SELECT p FROM Product p "
                         + "WHERE "

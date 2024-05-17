@@ -18,6 +18,11 @@ public interface ProductService {
                         int countInStock, String image, String unit, String category, int shopBoatId,
                         Timestamp createdAt, Timestamp updatedAt, String videoInfor);
 
+        // update a product by id
+        public void updateProductById(String name, String slug, String description, BigDecimal price, BigDecimal sale,
+                        int countInStock, String image, String unit, String category,
+                        Timestamp updatedAt, String videoInfor, int id);
+
         public List<Product> getAllProduct();
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale

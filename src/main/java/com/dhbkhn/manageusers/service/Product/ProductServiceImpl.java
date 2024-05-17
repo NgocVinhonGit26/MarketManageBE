@@ -31,6 +31,16 @@ public class ProductServiceImpl implements ProductService {
                 shopBoatId, createdAt, updatedAt, videoInfor);
     }
 
+    // update a product by id
+    @Override
+    @Transactional
+    public void updateProductById(String name, String slug, String description, BigDecimal price, BigDecimal sale,
+            int countInStock, String image, String unit, String category, Timestamp updatedAt,
+            String videoInfor, int id) {
+        productRepsitory.updateProductById(name, slug, description, price, sale, countInStock, image, unit, category,
+                updatedAt, videoInfor, id);
+    }
+
     @Autowired
     public ProductServiceImpl(ProductRepsitory productRepsitory) {
         this.productRepsitory = productRepsitory;
