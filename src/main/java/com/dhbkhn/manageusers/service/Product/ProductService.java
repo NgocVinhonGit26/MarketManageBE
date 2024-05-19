@@ -26,7 +26,7 @@ public interface ProductService {
         public List<Product> getAllProduct();
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
-        public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Integer countInStock,
+        public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Boolean countInStock,
                         String category, Double sale, int page, int shopBoatId);
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale for

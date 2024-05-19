@@ -188,7 +188,7 @@ public class ShopBoatController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Double priceFrom,
             @RequestParam(required = false) Double priceTo,
-            @RequestParam(required = false) Integer countInStock,
+            @RequestParam(required = false) Boolean countInStock,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Double sale) {
         Page<Product> pageResult = productService.searchProduct(name, priceFrom, priceTo, countInStock, category, sale,
@@ -203,7 +203,7 @@ public class ShopBoatController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Double priceFrom,
             @RequestParam(required = false) Double priceTo,
-            @RequestParam(required = false) Integer countInStock,
+            @RequestParam(required = false) Boolean countInStock,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Double sale,
             @PathVariable int page) {

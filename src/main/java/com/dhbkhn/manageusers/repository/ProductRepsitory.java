@@ -53,14 +53,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "(:name IS NULL OR p.name LIKE %:name%) "
                         + "AND (:priceFrom IS NULL OR p.price >= :priceFrom) "
                         + "AND (:priceTo IS NULL OR p.price <= :priceTo) "
-                        + "AND (:countInStock IS NULL OR p.count_in_stock = :countInStock) "
+                        + "AND (:countInStock IS NULL OR p.count_in_stock > 0) "
                         + "AND (:category IS NULL OR p.category = :category) "
                         + "AND (:sale IS NULL OR p.sale = :sale)")
         Page<Product> searchProduct(
                         @Param("name") String name,
                         @Param("priceFrom") Double priceFrom,
                         @Param("priceTo") Double priceTo,
-                        @Param("countInStock") Integer countInStock,
+                        @Param("countInStock") Boolean countInStock,
                         @Param("category") String category,
                         @Param("sale") Double sale,
                         Pageable pageable,

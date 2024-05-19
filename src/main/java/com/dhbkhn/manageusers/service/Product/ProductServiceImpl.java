@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
     @Override
-    public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Integer countInStock,
+    public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Boolean countInStock,
             String category, Double sale, int page, int shopBoatId) {
         int pageSize = 5;
         try {
