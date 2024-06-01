@@ -2,6 +2,7 @@ package com.dhbkhn.manageusers.controller;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
+import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 import com.dhbkhn.manageusers.service.Tour.TourService;
 import com.dhbkhn.manageusers.service.User.UserService;
@@ -36,12 +38,15 @@ public class AdminController {
     private ShopBoatService shopBoatService;
     private TourService tourService;
     private UserService userService;
+    private ProductService productService;
 
     @Autowired
-    public AdminController(ShopBoatService shopBoatService, TourService tourService, UserService userService) {
+    public AdminController(ShopBoatService shopBoatService, TourService tourService, UserService userService,
+            ProductService productService) {
         this.shopBoatService = shopBoatService;
         this.tourService = tourService;
         this.userService = userService;
+        this.productService = productService;
     }
 
     @GetMapping("/admin_only")
@@ -177,13 +182,13 @@ public class AdminController {
             orderTourDTO.setId((int) row[0]);
             orderTourDTO.setStatus((int) row[1]);
             orderTourDTO.setPaymentMethod((String) row[2]);
-            orderTourDTO.setStartTime((Date) row[3]);
+            orderTourDTO.setStartTime((Timestamp) row[3]);
             orderTourDTO.setQuantity((int) row[4]);
             orderTourDTO.setTourId((int) row[5]);
             orderTourDTO.setTourName((String) row[6]);
             orderTourDTO.setUserId((int) row[7]);
             orderTourDTO.setPrice((BigDecimal) row[8]);
-            orderTourDTO.setCreateAt((Date) row[9]);
+            orderTourDTO.setCreateAt((Timestamp) row[9]);
             orderTourDTO.setUserName((String) row[10]);
             orderTourDTO.setUserUName((String) row[11]);
             orderTourDTO.setUserAddress((String) row[12]);
@@ -287,4 +292,115 @@ public class AdminController {
         return ResponseEntity.notFound().build();
     }
 
+    // get quantity of order tour have status = 3 in today
+    @GetMapping("/getQuantityOrderTourCompleteInToday")
+    public Object getQuantityOrderTourComplete() {
+        return tourService.getQuantityOrderTourStatus3InToday();
+    }
+
+    // get quantity of order tour have status = 2 in today
+    @GetMapping("/getQuantityOrderTourCancelInToday")
+    public int getQuantityOrderTourCancel() {
+        return tourService.getQuantityOrderTourByStatus2InToday();
+    }
+
+    // get quantity of order tour have status = 3 in this week
+    @GetMapping("/getQuantityOrderTourCompleteInThisWeek")
+    public Object getQuantityOrderTourCompleteInThisWeek() {
+        return tourService.getQuantityOrderTourStatus3InThisWeek();
+    }
+
+    // get quantity of order tour have status = 2 in this week
+    @GetMapping("/getQuantityOrderTourCancelInThisWeek")
+    public int getQuantityOrderTourCancelInThisWeek() {
+        return tourService.getQuantityOrderTourByStatus2InThisWeek();
+    }
+
+    // get quantity of order tour have status = 3 in this month
+    @GetMapping("/getQuantityOrderTourCompleteInThisMonth")
+    public Object getQuantityOrderTourCompleteInThisMonth() {
+        return tourService.getQuantityOrderTourStatus3InThisMonth();
+    }
+
+    // get quantity of order tour have status = 2 in this month
+    @GetMapping("/getQuantityOrderTourCancelInThisMonth")
+    public int getQuantityOrderTourCancelInThisMonth() {
+        return tourService.getQuantityOrderTourByStatus2InThisMonth();
+    }
+
+    // get quantity of order tour have status = 3 in this year
+    @GetMapping("/getQuantityOrderTourCompleteInThisYear")
+    public Object getQuantityOrderTourCompleteInThisYear() {
+        return tourService.getQuantityOrderTourStatus3InThisYear();
+    }
+
+    // get quantity of order tour have status = 2 in this year
+    @GetMapping("/getQuantityOrderTourCancelInThisYear")
+    public int getQuantityOrderTourCancelInThisYear() {
+        return tourService.getQuantityOrderTourByStatus2InThisYear();
+    }
+
+    // get quantity of order tour have status = 3 in 0h-3h, 3h-6h, 6h-9h, 9h-12h,
+    // 12h-15h, 15h-18h, 18h-21h, 21h-24h
+    @GetMapping("/getQuantityOrderTourCompleteTodayByTimePeriod")
+    public List<Object[]> getQuantityOrderTourCompleteTodayByTimePeriod() {
+        return tourService.getQuantityOrderTourCompleteTodayByTimePeriod();
+    }
+
+    // get quantity of order tour have status = 3 in chủ nhật, thứ 2, thứ 3, thứ 4,
+    // thứ 5, thứ 6, thứ 7
+    @GetMapping("/getQuantityOrderTourCompleteThisWeekByDayOfWeek")
+    public List<Object[]> getQuantityOrderTourCompleteThisWeekByDayOfWeek() {
+        return tourService.getQuantityOrderTourCompleteThisWeekByDayOfWeek();
+    }
+
+    // get quantity of order tour have status = 3 in Tuần 1, Tuần 2, Tuần 3, Tuần 4,
+    // Tuần 5
+    @GetMapping("/getQuantityOrderTourCompleteThisMonthByWeekOfMonth")
+    public List<Object[]> getQuantityOrderTourCompleteThisMonthByWeekOfMonth() {
+        return tourService.getQuantityOrderTourCompleteThisMonthByWeekOfMonth();
+    }
+
+    // get quantity of order tour have status = 3 in T1, T2, T3, T4, T5, T6, T7, T8,
+    // T9, T10, T11, T12
+    @GetMapping("/getQuantityOrderTourCompleteThisYearByQuarter")
+    public List<Object[]> getQuantityOrderTourCompleteThisYearByQuarter() {
+        return tourService.getQuantityOrderTourCompleteThisYearByQuarter();
+    }
+
+    // get total price of order item by id shop boat in this month
+    @GetMapping("/getTotalPriceOrderItemByShopBoatIdInMonth")
+    public List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth() {
+        return productService.getTotalPriceOrderItemByShopBoatIdInMonth();
+    }
+
+    // get total price of order item by id shop boat in this year
+    @GetMapping("/getTotalPriceOrderItemByShopBoatIdInYear")
+    public List<Object[]> getTotalPriceOrderItemByShopBoatIdInYear() {
+        return productService.getTotalPriceOrderItemByShopBoatIdInYear();
+    }
+
+    // get top5 tour have price highest in today
+    @GetMapping("/getTop5TourHighestPriceInToday")
+    public List<Object[]> getTop5TourHighestPriceInToday() {
+        return tourService.getTop5TourHighestPriceInToday();
+    }
+
+    // get top5 tour have price highest in this week
+    @GetMapping("/getTop5TourHighestPriceInThisWeek")
+    public List<Object[]> getTop5TourHighestPriceInThisWeek() {
+        return tourService.getTop5TourHighestPriceInThisWeek();
+    }
+
+    // get top5 tour have price highest in this month
+    @GetMapping("/getTop5TourHighestPriceInThisMonth")
+    public List<Object[]> getTop5TourHighestPriceInThisMonth() {
+        return tourService.getTop5TourHighestPriceInThisMonth();
+    }
+
+    // get top5 tour have price highest in this year
+    @GetMapping("/getTop5TourHighestPriceInThisYear")
+    public List<Object[]> getTop5TourHighestPriceInThisYear() {
+        return tourService.getTop5TourHighestPriceInThisYear();
+    }
 }

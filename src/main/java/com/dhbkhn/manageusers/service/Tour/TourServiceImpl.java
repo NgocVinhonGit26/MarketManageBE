@@ -83,7 +83,8 @@ public class TourServiceImpl implements TourService {
 
     // insert order
     @Override
-    public void insertOrder(int status, String paymentMethod, Date startTime, int quantity, int tourId, String tourName,
+    public void insertOrder(int status, String paymentMethod, Timestamp startTime, int quantity, int tourId,
+            String tourName,
             int userId, Timestamp createAt) {
         // TODO Auto-generated method stub
         tourRepository.insertOrder(status, paymentMethod, startTime, quantity, tourId, tourName, userId, createAt);
@@ -97,7 +98,7 @@ public class TourServiceImpl implements TourService {
             Pageable pageable = PageRequest.of(page, pageSize);
             return tourRepository.searchOrderTour(userName, tourName, status, pageable);
         } catch (Exception e) {
-            System.out.println("tat ca chi la giac mo hehe");
+            // System.out.println("tat ca chi la giac mo hehe");
             e.printStackTrace();
             return Page.empty();
         }
@@ -122,4 +123,119 @@ public class TourServiceImpl implements TourService {
         }
     }
 
+    // get quantity of order tour have status = 3 in today
+    @Override
+    public Object getQuantityOrderTourStatus3InToday() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteInToday();
+    }
+
+    // get quantity of order tour have status = 2 in today
+    @Override
+    public int getQuantityOrderTourByStatus2InToday() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCancelInToday();
+    }
+
+    // get quantity of order tour have status = 3 in this week
+    @Override
+    public Object getQuantityOrderTourStatus3InThisWeek() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteInThisWeek();
+    }
+
+    // get quantity of order tour have status = 2 in this week
+    @Override
+    public int getQuantityOrderTourByStatus2InThisWeek() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCancelInThisWeek();
+    }
+
+    // get quantity of order tour have status = 3 in this month
+    @Override
+    public Object getQuantityOrderTourStatus3InThisMonth() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteInThisMonth();
+    }
+
+    // get quantity of order tour have status = 2 in this month
+    @Override
+    public int getQuantityOrderTourByStatus2InThisMonth() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCancelInThisMonth();
+    }
+
+    // get quantity of order tour have status = 3 in this year
+    @Override
+    public Object getQuantityOrderTourStatus3InThisYear() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteInThisYear();
+    }
+
+    // get quantity of order tour have status = 2 in this year
+    @Override
+    public int getQuantityOrderTourByStatus2InThisYear() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCancelInThisYear();
+    }
+
+    // get quantity of order tour have status = 3 in 0h-3h, 3h-6h, 6h-9h, 9h-12h,
+    // 12h-15h, 15h-18h, 18h-21h, 21h-24h
+    @Override
+    public List<Object[]> getQuantityOrderTourCompleteTodayByTimePeriod() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteTodayByTimePeriod();
+    }
+
+    // get quantity of order tour have status = 3 in chủ nhật, thứ 2, thứ 3, thứ 4,
+    // thứ 5, thứ 6, thứ 7
+    @Override
+    public List<Object[]> getQuantityOrderTourCompleteThisWeekByDayOfWeek() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteThisWeekByDayOfWeek();
+    }
+
+    // get quantity of order tour have status = 3 in Tuần 1, Tuần 2, Tuần 3, Tuần 4,
+    // Tuần 5
+    @Override
+    public List<Object[]> getQuantityOrderTourCompleteThisMonthByWeekOfMonth() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteThisMonthByWeekOfMonth();
+    }
+
+    // get quantity of order tour have status = 3 in T1, T2, T3, T4, T5, T6, T7, T8,
+    // T9, T10, T11, T12
+    @Override
+    public List<Object[]> getQuantityOrderTourCompleteThisYearByQuarter() {
+        // TODO Auto-generated method stub
+        return tourRepository.getQuantityOrderTourCompleteThisYearByQuarter();
+    }
+
+    // get top5 tour have price highest in today
+    @Override
+    public List<Object[]> getTop5TourHighestPriceInToday() {
+        // TODO Auto-generated method stub
+        return tourRepository.getTop5TourHighestPriceInToday();
+    }
+
+    // get top5 tour have price highest in this week
+    @Override
+    public List<Object[]> getTop5TourHighestPriceInThisWeek() {
+        // TODO Auto-generated method stub
+        return tourRepository.getTop5TourHighestPriceInThisWeek();
+    }
+
+    // get top5 tour have price highest in this month
+    @Override
+    public List<Object[]> getTop5TourHighestPriceInThisMonth() {
+        // TODO Auto-generated method stub
+        return tourRepository.getTop5TourHighestPriceInThisMonth();
+    }
+
+    // get top5 tour have price highest in this year
+    @Override
+    public List<Object[]> getTop5TourHighestPriceInThisYear() {
+        // TODO Auto-generated method stub
+        return tourRepository.getTop5TourHighestPriceInThisYear();
+    }
 }

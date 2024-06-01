@@ -63,11 +63,18 @@ public interface ProductService {
         public List<Object[]> getOrderProductById(int id);
 
         // update status order product by id
-        public void updateStatusOrderItemById(String status, int id);
+        public void updateStatusOrderItemById(String status, int orderProductId, int shopBoatId);
 
         // get order item by order product id
         public List<Object[]> getOrderItemByOrderProductId(int shopBoatId, int orderProductId);
 
+        // get order product by customer
+        public List<Object[]> getOrderProductByCustomer(int customerId);
+
+        // get order item by order product id
+        public List<Object[]> getOrderItemByOrderProductId(int orderProductId);
+
+        // ------THONG KE DOANH THU SHOP BOAT---------------------
         // get total order item by shop boat id in today
         public Object getTotalOrderItemByShopBoatId(int shopBoatId);
 
@@ -95,6 +102,12 @@ public interface ProductService {
         // get total order item by order product id and shop boat id in tháng 1, tháng
         // 2,...
         public List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(int shopBoatId);
+
+        // get total price of order item by id shop boat in this month
+        public List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth();
+
+        // get total price of order item by id shop boat in this year
+        public List<Object[]> getTotalPriceOrderItemByShopBoatIdInYear();
 
         // search prodct by name
         public Page<Product> searchProductByName(String name, int page);

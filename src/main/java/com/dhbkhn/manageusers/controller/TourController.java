@@ -47,10 +47,11 @@ public class TourController {
     @PostMapping("/insertOrder")
     public ResponseEntity<String> insertOrder(@RequestBody OrderTour request) {
         try {
-            // System.out.println("hehe" + request.getStatus() + request.getPaymentMethod()
-            // + request.getStartTime() +
-            // request.getQuantity() + request.getTourId() + request.getUserId() +
-            // request.getPrice());
+            System.out.println("hehe" + request.getStatus() + request.getPaymentMethod()
+                    + request.getStartTime() +
+                    request.getQuantity() + request.getTourId() + request.getUserId() + "k " +
+                    request.getCreatedAt());
+
             tourService.insertOrder(
                     request.getStatus(),
                     request.getPaymentMethod(),
@@ -59,7 +60,7 @@ public class TourController {
                     request.getTourId(),
                     request.getTourName(),
                     request.getUserId(),
-                    new Timestamp(System.currentTimeMillis()));
+                    request.getCreatedAt());
             return new ResponseEntity<>("Order created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to create order: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

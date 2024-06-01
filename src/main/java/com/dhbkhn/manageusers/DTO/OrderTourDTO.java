@@ -1,18 +1,18 @@
 package com.dhbkhn.manageusers.DTO;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class OrderTourDTO {
     private int id;
     private int status;
     private String paymentMethod;
-    private Date startTime;
+    private Timestamp startTime;
     private int quantity;
     private int tourId;
     private int userId;
     private BigDecimal price;
-    private Date createAt;
+    private Timestamp createAt;
     private String userName;
     private String userUName;
     private String userAddress;
@@ -27,8 +27,8 @@ public class OrderTourDTO {
     public OrderTourDTO() {
     }
 
-    public OrderTourDTO(int id, int status, String paymentMethod, Date startTime, int quantity, int tourId,
-            int userId, BigDecimal price, Date createAt, String userName, String userUName, String userAddress,
+    public OrderTourDTO(int id, int status, String paymentMethod, Timestamp startTime, int quantity, int tourId,
+            int userId, BigDecimal price, Timestamp createAt, String userName, String userUName, String userAddress,
             String userNumberPhone, String tourName, BigDecimal tourPrice, String transport, String avatar,
             String startLocation, String duration) {
         super();
@@ -77,11 +77,11 @@ public class OrderTourDTO {
         this.paymentMethod = paymentMethod;
     }
 
-    public Date getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
@@ -117,11 +117,11 @@ public class OrderTourDTO {
         this.price = price;
     }
 
-    public Date getCreateAt() {
+    public Timestamp getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
     }
 

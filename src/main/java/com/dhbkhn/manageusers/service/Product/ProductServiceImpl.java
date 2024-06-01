@@ -158,8 +158,8 @@ public class ProductServiceImpl implements ProductService {
     // update status order product by id
     @Override
     @Transactional
-    public void updateStatusOrderItemById(String status, int id) {
-        productRepsitory.updateStatusOrderItemById(status, id);
+    public void updateStatusOrderItemById(String status, int orderProductId, int shopBoatId) {
+        productRepsitory.updateStatusOrderItemById(status, orderProductId, shopBoatId);
     }
 
     // get order item by order product id
@@ -168,6 +168,19 @@ public class ProductServiceImpl implements ProductService {
         return productRepsitory.getOrderItemByOrderProductId(shopBoatId, orderProductId);
     }
 
+    // get order product by customer
+    @Override
+    public List<Object[]> getOrderProductByCustomer(int customerId) {
+        return productRepsitory.getOrderProductByCustomer(customerId);
+    }
+
+    // get order item by order product id
+    @Override
+    public List<Object[]> getOrderItemByOrderProductId(int orderProductId) {
+        return productRepsitory.getOrderItemByOrderProductId(orderProductId);
+    }
+
+    // ------THONG KE DOANH THU SHOP BOAT---------------------
     // get total order item by shop boat id in today
     @Override
     public Object getTotalOrderItemByShopBoatId(int shopBoatId) {
@@ -218,6 +231,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(int shopBoatId) {
         return productRepsitory.getTotalOrderItemByShopBoatIdInMonthOfYear(shopBoatId);
+    }
+
+    // get total price of order item by id shop boat in this month
+    @Override
+    public List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth() {
+        return productRepsitory.getTotalPriceOrderItemByShopBoatIdInMonth();
+    }
+
+    // get total price of order item by id shop boat in this year
+    @Override
+    public List<Object[]> getTotalPriceOrderItemByShopBoatIdInYear() {
+        return productRepsitory.getTotalPriceOrderItemByShopBoatIdInYear();
     }
 
     // seach product by name

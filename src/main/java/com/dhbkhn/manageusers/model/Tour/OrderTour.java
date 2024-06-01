@@ -2,8 +2,10 @@ package com.dhbkhn.manageusers.model.Tour;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.dhbkhn.manageusers.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +30,8 @@ public class OrderTour {
     private String paymentMethod;
 
     @Column(name = "start_time")
-    private Date startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp startTime;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
@@ -48,13 +51,14 @@ public class OrderTour {
     private BigDecimal price;
 
     @Column(name = "created_at", nullable = false)
-    private Date createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp createdAt;
 
     public OrderTour() {
     }
 
-    public OrderTour(int id, int status, String paymentMethod, Date startTime, int quantity, int tourId, int userId,
-            BigDecimal price, Date createdAt) {
+    public OrderTour(int id, int status, String paymentMethod, Timestamp startTime, int quantity, int tourId,
+            int userId, Timestamp createdAt) {
         super();
         this.id = id;
         this.status = status;
@@ -63,7 +67,6 @@ public class OrderTour {
         this.quantity = quantity;
         this.tourId = tourId;
         this.userId = userId;
-        this.price = price;
         this.createdAt = createdAt;
     }
 
@@ -91,11 +94,11 @@ public class OrderTour {
         this.paymentMethod = paymentMethod;
     }
 
-    public Date getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
@@ -139,11 +142,11 @@ public class OrderTour {
         this.price = price;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

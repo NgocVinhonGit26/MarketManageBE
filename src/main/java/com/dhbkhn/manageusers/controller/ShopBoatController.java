@@ -272,12 +272,14 @@ public class ShopBoatController {
     }
 
     // update status order product by id
-    @PostMapping("/updateStatusOrderItemById/{id}")
+    @PostMapping("/updateStatusOrderItemById")
     public ResponseEntity<String> updateStatusOrderItemById(
-            @RequestBody OrderItem orderItem,
-            @PathVariable int id) {
-        productService.updateStatusOrderItemById(orderItem.getStatus(), id);
-        return ResponseEntity.ok("Update status successfully!");
+            @RequestBody OrderItem orderItem) {
+        productService.updateStatusOrderItemById(orderItem.getStatus(), orderItem.getOrderProductId(),
+                orderItem.getShopBoatId());
+
+        // return ResponseEntity.ok("Update status successfully!");
+        return ResponseEntity.ok(orderItem.getStatus());
     }
 
     // get order product by id shopboat and id order item
@@ -298,6 +300,7 @@ public class ShopBoatController {
             orderProductDTO.setUserName((String) objects[7]);
             orderProductDTO.setUserNumberPhone((String) objects[8]);
             orderProductDTO.setUserAddress((String) objects[9]);
+            orderProductDTO.setStatusOrderItems((String) objects[10]);
             listOrderProduct.add(orderProductDTO);
         }
 

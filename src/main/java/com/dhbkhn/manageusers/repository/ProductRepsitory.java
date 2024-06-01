@@ -55,7 +55,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "AND (:priceTo IS NULL OR p.price <= :priceTo) "
                         + "AND (:countInStock IS NULL OR p.count_in_stock > 0) "
                         + "AND (:category IS NULL OR p.category = :category) "
-                        + "AND (:sale IS NULL OR p.sale = :sale)")
+                        + "AND (:sale IS NULL OR p.sale >= :sale)")
         Page<Product> searchProduct(
                         @Param("name") String name,
                         @Param("priceFrom") Double priceFrom,
@@ -95,12 +95,13 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "order_product.*, " +
                         "User.name AS customer_name, " +
                         "User.phone_number AS customer_phone_number, " +
-                        "User.address AS customer_address " +
+                        "User.address AS customer_address, " +
+                        "order_item.status AS orderitem_status " +
                         "FROM order_product " +
                         "INNER JOIN order_item ON order_product.id = order_item.order_product_id " +
                         "INNER JOIN User ON order_product.customer = User.id " +
                         "WHERE order_item.shop_boat_id = :shopBoatId " +
-                        "GROUP BY order_product.id", nativeQuery = true)
+                        "GROUP BY order_product.id, order_item.status", nativeQuery = true)
         Page<Object[]> getAllListOrderProduct(@Param("shopBoatId") int shopBoatId, Pageable pageable);
 
         // ORDER PRODUCT---------------------------------------------
@@ -153,8 +154,11 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
 
         // update status order product by id
         @Modifying
-        @Query(value = "UPDATE order_item SET status = :status WHERE id = :id", nativeQuery = true)
-        void updateStatusOrderItemById(@Param("status") String status, @Param("id") int id);
+        @Query(value = "UPDATE order_item SET status = :status WHERE order_product_id = :orderProductId AND shop_boat_id = :shopBoatId", nativeQuery = true)
+        void updateStatusOrderItemById(
+                        @Param("status") String status,
+                        @Param("orderProductId") int orderProductId,
+                        @Param("shopBoatId") int shopBoatId);
 
         // get order item by order product id
         @Query(value = "SELECT oi.*, p.name, p.image FROM order_item AS oi " +
@@ -164,6 +168,16 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("shopBoatId") int shopBoatId,
                         @Param("orderProductId") int orderProductId);
 
+        // get order product by customer
+        @Query(value = "SELECT * FROM order_product WHERE customer = :customerId", nativeQuery = true)
+        List<Object[]> getOrderProductByCustomer(@Param("customerId") int customerId);
+
+        // get order item by order product id
+        @Query(value = "SELECT oi.*, p.name, p.slug FROM order_item oi JOIN Product p ON oi.product_id = p.id " +
+                        "WHERE oi.order_product_id = :orderProductId", nativeQuery = true)
+        List<Object[]> getOrderItemByOrderProductId(@Param("orderProductId") int orderProductId);
+
+        // ------THONG KE DOANH THU SHOP BOAT---------------------
         // get total order item by order product id and shop boat id in today
         @Query(value = "SELECT COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount " +
                         "FROM order_item oi " +
@@ -266,5 +280,25 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // search product by name
         @Query("SELECT p FROM Product p WHERE :name IS NULL OR p.name LIKE %:name%")
         Page<Product> searchProductByName(@Param("name") String name, Pageable pageable);
+
+        // get total price of order item by id shop boat in this month
+        @Query(value = "SELECT sb.id AS shop_boat_id, sb.name AS shop_name, SUM(oi.price) AS total_revenue " +
+                        "FROM order_item oi " +
+                        "INNER JOIN order_product op ON oi.order_product_id = op.id " +
+                        "INNER JOIN ShopBoat sb ON oi.shop_boat_id = sb.id " +
+                        "WHERE MONTH(op.created_at) = MONTH(CURDATE()) AND YEAR(op.created_at) = YEAR(CURDATE()) " +
+                        "GROUP BY sb.id, sb.name " +
+                        "ORDER BY sb.id", nativeQuery = true)
+        List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth();
+
+        // get total price of order item by id shop boat in this year
+        @Query(value = "SELECT sb.id AS shop_boat_id, sb.name AS shop_name, SUM(oi.price) AS total_revenue " +
+                        "FROM order_item oi " +
+                        "INNER JOIN order_product op ON oi.order_product_id = op.id " +
+                        "INNER JOIN ShopBoat sb ON oi.shop_boat_id = sb.id " +
+                        "WHERE YEAR(op.created_at) = YEAR(CURDATE()) " +
+                        "GROUP BY sb.id, sb.name " +
+                        "ORDER BY sb.id", nativeQuery = true)
+        List<Object[]> getTotalPriceOrderItemByShopBoatIdInYear();
 
 }

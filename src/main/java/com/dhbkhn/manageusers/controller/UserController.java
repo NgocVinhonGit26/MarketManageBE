@@ -1,5 +1,8 @@
 package com.dhbkhn.manageusers.controller;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dhbkhn.manageusers.DTO.BillDetail;
 import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
+import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.User.UserService;
@@ -113,6 +118,45 @@ public class UserController {
         userResult.setRole(user.getRole());
         return ResponseEntity.ok(userResult);
 
+    }
+
+    @GetMapping("/getOrderProductByCustomer/{customerId}")
+    public List<Object[]> getOrderProductByCustomer(@PathVariable int customerId) {
+        List<Object[]> resultOrderProduct = productService.getOrderProductByCustomer(customerId);
+        List<OrderProduct> orderProducts = new ArrayList<>();
+        for (Object[] object : resultOrderProduct) {
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setId((int) object[0]);
+            orderProduct.setStatus((String) object[1]);
+            orderProduct.setPaymentMethod((String) object[2]);
+            orderProduct.setTotal((BigDecimal) object[3]);
+            orderProduct.setCustomer((int) object[4]);
+            orderProduct.setCreatedAt((Timestamp) object[5]);
+            orderProduct.setUpdatedAt((Timestamp) object[6]);
+            orderProducts.add(orderProduct);
+        }
+        return resultOrderProduct;
+    }
+
+    @GetMapping("/getOrderItemByOrderProductId/{orderProductId}")
+    public List<BillDetail> getOrderItemByOrderProductId(@PathVariable int orderProductId) {
+        List<Object[]> resultOrderItems = productService.getOrderItemByOrderProductId(orderProductId);
+        List<BillDetail> billDetails = new ArrayList<>();
+        for (Object[] object : resultOrderItems) {
+            BillDetail billDetail = new BillDetail();
+            billDetail.setId((int) object[0]);
+            billDetail.setStatus((String) object[1]);
+            billDetail.setProductId((int) object[2]);
+            billDetail.setOrderProductId((int) object[3]);
+            billDetail.setShopBoatId((int) object[4]);
+            billDetail.setQuantity((Integer) object[5]);
+            billDetail.setPrice((BigDecimal) object[6]);
+            billDetail.setSale((BigDecimal) object[7]);
+            billDetail.setProductName((String) object[8]);
+            billDetail.setProductSlug((String) object[9]);
+            billDetails.add(billDetail);
+        }
+        return billDetails;
     }
 
 }

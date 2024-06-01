@@ -14,12 +14,14 @@ public class OrderProductDTO {
     private String userName;
     private String userNumberPhone;
     private String userAddress;
+    private String statusOrderItems;
 
     public OrderProductDTO() {
     }
 
     public OrderProductDTO(int id, String status, String paymentMethod, BigDecimal total, int customer,
-            Timestamp createdAt, Timestamp updatedAt, String userName, String userNumberPhone, String userAddress) {
+            Timestamp createdAt, Timestamp updatedAt, String userName,
+            String userNumberPhone, String userAddress, String statusOrderItems) {
         this.id = id;
         this.status = status;
         this.paymentMethod = paymentMethod;
@@ -30,6 +32,7 @@ public class OrderProductDTO {
         this.userName = userName;
         this.userNumberPhone = userNumberPhone;
         this.userAddress = userAddress;
+        this.statusOrderItems = statusOrderItems;
     }
 
     public int getId() {
@@ -110,6 +113,14 @@ public class OrderProductDTO {
 
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
+    }
+
+    public String getStatusOrderItems() {
+        return statusOrderItems;
+    }
+
+    public void setStatusOrderItems(String statusOrderItems) {
+        this.statusOrderItems = statusOrderItems;
     }
 
 }

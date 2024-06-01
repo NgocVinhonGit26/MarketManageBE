@@ -18,19 +18,19 @@ public class Tour {
     private int id;
     private String name;
     private String slug;
-    private String startTime;
+    private String start_time;
 
     @Column(name = "start_location", nullable = false)
-    private String startLocation;
+    private String start_location;
 
     @Column(name = "tour_duration", nullable = false)
-    private String tourDuration;
+    private String tour_duration;
 
     private String description;
     private BigDecimal price;
     private String avatar;
     private String transport;
-    private String tourInformation;
+    private String tour_information;
 
     public int getId() {
         return id;
@@ -57,27 +57,27 @@ public class Tour {
     }
 
     public String getStartTime() {
-        return startTime;
+        return start_time;
     }
 
     public void setStartTime(String startTime) {
-        this.startTime = startTime;
+        this.start_time = startTime;
     }
 
     public String getStartLocation() {
-        return startLocation;
+        return start_location;
     }
 
     public void setStartLocation(String startLocation) {
-        this.startLocation = startLocation;
+        this.start_location = startLocation;
     }
 
     public String getTourDuration() {
-        return tourDuration;
+        return tour_duration;
     }
 
     public void setTourDuration(String tourDuration) {
-        this.tourDuration = tourDuration;
+        this.tour_duration = tourDuration;
     }
 
     public String getDescription() {
@@ -105,11 +105,11 @@ public class Tour {
     }
 
     public String getTourInformation() {
-        return tourInformation;
+        return tour_information;
     }
 
     public void setTourInformation(String tourInformation) {
-        this.tourInformation = tourInformation;
+        this.tour_information = tourInformation;
     }
 
     public String getTransport() {
