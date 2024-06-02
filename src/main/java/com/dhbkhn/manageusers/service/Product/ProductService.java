@@ -103,6 +103,18 @@ public interface ProductService {
         // 2,...
         public List<Object[]> getTotalOrderItemByShopBoatIdInMonthOfYear(int shopBoatId);
 
+        // get top 5 product by revenue in today
+        public List<Object[]> getTop5ProductByRevenueInToday(int shopBoatId);
+
+        // get top 5 product by revenue in week
+        public List<Object[]> getTop5ProductByRevenueInThisWeek(int shopBoatId);
+
+        // get top 5 product by revenue in month
+        public List<Object[]> getTop5ProductByRevenueInThisMonth(int shopBoatId);
+
+        // get top 5 product by revenue in year
+        public List<Object[]> getTop5ProductByRevenueInThisYear(int shopBoatId);
+
         // get total price of order item by id shop boat in this month
         public List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth();
 

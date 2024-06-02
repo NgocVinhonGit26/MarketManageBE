@@ -377,4 +377,36 @@ public class ShopBoatController {
         return result;
     }
 
+    // get top 5 product by revenue in today
+    @GetMapping("/getTop5ProductByRevenueInToday/{shopBoatId}")
+    public List<Object[]> getTop5ProductByRevenueInToday(
+            @PathVariable int shopBoatId) {
+        List<Object[]> result = productService.getTop5ProductByRevenueInToday(shopBoatId);
+        return result;
+    }
+
+    // get top 5 product by revenue in week
+    @GetMapping("/getTop5ProductByRevenueInThisWeek/{shopBoatId}")
+    public List<Object[]> getTop5ProductByRevenueInThisWeek(
+            @PathVariable int shopBoatId) {
+        List<Object[]> result = productService.getTop5ProductByRevenueInThisWeek(shopBoatId);
+        return result;
+    }
+
+    // get top 5 product by revenue in month
+    @GetMapping("/getTop5ProductByRevenueInThisMonth/{shopBoatId}")
+    public List<Object[]> getTop5ProductByRevenueInThisMonth(
+            @PathVariable int shopBoatId) {
+        List<Object[]> result = productService.getTop5ProductByRevenueInThisMonth(shopBoatId);
+        return result;
+    }
+
+    // get top 5 product by revenue in year
+    @GetMapping("/getTop5ProductByRevenueInThisYear/{shopBoatId}")
+    public List<Object[]> getTop5ProductByRevenueInThisYear(
+            @PathVariable int shopBoatId) {
+        List<Object[]> result = productService.getTop5ProductByRevenueInThisYear(shopBoatId);
+        return result;
+    }
+
 }

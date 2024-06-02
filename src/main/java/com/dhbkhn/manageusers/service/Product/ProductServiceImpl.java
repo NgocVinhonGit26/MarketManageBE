@@ -233,6 +233,30 @@ public class ProductServiceImpl implements ProductService {
         return productRepsitory.getTotalOrderItemByShopBoatIdInMonthOfYear(shopBoatId);
     }
 
+    // get top 5 product by revenue in today
+    @Override
+    public List<Object[]> getTop5ProductByRevenueInToday(int shopBoatId) {
+        return productRepsitory.getTop5ProductByRevenueInToday(shopBoatId);
+    }
+
+    // get top 5 product by revenue in week
+    @Override
+    public List<Object[]> getTop5ProductByRevenueInThisWeek(int shopBoatId) {
+        return productRepsitory.getTop5ProductByRevenueInThisWeek(shopBoatId);
+    }
+
+    // get top 5 product by revenue in month
+    @Override
+    public List<Object[]> getTop5ProductByRevenueInThisMonth(int shopBoatId) {
+        return productRepsitory.getTop5ProductByRevenueInThisMonth(shopBoatId);
+    }
+
+    // get top 5 product by revenue in year
+    @Override
+    public List<Object[]> getTop5ProductByRevenueInThisYear(int shopBoatId) {
+        return productRepsitory.getTop5ProductByRevenueInThisYear(shopBoatId);
+    }
+
     // get total price of order item by id shop boat in this month
     @Override
     public List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth() {
