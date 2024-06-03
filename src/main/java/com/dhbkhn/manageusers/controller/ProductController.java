@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dhbkhn.manageusers.DTO.CommentsDTO;
 import com.dhbkhn.manageusers.model.Product.OrderItem;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
+import com.dhbkhn.manageusers.service.Comments.CommentsService;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -27,10 +29,12 @@ import com.dhbkhn.manageusers.service.Product.ProductService;
 @RequestMapping("/product")
 public class ProductController {
     private final ProductService productService;
+    private final CommentsService commentsService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CommentsService commentsService) {
         this.productService = productService;
+        this.commentsService = commentsService;
     }
 
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale for
@@ -121,6 +125,13 @@ public class ProductController {
             @RequestParam(name = "name", required = false) String name,
             @PathVariable int page) {
         return productService.searchProductByName(name, page).getTotalPages();
+    }
+
+    // get all comments by product id
+    @GetMapping("/findAllByProductId/{productId}")
+    public List<Object[]> findAllByProductId(
+            @PathVariable int productId) {
+        return commentsService.findAllByProductId(productId);
     }
 
 }
