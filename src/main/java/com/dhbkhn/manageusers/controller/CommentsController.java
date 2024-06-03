@@ -35,9 +35,7 @@ public class CommentsController {
                 comment.getProduct_id(),
                 comment.getUser_id(),
                 comment.getContent(),
-                comment.getCreated_at(),
-                comment.getLikes(),
-                comment.getDislikes());
+                comment.getCreated_at());
         return ResponseEntity.ok("Comment created successfully");
     }
 

@@ -22,8 +22,8 @@ public class CommentsServiceImpl implements CommentsService {
 
     // create new comment
     @Override
-    public void createComment(int productId, int userId, String content, Timestamp createdAt, int likes, int dislikes) {
-        Comments comment = new Comments(productId, userId, content, createdAt, likes, dislikes);
+    public void createComment(int productId, int userId, String content, Timestamp createdAt) {
+        Comments comment = new Comments(productId, userId, content, createdAt);
         commentsRepository.save(comment);
     }
 
@@ -32,4 +32,5 @@ public class CommentsServiceImpl implements CommentsService {
     public List<Object[]> findAllByProductId(int productId) {
         return commentsRepository.getAllCommentsProductId(productId);
     }
+
 }

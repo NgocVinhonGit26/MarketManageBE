@@ -1,5 +1,6 @@
 package com.dhbkhn.manageusers.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,9 +130,27 @@ public class ProductController {
 
     // get all comments by product id
     @GetMapping("/findAllByProductId/{productId}")
-    public List<Object[]> findAllByProductId(
+    public List<CommentsDTO> findAllByProductId(
             @PathVariable int productId) {
-        return commentsService.findAllByProductId(productId);
+        List<Object[]> resultComments = commentsService.findAllByProductId(productId);
+        List<CommentsDTO> comments = new ArrayList<>();
+        for (Object[] result : resultComments) {
+            int id = ((Number) result[0]).intValue();
+            int productIdResult = ((Number) result[1]).intValue();
+            int userId = ((Number) result[2]).intValue();
+            String content = (String) result[3];
+            Timestamp createdAt = (Timestamp) result[4];
+            String userName = (String) result[5];
+            String userAvatar = (String) result[6];
+            int likes = ((Number) result[7]).intValue();
+            int dislikes = ((Number) result[8]).intValue();
+
+            CommentsDTO comment = new CommentsDTO(id, productIdResult, userId, content, createdAt,
+                    likes, dislikes, userName, userAvatar);
+            comments.add(comment);
+        }
+        return comments;
+
     }
 
 }

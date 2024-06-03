@@ -8,8 +8,9 @@ import com.dhbkhn.manageusers.model.Comments;
 
 public interface CommentsService {
     // create new comment
-    public void createComment(int productId, int userId, String content, Timestamp createdAt, int likes, int dislikes);
+    public void createComment(int productId, int userId, String content, Timestamp createdAt);
 
     // get all comments by product id
     public List<Object[]> findAllByProductId(int productId);
+
 }

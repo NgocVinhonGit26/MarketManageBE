@@ -21,30 +21,24 @@ public class Comments {
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp created_at;
-    private int likes;
-    private int dislikes;
 
     public Comments() {
     }
 
-    public Comments(int product_id, int user_id, String content, Timestamp createdAt, int likes, int dislikes) {
+    public Comments(int product_id, int user_id, String content, Timestamp createdAt) {
         this.product_id = product_id;
         this.user_id = user_id;
         this.content = content;
         this.created_at = createdAt;
-        this.likes = likes;
-        this.dislikes = dislikes;
     }
 
-    public Comments(int id, int product_id, int user_id, String content, Timestamp created_at, int likes,
-            int dislikes) {
+    public Comments(int id, int product_id, int user_id, String content, Timestamp created_at) {
         this.id = id;
         this.product_id = product_id;
         this.user_id = user_id;
         this.content = content;
         this.created_at = created_at;
-        this.likes = likes;
-        this.dislikes = dislikes;
+
     }
 
     public int getId() {
@@ -85,22 +79,6 @@ public class Comments {
 
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public int getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(int dislikes) {
-        this.dislikes = dislikes;
     }
 
 }
