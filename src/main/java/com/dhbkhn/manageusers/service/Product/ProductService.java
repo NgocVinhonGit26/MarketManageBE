@@ -49,6 +49,9 @@ public interface ProductService {
         // get order product by id shopboat and id order item
         public Page<Object[]> getAllListOrderProduct(int shopBoatId, int page);
 
+        // update total order product by id
+        public void updateTotalOrderProductById(BigDecimal total, int orderProductId);
+
         // ORDER ITEM---------------------------------------------
 
         // insert order item

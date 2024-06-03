@@ -124,6 +124,13 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    // update total order product by id
+    @Override
+    @Transactional
+    public void updateTotalOrderProductById(BigDecimal total, int orderProductId) {
+        productRepsitory.updateTotalOrderProductById(total, orderProductId);
+    }
+
     // ORDER ITEM---------------------------------------------
 
     // insert order item

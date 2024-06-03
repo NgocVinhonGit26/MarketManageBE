@@ -75,6 +75,13 @@ public class ProductController {
         return productService.findBySlug(slug);
     }
 
+    // update total order product by id
+    @PostMapping("/updateTotalOrderProductById")
+    public ResponseEntity<String> updateTotalOrderProductById(@RequestBody OrderProduct orderProduct) {
+        productService.updateTotalOrderProductById(orderProduct.getTotal(), orderProduct.getId());
+        return ResponseEntity.ok("Total order product updated successfully!");
+    }
+
     // ORDER ITEM---------------------------------------------
 
     // insert order product

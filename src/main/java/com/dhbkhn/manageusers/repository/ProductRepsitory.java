@@ -105,6 +105,11 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "GROUP BY order_product.id, order_item.status", nativeQuery = true)
         Page<Object[]> getAllListOrderProduct(@Param("shopBoatId") int shopBoatId, Pageable pageable);
 
+        // update total order product by id
+        @Modifying
+        @Query(value = "UPDATE order_product SET total = :total WHERE id = :id", nativeQuery = true)
+        void updateTotalOrderProductById(@Param("total") BigDecimal total, @Param("id") int id);
+
         // ORDER PRODUCT---------------------------------------------
         // insert order product
 
