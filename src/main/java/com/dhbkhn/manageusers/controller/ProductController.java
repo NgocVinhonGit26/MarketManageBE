@@ -1,6 +1,8 @@
 package com.dhbkhn.manageusers.controller;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -139,11 +141,18 @@ public class ProductController {
             int productIdResult = ((Number) result[1]).intValue();
             int userId = ((Number) result[2]).intValue();
             String content = (String) result[3];
-            Timestamp createdAt = (Timestamp) result[4];
+            Timestamp timestamp = (Timestamp) result[4];
             String userName = (String) result[5];
             String userAvatar = (String) result[6];
             int likes = ((Number) result[7]).intValue();
             int dislikes = ((Number) result[8]).intValue();
+
+            // Convert Timestamp to LocalDateTime
+            LocalDateTime localDateTime = timestamp.toLocalDateTime();
+
+            // Format LocalDateTime to 'yyyy-MM-dd HH:mm:ss' string
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String createdAt = localDateTime.format(formatter);
 
             CommentsDTO comment = new CommentsDTO(id, productIdResult, userId, content, createdAt,
                     likes, dislikes, userName, userAvatar);

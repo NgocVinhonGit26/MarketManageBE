@@ -158,4 +158,11 @@ public class UserServiceImpl implements UserService {
         // TODO Auto-generated method stub
         return userRepository.getUserById(id);
     }
+
+    @Override
+    @Transactional
+    public void updateAddressById(String address, int id) {
+        // TODO Auto-generated method stub
+        userRepository.updateAddressById(address, id);
+    }
 }

@@ -41,4 +41,7 @@ public interface UserService {
 
     // update user by id
     public void updateUserById(String name, String avatar, String phone_number, int id);
+
+    // update address by id
+    public void updateAddressById(String address, int id);
 }

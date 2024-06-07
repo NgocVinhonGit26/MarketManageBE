@@ -7,7 +7,7 @@ public class CommentsDTO {
     private int product_id;
     private int user_id;
     private String content;
-    private Timestamp created_at;
+    private String created_at;
     private int likes;
     private int dislikes;
     private String userName;
@@ -16,7 +16,7 @@ public class CommentsDTO {
     public CommentsDTO() {
     }
 
-    public CommentsDTO(int id, int product_id, int user_id, String content, Timestamp created_at, int likes,
+    public CommentsDTO(int id, int product_id, int user_id, String content, String created_at, int likes,
             int dislikes, String userName, String userAvatar) {
         this.id = id;
         this.product_id = product_id;
@@ -61,11 +61,11 @@ public class CommentsDTO {
         this.content = content;
     }
 
-    public Timestamp getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Timestamp created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 

@@ -80,4 +80,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // get user by id
         @Query("SELECT u FROM User u WHERE u.id = :id")
         public User getUserById(@Param("id") int id);
+
+        // update address by id
+        @Transactional
+        @Modifying
+        @Query("UPDATE User u SET u.address = :address WHERE u.id = :id")
+        public void updateAddressById(@Param("address") String address, @Param("id") int id);
 }

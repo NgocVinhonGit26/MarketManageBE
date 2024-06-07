@@ -159,4 +159,22 @@ public class UserController {
         return billDetails;
     }
 
+    // update address by id
+    @PostMapping("/updateAddressById/{id}")
+    public ResponseEntity<User> updateAddressById(
+            @RequestParam String address,
+            @PathVariable int id) {
+        userService.updateAddressById(address, id);
+        User user = userService.getUserById(id);
+        User userResult = new User();
+        userResult.setId(user.getId());
+        userResult.setName(user.getName());
+        userResult.setAddress(user.getAddress());
+        userResult.setAvatar(user.getAvatar());
+        userResult.setPhoneNumber(user.getPhoneNumber());
+        userResult.setUsername(user.getUsername());
+        userResult.setRole(user.getRole());
+        return ResponseEntity.ok(userResult);
+    }
+
 }
