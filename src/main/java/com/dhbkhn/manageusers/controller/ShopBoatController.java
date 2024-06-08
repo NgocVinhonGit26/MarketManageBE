@@ -282,6 +282,60 @@ public class ShopBoatController {
         return ResponseEntity.ok(orderItem.getStatus());
     }
 
+    // get order product b
+    @GetMapping("/searchOrderProduct/{page}/{shopBoatId}")
+    public List<OrderProductDTO> searchOrderProduct(
+            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) String customerPhoneNumber,
+            @RequestParam(required = false) String customerAddress,
+            @RequestParam(required = false) Timestamp dateFrom,
+            @RequestParam(required = false) Timestamp dateTo,
+            @RequestParam(required = false) BigDecimal totalFrom,
+            @RequestParam(required = false) BigDecimal totalTo,
+            @RequestParam(required = false) String status,
+            @PathVariable int shopBoatId,
+            @PathVariable int page) {
+        Page<Object[]> pageResult = productService.searchOrderProduct(customerName, customerPhoneNumber,
+                customerAddress,
+                dateFrom, dateTo, totalFrom, totalTo, status, shopBoatId, page);
+        List<OrderProductDTO> listOrderProduct = new ArrayList<>();
+        for (Object[] objects : pageResult.getContent()) {
+            OrderProductDTO orderProductDTO = new OrderProductDTO();
+            orderProductDTO.setId((int) objects[0]);
+            orderProductDTO.setStatus((String) objects[1]);
+            orderProductDTO.setPaymentMethod((String) objects[2]);
+            orderProductDTO.setTotal((java.math.BigDecimal) objects[3]);
+            // orderProductDTO.setShopBoatId((int) objects[4]);
+            orderProductDTO.setCustomer((int) objects[4]);
+            orderProductDTO.setCreatedAt((java.sql.Timestamp) objects[5]);
+            orderProductDTO.setUpdatedAt((java.sql.Timestamp) objects[6]);
+            orderProductDTO.setUserName((String) objects[7]);
+            orderProductDTO.setUserNumberPhone((String) objects[8]);
+            orderProductDTO.setUserAddress((String) objects[9]);
+            orderProductDTO.setStatusOrderItems((String) objects[10]);
+            listOrderProduct.add(orderProductDTO);
+        }
+        return listOrderProduct;
+    }
+
+    // get total page order product
+    @GetMapping("/getTotalPageOrderProducts/{page}/{shopBoatId}")
+    public int getTotalPageOrderProducts(
+            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) String customerPhoneNumber,
+            @RequestParam(required = false) String customerAddress,
+            @RequestParam(required = false) Timestamp dateFrom,
+            @RequestParam(required = false) Timestamp dateTo,
+            @RequestParam(required = false) BigDecimal totalFrom,
+            @RequestParam(required = false) BigDecimal totalTo,
+            @RequestParam(required = false) String status,
+            @PathVariable int shopBoatId,
+            @PathVariable int page) {
+        Page<Object[]> pageResult = productService.searchOrderProduct(customerName, customerPhoneNumber,
+                customerAddress, dateFrom, dateTo, totalFrom, totalTo, status, shopBoatId, page);
+        return pageResult.getTotalPages();
+    }
+
     // get order product by id shopboat and id order item
     @GetMapping("/getAllListOrderProduct/{shopBoatId}/{page}")
     public List<OrderProductDTO> getAllListOrderProduct(@PathVariable int shopBoatId, @PathVariable int page) {

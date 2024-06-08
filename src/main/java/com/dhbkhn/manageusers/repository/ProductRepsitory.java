@@ -183,6 +183,38 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "WHERE oi.order_product_id = :orderProductId", nativeQuery = true)
         List<Object[]> getOrderItemByOrderProductId(@Param("orderProductId") int orderProductId);
 
+        // search order product b
+        @Query(value = "SELECT " +
+                        "order_product.*, " +
+                        "User.name AS customer_name, " +
+                        "User.phone_number AS customer_phone_number, " +
+                        "User.address AS customer_address, " +
+                        "order_item.status AS orderitem_status " +
+                        "FROM order_product " +
+                        "INNER JOIN order_item ON order_product.id = order_item.order_product_id " +
+                        "INNER JOIN User ON order_product.customer = User.id " +
+                        "WHERE order_item.shop_boat_id = :shopBoatId AND " +
+                        "(:customerName IS NULL OR User.name LIKE %:customerName%) AND " +
+                        "(:customerPhoneNumber IS NULL OR User.phone_number LIKE %:customerPhoneNumber%) AND " +
+                        "(:customerAddress IS NULL OR User.address LIKE %:customerAddress%) AND " +
+                        "(:dateFrom IS NULL OR DATE(order_product.created_at) >= :dateFrom) AND " +
+                        "(:dateTo IS NULL OR DATE(order_product.created_at) <= :dateTo) AND " +
+                        "(:priceFrom IS NULL OR order_product.total >= :priceFrom) AND " +
+                        "(:priceTo IS NULL OR order_product.total <= :priceTo) AND " +
+                        "(:status IS NULL OR order_item.status = :status) " +
+                        "GROUP BY order_product.id, order_item.status", nativeQuery = true)
+        Page<Object[]> searchOrderProduct(
+                        @Param("customerName") String customerName,
+                        @Param("customerPhoneNumber") String customerPhoneNumber,
+                        @Param("customerAddress") String customerAddress,
+                        @Param("dateFrom") Timestamp dateFrom,
+                        @Param("dateTo") Timestamp dateTo,
+                        @Param("priceFrom") BigDecimal priceFrom,
+                        @Param("priceTo") BigDecimal priceTo,
+                        @Param("status") String status,
+                        @Param("shopBoatId") int shopBoatId,
+                        Pageable pageable);
+
         // ------THONG KE DOANH THU SHOP BOAT---------------------
         // get total order item by order product id and shop boat id in today
         @Query(value = "SELECT COUNT(oi.id) AS total_orders, SUM(oi.price) AS total_amount " +
@@ -410,5 +442,4 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "GROUP BY sb.id, sb.name " +
                         "ORDER BY sb.id", nativeQuery = true)
         List<Object[]> getTotalPriceOrderItemByShopBoatIdInYear();
-
 }

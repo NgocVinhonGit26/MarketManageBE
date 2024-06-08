@@ -77,6 +77,11 @@ public interface ProductService {
         // get order item by order product id
         public List<Object[]> getOrderItemByOrderProductId(int orderProductId);
 
+        // search order product b
+        public Page<Object[]> searchOrderProduct(String customerName, String customerPhoneNumber,
+                        String customerAddress, Timestamp dateFrom, Timestamp dateTo,
+                        BigDecimal totalFrom, BigDecimal totalTo, String status, int shopBoatId, int page);
+
         // ------THONG KE DOANH THU SHOP BOAT---------------------
         // get total order item by shop boat id in today
         public Object getTotalOrderItemByShopBoatId(int shopBoatId);

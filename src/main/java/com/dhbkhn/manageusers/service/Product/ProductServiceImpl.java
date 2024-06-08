@@ -142,6 +142,23 @@ public class ProductServiceImpl implements ProductService {
         productRepsitory.insertOrderItem(status, productId, orderProductId, shopBoatId, quantity, price, sale);
     }
 
+    // search order product b
+    @Override
+    public Page<Object[]> searchOrderProduct(String customerName, String customerPhoneNumber,
+            String customerAddress, Timestamp dateFrom, Timestamp dateTo,
+            BigDecimal totalFrom, BigDecimal totalTo, String status, int shopBoatId, int page) {
+        int pageSize = 5;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Object[]> pageResult = productRepsitory.searchOrderProduct(customerName, customerPhoneNumber,
+                    customerAddress, dateFrom, dateTo, totalFrom, totalTo, status, shopBoatId, pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
     // get all order product
     @Override
     public Page<Object[]> getAllListOrderItem(int shopBoatId, int page) {
