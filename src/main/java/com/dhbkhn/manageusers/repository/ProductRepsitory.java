@@ -428,7 +428,8 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "FROM order_item oi " +
                         "INNER JOIN order_product op ON oi.order_product_id = op.id " +
                         "INNER JOIN ShopBoat sb ON oi.shop_boat_id = sb.id " +
-                        "WHERE MONTH(op.created_at) = MONTH(CURDATE()) AND YEAR(op.created_at) = YEAR(CURDATE()) " +
+                        "WHERE MONTH(op.created_at) = MONTH(CURDATE()) AND YEAR(op.created_at) = YEAR(CURDATE()) AND oi.status = 'completed' "
+                        +
                         "GROUP BY sb.id, sb.name " +
                         "ORDER BY sb.id", nativeQuery = true)
         List<Object[]> getTotalPriceOrderItemByShopBoatIdInMonth();
@@ -438,7 +439,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "FROM order_item oi " +
                         "INNER JOIN order_product op ON oi.order_product_id = op.id " +
                         "INNER JOIN ShopBoat sb ON oi.shop_boat_id = sb.id " +
-                        "WHERE YEAR(op.created_at) = YEAR(CURDATE()) " +
+                        "WHERE YEAR(op.created_at) = YEAR(CURDATE()) AND oi.status = 'completed' " +
                         "GROUP BY sb.id, sb.name " +
                         "ORDER BY sb.id", nativeQuery = true)
         List<Object[]> getTotalPriceOrderItemByShopBoatIdInYear();

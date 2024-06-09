@@ -25,6 +25,7 @@ import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
+import com.dhbkhn.manageusers.service.Imgqr.ImgqrService;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 import com.dhbkhn.manageusers.service.Tour.TourService;
@@ -39,14 +40,16 @@ public class AdminController {
     private TourService tourService;
     private UserService userService;
     private ProductService productService;
+    private ImgqrService imgqrService;
 
     @Autowired
     public AdminController(ShopBoatService shopBoatService, TourService tourService, UserService userService,
-            ProductService productService) {
+            ProductService productService, ImgqrService imgqrService) {
         this.shopBoatService = shopBoatService;
         this.tourService = tourService;
         this.userService = userService;
         this.productService = productService;
+        this.imgqrService = imgqrService;
     }
 
     @GetMapping("/admin_only")
@@ -403,4 +406,17 @@ public class AdminController {
     public List<Object[]> getTop5TourHighestPriceInThisYear() {
         return tourService.getTop5TourHighestPriceInThisYear();
     }
+
+    // get img qr by id = 1
+    @GetMapping("/getImgqrById")
+    public String getImgqrById() {
+        return imgqrService.getImgqrById();
+    }
+
+    // update imgqr by id = 1
+    @PostMapping("/updateImgqrById")
+    public void updateImgqrById(@RequestParam String imgQR) {
+        imgqrService.updateImgqrById(imgQR);
+    }
+
 }

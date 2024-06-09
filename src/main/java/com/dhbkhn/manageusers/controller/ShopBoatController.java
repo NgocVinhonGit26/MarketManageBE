@@ -27,6 +27,7 @@ import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.Product.OrderItem;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
+import com.dhbkhn.manageusers.service.Imgqr.ImgqrService;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 
@@ -37,10 +38,13 @@ public class ShopBoatController {
     @Autowired
     private ShopBoatService shopBoatService;
     private ProductService productService;
+    private ImgqrService imgqrService;
 
-    public ShopBoatController(ShopBoatService shopBoatService, ProductService productService) {
+    public ShopBoatController(ShopBoatService shopBoatService, ProductService productService,
+            ImgqrService imgqrService) {
         this.shopBoatService = shopBoatService;
         this.productService = productService;
+        this.imgqrService = imgqrService;
     }
 
     // get all shop boats
@@ -461,6 +465,12 @@ public class ShopBoatController {
             @PathVariable int shopBoatId) {
         List<Object[]> result = productService.getTop5ProductByRevenueInThisYear(shopBoatId);
         return result;
+    }
+
+    // get img qr by id
+    @GetMapping("/getImgqrById")
+    public String getImgqrById() {
+        return imgqrService.getImgqrById();
     }
 
 }
