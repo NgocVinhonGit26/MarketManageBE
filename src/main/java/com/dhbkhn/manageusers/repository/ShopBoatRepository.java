@@ -51,10 +51,10 @@ public interface ShopBoatRepository
                         "FROM ShopBoat sb " +
                         "INNER JOIN User u ON sb.owner = u.id " +
                         "WHERE " +
-                        "(:name IS NULL OR sb.name = :name) AND " +
+                        "(:name IS NULL OR sb.name like %:name%) AND " +
                         "(:code IS NULL OR sb.code = :code) AND " +
                         "(:phoneNumber IS NULL OR sb.phone_number = :phoneNumber) AND " +
-                        "(:type IS NULL OR sb.type = :type) AND " +
+                        "(:type IS NULL OR sb.type like %:type%) AND " +
                         "(:status IS NULL OR sb.status = :status)", nativeQuery = true)
         public Page<Object[]> searchShopBoat(
                         @Param("name") String name,

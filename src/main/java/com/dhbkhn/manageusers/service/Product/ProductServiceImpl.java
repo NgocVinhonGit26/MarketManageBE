@@ -19,6 +19,22 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepsitory productRepsitory;
 
+    // get all product admin
+    @Override
+    public Page<Object[]> getAllProductAdmin(String name, BigDecimal priceFrom, BigDecimal priceTo,
+            Boolean countInStock, String category, BigDecimal sale, int page) {
+        int pageSize = 5;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Object[]> pageResult = productRepsitory.getAllProductAdmin(pageable, name, priceFrom, priceTo,
+                    countInStock, category, sale);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
     // create new product
     @Override
     @Transactional

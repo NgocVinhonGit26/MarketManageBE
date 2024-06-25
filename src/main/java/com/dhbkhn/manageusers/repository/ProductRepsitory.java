@@ -32,6 +32,25 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("updatedAt") Timestamp updatedAt,
                         @Param("videoInfor") String videoInfor);
 
+        // get all product
+
+        @Query(value = "SELECT p.*, sb.name AS shop_name " +
+                        "FROM Product p " +
+                        "JOIN ShopBoat sb ON p.shop_boat_id = sb.id " +
+                        "WHERE (:name IS NULL OR p.name LIKE %:name%) " +
+                        "AND (:priceFrom IS NULL OR p.price >= :priceFrom) " +
+                        "AND (:priceTo IS NULL OR p.price <= :priceTo) " +
+                        "AND (:countInStock IS NULL OR p.count_in_stock > 0) " +
+                        "AND (:category IS NULL OR p.category = :category) " +
+                        "AND (:sale IS NULL OR p.sale = :sale)", nativeQuery = true)
+        Page<Object[]> getAllProductAdmin(Pageable pageable,
+                        @Param("name") String name,
+                        @Param("priceFrom") BigDecimal priceFrom,
+                        @Param("priceTo") BigDecimal priceTo,
+                        @Param("countInStock") Boolean countInStock,
+                        @Param("category") String category,
+                        @Param("sale") BigDecimal sale);
+
         // update a product by id
         @Transactional
         @Modifying

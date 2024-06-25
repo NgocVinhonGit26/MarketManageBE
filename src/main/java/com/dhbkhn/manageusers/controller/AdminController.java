@@ -449,4 +449,34 @@ public class AdminController {
         imgqrService.updateImgqrById(imgQR);
     }
 
+    // get all product admin
+    @GetMapping("/getAllProductAdmin/{page}")
+    public List<Object[]> getAllProduct(
+            @PathVariable int page,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) BigDecimal priceFrom,
+            @RequestParam(required = false) BigDecimal priceTo,
+            @RequestParam(required = false) Boolean countInStock,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal sale) {
+        Page<Object[]> resultPage = productService.getAllProductAdmin(
+                name, priceFrom, priceTo, countInStock, category, sale, page);
+        return resultPage.getContent();
+    }
+
+    // get total page of product admin
+    @GetMapping("/getTotalPageProductAdmin/{page}")
+    public int getTotalPageProductAdmin(
+            @PathVariable int page,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) BigDecimal priceFrom,
+            @RequestParam(required = false) BigDecimal priceTo,
+            @RequestParam(required = false) Boolean countInStock,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal sale) {
+        Page<Object[]> resultPage = productService.getAllProductAdmin(
+                name, priceFrom, priceTo, countInStock, category, sale, page);
+        return resultPage.getTotalPages();
+    }
+
 }

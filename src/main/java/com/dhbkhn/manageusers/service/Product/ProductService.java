@@ -10,6 +10,10 @@ import com.dhbkhn.manageusers.model.Product.Product;
 
 public interface ProductService {
 
+        // get all product admin
+        public Page<Object[]> getAllProductAdmin(String name, BigDecimal priceFrom, BigDecimal priceTo,
+                        Boolean countInStock, String category, BigDecimal sale, int page);
+
         // create new product
         public void createNewProduct(String name, String slug, String description, BigDecimal price, BigDecimal sale,
                         int countInStock, String image, String unit, String category, int shopBoatId,
