@@ -22,6 +22,17 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
         // get all tour
         List<Tour> findAll();
 
+        // create tour
+        @Transactional
+        @Modifying
+        @Query(value = "INSERT INTO tour (name, slug, start_time, start_location, tour_duration, description, price, avatar, transport, tour_information) "
+                        + "VALUES (:name, :slug, :startTime, :startLocation, :tourDuration, :description, :price, :avatar, :transport, :tourInformation)", nativeQuery = true)
+        void insertTour(@Param("name") String name, @Param("slug") String slug, @Param("startTime") String startTime,
+                        @Param("startLocation") String startLocation, @Param("tourDuration") String tourDuration,
+                        @Param("description") String description, @Param("price") BigDecimal price,
+                        @Param("avatar") String avatar,
+                        @Param("transport") String transport, @Param("tourInformation") String tourInformation);
+
         // update tour by id
         @Transactional
         @Modifying
@@ -72,14 +83,26 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         "INNER JOIN user u ON ot.user_id = u.id " +
                         "INNER JOIN tour t ON ot.tour_id = t.id " +
                         "WHERE " +
-                        "(:userName IS NULL OR u.name = :userName) AND " +
-                        "(:tourName IS NULL OR t.name = :tourName) AND " +
-                        "(:status IS NULL OR ot.status = :status) ", nativeQuery = true)
+                        "(:userName IS NULL OR u.name like %:userName%) AND " +
+                        "(:tourName IS NULL OR t.name like %:tourName%) AND " +
+                        "(:startTimeFrom IS NULL OR ot.start_time >= :startTimeFrom) AND " +
+                        "(:startTimeTo IS NULL OR ot.start_time <= :startTimeTo) AND " +
+                        "(:priceFrom IS NULL OR ot.price >= :priceFrom) AND " +
+                        "(:priceTo IS NULL OR ot.price <= :priceTo) AND " +
+                        "(:status IS NULL OR ot.status = :status) AND " +
+                        "(:createdAtFrom IS NULL OR ot.created_at >= :createdAtFrom) AND " +
+                        "(:createdAtTo IS NULL OR ot.created_at <= :createdAtTo) ", nativeQuery = true)
 
         public Page<Object[]> searchOrderTour(
                         @Param("userName") String userName,
                         @Param("tourName") String tourName,
+                        @Param("startTimeFrom") Timestamp startTimeFrom,
+                        @Param("startTimeTo") Timestamp startTimeTo,
+                        @Param("priceFrom") BigDecimal priceFrom,
+                        @Param("priceTo") BigDecimal priceTo,
                         @Param("status") Integer status,
+                        @Param("createdAtFrom") Timestamp createdAtFrom,
+                        @Param("createdAtTo") Timestamp createdAtTo,
                         Pageable pageable);
 
         // update status order tour
@@ -90,12 +113,12 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
 
         // search Tour by name, price, transport, start_location, tour_duration
         @Query(value = "SELECT t FROM Tour t WHERE " +
-                        "(:name IS NULL OR t.name = :name) AND " +
+                        "(:name IS NULL OR t.name like %:name%) AND " +
                         "(:priceFrom IS NULL OR t.price >= :priceFrom) AND " +
                         "(:priceTo IS NULL OR t.price <= :priceTo) AND " +
-                        "(:transport IS NULL OR t.transport like :transport) AND " +
-                        "(:startLocation IS NULL OR t.start_location = :startLocation) AND " +
-                        "(:tourDuration IS NULL OR t.tour_duration = :tourDuration)")
+                        "(:transport IS NULL OR t.transport like %:transport%) AND " +
+                        "(:startLocation IS NULL OR t.start_location like %:startLocation%) AND " +
+                        "(:tourDuration IS NULL OR t.tour_duration like %:tourDuration%)")
         public Page<Tour> searchTour(
                         @Param("name") String name,
                         @Param("priceFrom") BigDecimal priceFrom,

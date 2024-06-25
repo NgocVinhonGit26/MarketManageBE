@@ -165,16 +165,25 @@ public class AdminController {
     }
 
     // manage order tour
+
     @GetMapping("/getListOrderTour/{page}")
     public List<OrderTourDTO> searchOrderTour(
             @RequestParam(required = false) String userName,
             @RequestParam(required = false) String tourName,
+            @RequestParam(required = false) Timestamp startTimeFrom,
+            @RequestParam(required = false) Timestamp startTimeTo,
+            @RequestParam(required = false) BigDecimal priceFrom,
+            @RequestParam(required = false) BigDecimal priceTo,
             @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) Timestamp createdAtFrom,
+            @RequestParam(required = false) Timestamp createdAtTo,
             @PathVariable int page) {
         List<OrderTourDTO> listOrderTourDTOs = new ArrayList<>();
 
-        Page<Object[]> pageResult = tourService.searchOrderTour(userName, tourName, status, page);
-        System.out.println("tat ca chi la giac mo " + pageResult.getContent());
+        Page<Object[]> pageResult = tourService.searchOrderTour(userName, tourName, startTimeFrom, startTimeTo,
+                priceFrom,
+                priceTo, status, createdAtFrom, createdAtTo, page);
+        // System.out.println("tat ca chi la giac mo " + pageResult.getContent());
         for (Object[] row : pageResult.getContent()) {
             System.out.println("rosss: " + row[1] + " " + row[2] + " " + row[3] + " " +
                     row[4] + " " + row[5] + " "
@@ -211,9 +220,16 @@ public class AdminController {
     public int getTotalPageOrderTour(
             @RequestParam(required = false) String userName,
             @RequestParam(required = false) String tourName,
+            @RequestParam(required = false) Timestamp startTimeFrom,
+            @RequestParam(required = false) Timestamp startTimeTo,
+            @RequestParam(required = false) BigDecimal priceFrom,
+            @RequestParam(required = false) BigDecimal priceTo,
             @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) Timestamp createdAtFrom,
+            @RequestParam(required = false) Timestamp createdAtTo,
             @PathVariable int page) {
-        Page<Object[]> pageResult = tourService.searchOrderTour(userName, tourName, status, page);
+        Page<Object[]> pageResult = tourService.searchOrderTour(userName, tourName, startTimeFrom, startTimeTo,
+                priceFrom, priceTo, status, createdAtFrom, createdAtTo, page);
         return pageResult.getTotalPages();
         // return pageResult;
     }
@@ -265,6 +281,20 @@ public class AdminController {
     @GetMapping("/getOrderTourById/{id}")
     public OrderTour getOrderTourById(@PathVariable int id) {
         return tourService.getOrderTourById(id);
+    }
+
+    @PostMapping("/insertTour")
+    public ResponseEntity<Tour> insertTour(@RequestBody Tour tour) {
+        tourService.insertTour(tour.getName(), tour.getSlug(), tour.getStartTime(), tour.getStartLocation(),
+                tour.getTourDuration(), tour.getDescription(), tour.getPrice(), tour.getAvatar(), tour.getTransport(),
+                tour.getTourInformation());
+        Tour insertedTour = tourService.getTourBySlug(tour.getSlug()).get();
+        if (insertedTour != null) {
+            System.out.println("Tour: insert successfully!");
+            return ResponseEntity.ok(insertedTour);
+        }
+        System.out.println("Tour: insert failed!");
+        return ResponseEntity.notFound().build();
     }
 
     // updateTourById

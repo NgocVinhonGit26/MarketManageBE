@@ -5,10 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 
-import com.dhbkhn.manageusers.model.OrderItemSum;
-import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 
 public interface ProductService {

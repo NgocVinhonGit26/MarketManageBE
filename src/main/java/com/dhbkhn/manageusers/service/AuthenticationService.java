@@ -1,5 +1,6 @@
 package com.dhbkhn.manageusers.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +36,15 @@ public class AuthenticationService {
         this.jwtService = jwtService;
         this.tokenRepository = tokenRepository;
         this.authenticationManager = authenticationManager;
+    }
+
+    public ResponseEntity<Boolean> checkEmail(String email) {
+        Optional<User> user = repository.findByUsername(email);
+        // System.out.println("checkEmail: " + email);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
 
     public AuthenticationResponse register(User request) {

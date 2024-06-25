@@ -17,6 +17,9 @@ public interface TourService {
 
         // public Page<Object[]> getAllTourWithPagination(int page);
 
+        void insertTour(String name, String slug, String startTime, String startLocation, String tourDuration,
+                        String description, BigDecimal price, String avatar, String transport, String tourInformation);
+
         public Optional<Tour> getTourBySlug(String slug);
 
         public Page<Tour> searchTour(
@@ -39,7 +42,9 @@ public interface TourService {
         public void insertOrder(int status, String paymentMethod, Timestamp startTime, int quantity, int tourId,
                         String tourName, int userId, Timestamp createAt);
 
-        public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page);
+        public Page<Object[]> searchOrderTour(String userName, String tourName, Timestamp startTimeFrom,
+                        Timestamp startTimeTo, BigDecimal priceFrom, BigDecimal priceTo, Integer status,
+                        Timestamp createdAtFrom, Timestamp createdAtTo, int page);
 
         public String updateStatusOrder(int status, int orderId);
 

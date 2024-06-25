@@ -22,7 +22,6 @@ import com.dhbkhn.manageusers.DTO.OrderItemDTO;
 import com.dhbkhn.manageusers.DTO.OrderItemShopBoatDTO;
 import com.dhbkhn.manageusers.DTO.OrderProductDTO;
 import com.dhbkhn.manageusers.DTO.ShopBoatDTO;
-import com.dhbkhn.manageusers.model.OrderItemSum;
 import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.Product.OrderItem;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
@@ -376,8 +375,6 @@ public class ShopBoatController {
     @GetMapping("/getTotalOrderItemByShopBoatId/{shopBoatId}")
     public Object getTotalOrderItemByShopBoatId(@PathVariable int shopBoatId) {
         Object result = productService.getTotalOrderItemByShopBoatId(shopBoatId);
-        // OrderItemSum orderItemSum = new OrderItemSum();
-        // System.out.println("Total order item: " + result[0]);
 
         return result;
     }

@@ -3,6 +3,7 @@ package com.dhbkhn.manageusers.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,14 @@ public class AuthenticationController {
 
     public AuthenticationController(AuthenticationService authService) {
         this.authService = authService;
+    }
+
+    @GetMapping("/signup/checkEmail/{email}")
+    public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
+        if (authService.checkEmail(email).getBody()) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
 
     @PostMapping("/signup")

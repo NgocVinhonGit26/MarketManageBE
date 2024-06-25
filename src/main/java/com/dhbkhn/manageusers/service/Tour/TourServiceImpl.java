@@ -34,6 +34,15 @@ public class TourServiceImpl implements TourService {
         return tourRepository.findAll();
     }
 
+    // insert tour
+    @Override
+    public void insertTour(String name, String slug, String startTime, String startLocation, String tourDuration,
+            String description, BigDecimal price, String avatar, String transport, String tourInformation) {
+        // TODO Auto-generated method stub
+        tourRepository.insertTour(name, slug, startTime, startLocation, tourDuration, description, price, avatar,
+                transport, tourInformation);
+    }
+
     // @Autowired
     // public Page<Object[]> getAllTourWithPagination(int page) {
     // int pageSize = 5;
@@ -92,11 +101,14 @@ public class TourServiceImpl implements TourService {
 
     // search order tour
     @Override
-    public Page<Object[]> searchOrderTour(String userName, String tourName, Integer status, int page) {
+    public Page<Object[]> searchOrderTour(String userName, String tourName, Timestamp startTimeFrom,
+            Timestamp startTimeTo, BigDecimal priceFrom, BigDecimal priceTo, Integer status,
+            Timestamp createdAtFrom, Timestamp createdAtTo, int page) {
         int pageSize = 5;
         try {
             Pageable pageable = PageRequest.of(page, pageSize);
-            return tourRepository.searchOrderTour(userName, tourName, status, pageable);
+            return tourRepository.searchOrderTour(userName, tourName, startTimeFrom, startTimeTo, priceFrom, priceTo,
+                    status, createdAtFrom, createdAtTo, pageable);
         } catch (Exception e) {
             // System.out.println("tat ca chi la giac mo hehe");
             e.printStackTrace();
