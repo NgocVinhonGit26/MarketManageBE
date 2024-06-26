@@ -32,7 +32,7 @@ import com.dhbkhn.manageusers.service.Tour.TourService;
 import com.dhbkhn.manageusers.service.User.UserService;
 
 @RestController
-@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
+@CrossOrigin(origins = "https://market-manage-fe.vercel.app")
 @RequestMapping("/admin")
 public class AdminController {
 

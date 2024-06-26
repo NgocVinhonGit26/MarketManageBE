@@ -25,7 +25,7 @@ import com.dhbkhn.manageusers.model.Tour.Tour;
 import com.dhbkhn.manageusers.service.Tour.TourService;
 
 @RestController
-@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
+@CrossOrigin(origins = "https://market-manage-fe.vercel.app")
 @RequestMapping("/tour")
 public class TourController {
     private TourService tourService;

@@ -30,7 +30,7 @@ import com.dhbkhn.manageusers.service.Imgqr.ImgqrService;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 
-@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
+@CrossOrigin(origins = "https://market-manage-fe.vercel.app")
 @RestController
 @RequestMapping("/merchant")
 public class ShopBoatController {

@@ -14,7 +14,7 @@ import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.service.AuthenticationService;
 
 @RestController
-@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
+@CrossOrigin(origins = "https://market-manage-fe.vercel.app")
 public class AuthenticationController {
 
     private final AuthenticationService authService;

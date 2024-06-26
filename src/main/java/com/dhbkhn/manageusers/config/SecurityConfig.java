@@ -104,7 +104,7 @@ public class SecurityConfig {
                                 .configurationSource(request -> {
                                         CorsConfiguration corsConfig = new CorsConfiguration();
                                         corsConfig.addAllowedOrigin(
-                                                        "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app");
+                                                        "https://market-manage-fe.vercel.app");
                                         corsConfig.addAllowedHeader("*");
                                         corsConfig.addAllowedMethod("*");
                                         corsConfig.setAllowCredentials(true);
