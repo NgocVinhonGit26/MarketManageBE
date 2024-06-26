@@ -27,7 +27,7 @@ import com.dhbkhn.manageusers.model.Product.Product;
 import com.dhbkhn.manageusers.service.Comments.CommentsService;
 import com.dhbkhn.manageusers.service.Product.ProductService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
 @RestController
 @RequestMapping("/product")
 public class ProductController {

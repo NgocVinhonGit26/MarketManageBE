@@ -103,7 +103,8 @@ public class SecurityConfig {
                 return new CorsConfigurer<HttpSecurity>()
                                 .configurationSource(request -> {
                                         CorsConfiguration corsConfig = new CorsConfiguration();
-                                        corsConfig.addAllowedOrigin("http://localhost:3000");
+                                        corsConfig.addAllowedOrigin(
+                                                        "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app");
                                         corsConfig.addAllowedHeader("*");
                                         corsConfig.addAllowedMethod("*");
                                         corsConfig.setAllowCredentials(true);

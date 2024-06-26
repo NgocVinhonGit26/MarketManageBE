@@ -32,7 +32,7 @@ import com.dhbkhn.manageusers.service.Tour.TourService;
 import com.dhbkhn.manageusers.service.User.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
 @RequestMapping("/admin")
 public class AdminController {
 

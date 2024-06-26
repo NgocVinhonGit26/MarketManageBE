@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dhbkhn.manageusers.model.Comments;
 import com.dhbkhn.manageusers.service.Comments.CommentsService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {

@@ -29,7 +29,7 @@ import com.dhbkhn.manageusers.service.User.UserService;
 
 import jakarta.websocket.server.PathParam;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://market-manage-fgotsqtmt-ngocvinhongit26s-projects.vercel.app")
 @RestController
 @RequestMapping("/user")
 public class UserController {
