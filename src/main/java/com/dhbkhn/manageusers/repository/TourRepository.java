@@ -112,13 +112,13 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
         void updateStatusOrder(@Param("status") int status, @Param("id") int id);
 
         // search Tour by name, price, transport, start_location, tour_duration
-        @Query(value = "SELECT t FROM Tour t WHERE " +
-                        "(:name IS NULL OR t.name like %:name%) AND " +
-                        "(:priceFrom IS NULL OR t.price >= :priceFrom) AND " +
-                        "(:priceTo IS NULL OR t.price <= :priceTo) AND " +
-                        "(:transport IS NULL OR t.transport like %:transport%) AND " +
-                        "(:startLocation IS NULL OR t.start_location like %:startLocation%) AND " +
-                        "(:tourDuration IS NULL OR t.tour_duration like %:tourDuration%)")
+        @Query(value = "SELECT * FROM tour WHERE " +
+                        "(:name IS NULL OR name like %:name%) AND " +
+                        "(:priceFrom IS NULL OR price >= :priceFrom) AND " +
+                        "(:priceTo IS NULL OR price <= :priceTo) AND " +
+                        "(:transport IS NULL OR transport like %:transport%) AND " +
+                        "(:startLocation IS NULL OR start_location like %:startLocation%) AND " +
+                        "(:tourDuration IS NULL OR tour_duration like %:tourDuration%)", nativeQuery = true)
         public Page<Tour> searchTour(
                         @Param("name") String name,
                         @Param("priceFrom") BigDecimal priceFrom,
@@ -131,11 +131,11 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
         // update tour by id
         @Transactional
         @Modifying
-        @Query("UPDATE Tour t SET t.name = :name, t.slug = :slug, t.start_time = :startTime, t.start_location = :startLocation, "
+        @Query(value = "UPDATE tour t SET t.name = :name, t.slug = :slug, t.start_time = :startTime, t.start_location = :startLocation, "
                         +
                         "t.tour_duration = :tourDuration, t.description = :description, t.price = :price, t.avatar = :avatar, t.transport = :transport, "
                         +
-                        "t.tour_information = :tourInformation WHERE t.id = :id")
+                        "t.tour_information = :tourInformation WHERE t.id = :id", nativeQuery = true)
         public void updateTourById(
                         @Param("name") String name,
                         @Param("slug") String slug,
@@ -259,7 +259,7 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         "COUNT(ot.id) AS `Tổng số đơn`, " +
                         "SUM(ot.price) AS `Tổng doanh thu` " +
                         "FROM order_tour ot " +
-                        "INNER JOIN Tour t ON ot.tour_id = t.id " +
+                        "INNER JOIN tour t ON ot.tour_id = t.id " +
                         "WHERE " +
                         "(ot.status = 3) " +
                         "AND DATE(ot.created_at) = CURDATE() " +
@@ -275,7 +275,7 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         "COUNT(ot.id) AS `Tổng số đơn`, " +
                         "SUM(ot.price) AS `Tổng doanh thu` " +
                         "FROM order_tour ot " +
-                        "INNER JOIN Tour t ON ot.tour_id = t.id " +
+                        "INNER JOIN tour t ON ot.tour_id = t.id " +
                         "WHERE " +
                         "(ot.status = 3) " +
                         "AND YEAR(ot.created_at) = YEAR(CURDATE()) " +
@@ -292,7 +292,7 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         "COUNT(ot.id) AS `Tổng số đơn`, " +
                         "SUM(ot.price) AS `Tổng doanh thu` " +
                         "FROM order_tour ot " +
-                        "INNER JOIN Tour t ON ot.tour_id = t.id " +
+                        "INNER JOIN tour t ON ot.tour_id = t.id " +
                         "WHERE " +
                         "(ot.status = 3) " +
                         "AND YEAR(ot.created_at) = YEAR(CURDATE()) " +
@@ -309,7 +309,7 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
                         "COUNT(ot.id) AS `Tổng số đơn`, " +
                         "SUM(ot.price) AS `Tổng doanh thu` " +
                         "FROM order_tour ot " +
-                        "INNER JOIN Tour t ON ot.tour_id = t.id " +
+                        "INNER JOIN tour t ON ot.tour_id = t.id " +
                         "WHERE " +
                         "(ot.status = 3) " +
                         "AND YEAR(ot.created_at) = YEAR(CURDATE()) " +

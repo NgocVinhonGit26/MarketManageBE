@@ -22,10 +22,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // add user
         public User save(User user);
 
-        @Query("SELECT u FROM User u WHERE u.id = ?1")
+        @Query(value = "SELECT * FROM user WHERE id = ?1", nativeQuery = true)
         public User findById(int id);
 
-        @Query("SELECT u FROM User u WHERE u.name = ?1")
+        @Query(value = "SELECT * FROM user WHERE name = ?1", nativeQuery = true)
         public User findByName(String name);
 
         // update user
@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // @Query("UPDATE User u SET u.name = ?1, u.address = ?2, u.password = ?3
         // WHERE
         // u.id = ?4")
-        @Query("UPDATE User u SET u.name = :name, u.avatar = :avatar, u.phone_number = :phone_number WHERE u.id = :id")
+        @Query(value = "UPDATE user u SET u.name = :name, u.avatar = :avatar, u.phone_number = :phone_number WHERE u.id = :id", nativeQuery = true)
         public void updateUserById(
                         @Param("name") String name,
                         @Param("avatar") String avatar,
@@ -55,14 +55,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         Optional<User> findByUsername(String username);
 
         // search user by name, username,address, phone_number,role
-        @Query("SELECT u FROM User u " +
+        @Query(value = "SELECT * FROM user " +
                         "WHERE " +
-                        "u.isdeleted = FALSE AND " +
-                        "(:name IS NULL OR u.name like %:name%) AND " +
-                        "(:username IS NULL OR u.username = :username) AND " +
-                        "(:address IS NULL OR u.address like %:address%) AND " +
-                        "(:phone_number IS NULL OR u.phone_number = :phone_number) AND " +
-                        "(:role IS NULL OR u.role = :role)")
+                        "isdeleted = FALSE AND " +
+                        "(:name IS NULL OR name like %:name%) AND " +
+                        "(:username IS NULL OR username = :username) AND " +
+                        "(:address IS NULL OR address like %:address%) AND " +
+                        "(:phone_number IS NULL OR phone_number = :phone_number) AND " +
+                        "(:role IS NULL OR role = :role)", nativeQuery = true)
         Page<User> searchUser(
                         @Param("name") String name,
                         @Param("username") String username,
@@ -74,17 +74,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         // delete user by id
         @Transactional
         @Modifying
-        @Query("UPDATE User u SET u.isdeleted = TRUE WHERE u.id = :id")
+        @Query(value = "UPDATE user u SET u.isdeleted = TRUE WHERE u.id = :id", nativeQuery = true)
         public void deleteByUserId(@Param("id") int id);
 
         // get user by id
-        @Query("SELECT u FROM User u WHERE u.id = :id")
+        @Query(value = "SELECT * FROM user WHERE id = :id", nativeQuery = true)
         public User getUserById(@Param("id") int id);
 
         // update address by id
         @Transactional
         @Modifying
-        @Query("UPDATE User u SET u.address = :address WHERE u.id = :id")
+        @Query(value = "UPDATE user u SET u.address = :address WHERE u.id = :id", nativeQuery = true)
         public void updateAddressById(@Param("address") String address, @Param("id") int id);
 
 }

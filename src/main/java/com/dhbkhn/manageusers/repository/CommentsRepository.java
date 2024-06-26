@@ -16,7 +16,7 @@ public interface CommentsRepository extends JpaRepository<Comments, Integer> {
 
     // get all comments by product id
 
-    @Query(value = "SELECT comments.*, User.name, User.avatar, COUNT(CASE WHEN react.type = 'like' THEN 1 END) AS likes, COUNT(CASE WHEN react.type = 'dislike' THEN 1 END) AS dislikes FROM comments "
-            + "INNER JOIN User ON comments.user_id = User.id LEFT JOIN react ON comments.id = react.comment_id WHERE comments.product_id = :productId GROUP BY comments.id, User.name, User.avatar", nativeQuery = true)
+    @Query(value = "SELECT comments.*, user.name, user.avatar, COUNT(CASE WHEN react.type = 'like' THEN 1 END) AS likes, COUNT(CASE WHEN react.type = 'dislike' THEN 1 END) AS dislikes FROM comments "
+            + "INNER JOIN user ON comments.user_id = user.id LEFT JOIN react ON comments.id = react.comment_id WHERE comments.product_id = :productId GROUP BY comments.id, user.name, user.avatar", nativeQuery = true)
     public List<Object[]> getAllCommentsProductId(@Param("productId") int productId);
 }

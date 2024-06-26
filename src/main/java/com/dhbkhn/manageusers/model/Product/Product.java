@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import com.dhbkhn.manageusers.model.ShopBoat;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "product")
 public class Product {
 
     @Id

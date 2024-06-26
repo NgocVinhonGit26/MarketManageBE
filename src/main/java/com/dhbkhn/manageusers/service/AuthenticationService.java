@@ -89,6 +89,8 @@ public class AuthenticationService {
 
     }
 
+    // reset password
+
     private void revokeAllTokenByUser(User user) {
         List<Token> validTokens = tokenRepository.findAllTokensByUser(user.getId());
         if (validTokens.isEmpty()) {

@@ -20,9 +20,9 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // create a new product
         @Transactional
         @Modifying
-        @Query("INSERT INTO Product (name, slug, description, price, sale, count_in_stock, image, unit, category, shop_boat_id, created_at, updated_at, video_infor) "
+        @Query(value = "INSERT INTO product (name, slug, description, price, sale, count_in_stock, image, unit, category, shop_boat_id, created_at, updated_at, video_infor) "
                         +
-                        "VALUES (:name, :slug, :description, :price, :sale, :countInStock, :image, :unit, :category, :shopBoatId, :createdAt, :updatedAt, :videoInfor)")
+                        "VALUES (:name, :slug, :description, :price, :sale, :countInStock, :image, :unit, :category, :shopBoatId, :createdAt, :updatedAt, :videoInfor)", nativeQuery = true)
         void createNewProduct(@Param("name") String name, @Param("slug") String slug,
                         @Param("description") String description,
                         @Param("price") BigDecimal price, @Param("sale") BigDecimal sale,
@@ -35,8 +35,8 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get all product
 
         @Query(value = "SELECT p.*, sb.name AS shop_name " +
-                        "FROM Product p " +
-                        "JOIN ShopBoat sb ON p.shop_boat_id = sb.id " +
+                        "FROM product p " +
+                        "JOIN shopboat sb ON p.shop_boat_id = sb.id " +
                         "WHERE (:name IS NULL OR p.name LIKE %:name%) " +
                         "AND (:priceFrom IS NULL OR p.price >= :priceFrom) " +
                         "AND (:priceTo IS NULL OR p.price <= :priceTo) " +
@@ -54,9 +54,8 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // update a product by id
         @Transactional
         @Modifying
-        @Query("UPDATE Product SET name = :name, slug = :slug, description = :description, price = :price, sale = :sale, count_in_stock = :countInStock, image = :image, unit = :unit, "
-                        +
-                        "category = :category, updated_at = :updatedAt, video_infor = :videoInfor WHERE id = :id")
+        @Query(value = "UPDATE product SET name = :name, slug = :slug, description = :description, price = :price, sale = :sale, count_in_stock = :countInStock, image = :image, unit = :unit, "
+                        + "category = :category, updated_at = :updatedAt, video_infor = :videoInfor WHERE id = :id", nativeQuery = true)
         void updateProductById(@Param("name") String name, @Param("slug") String slug,
                         @Param("description") String description,
                         @Param("price") BigDecimal price, @Param("sale") BigDecimal sale,
@@ -67,15 +66,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("id") int id);
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
-        @Query(value = "SELECT p FROM Product p "
-                        + "WHERE "
-                        + "p.shop_boat_id = :shopBoatId AND "
-                        + "(:name IS NULL OR p.name LIKE %:name%) "
-                        + "AND (:priceFrom IS NULL OR p.price >= :priceFrom) "
-                        + "AND (:priceTo IS NULL OR p.price <= :priceTo) "
-                        + "AND (:countInStock IS NULL OR p.count_in_stock > 0) "
-                        + "AND (:category IS NULL OR p.category = :category) "
-                        + "AND (:sale IS NULL OR p.sale >= :sale)")
+        @Query(value = "SELECT * FROM product "
+                        + "WHERE shop_boat_id = :shopBoatId "
+                        + "AND (:name IS NULL OR name LIKE %:name%) "
+                        + "AND (:priceFrom IS NULL OR price >= :priceFrom) "
+                        + "AND (:priceTo IS NULL OR price <= :priceTo) "
+                        + "AND (:countInStock IS NULL OR count_in_stock > 0) "
+                        + "AND (:category IS NULL OR category = :category) "
+                        + "AND (:sale IS NULL OR sale >= :sale)", nativeQuery = true)
         Page<Product> searchProduct(
                         @Param("name") String name,
                         @Param("priceFrom") Double priceFrom,
@@ -88,14 +86,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale for
         // user
-        @Query(value = "SELECT p FROM Product p "
+        @Query(value = "SELECT * FROM product "
                         + "WHERE "
-                        + "(:name IS NULL OR p.name LIKE %:name%) "
-                        + "AND (:priceFrom IS NULL OR p.price >= :priceFrom) "
-                        + "AND (:priceTo IS NULL OR p.price <= :priceTo) "
-                        + "AND (:countInStock IS NULL OR p.count_in_stock = :countInStock) "
-                        + "AND (:category IS NULL OR p.category = :category) "
-                        + "AND (:sale IS NULL OR p.sale = :sale)")
+                        + "(:name IS NULL OR name LIKE %:name%) "
+                        + "AND (:priceFrom IS NULL OR price >= :priceFrom) "
+                        + "AND (:priceTo IS NULL OR price <= :priceTo) "
+                        + "AND (:countInStock IS NULL OR count_in_stock = :countInStock) "
+                        + "AND (:category IS NULL OR category = :category) "
+                        + "AND (:sale IS NULL OR sale = :sale)", nativeQuery = true)
         Page<Product> searchProductForUser(
                         @Param("name") String name,
                         @Param("priceFrom") Double priceFrom,
@@ -113,13 +111,13 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get order product by id shopboat and id order item
         @Query(value = "SELECT " +
                         "order_product.*, " +
-                        "User.name AS customer_name, " +
-                        "User.phone_number AS customer_phone_number, " +
-                        "User.address AS customer_address, " +
+                        "user.name AS customer_name, " +
+                        "user.phone_number AS customer_phone_number, " +
+                        "user.address AS customer_address, " +
                         "order_item.status AS orderitem_status " +
                         "FROM order_product " +
                         "INNER JOIN order_item ON order_product.id = order_item.order_product_id " +
-                        "INNER JOIN User ON order_product.customer = User.id " +
+                        "INNER JOIN user ON order_product.customer = user.id " +
                         "WHERE order_item.shop_boat_id = :shopBoatId " +
                         "GROUP BY order_product.id, order_item.status", nativeQuery = true)
         Page<Object[]> getAllListOrderProduct(@Param("shopBoatId") int shopBoatId, Pageable pageable);
@@ -164,7 +162,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         @Query(value = "SELECT oi.*, u.name, u.phone_number, u.address " +
                         "FROM order_item AS oi " +
                         "JOIN order_product AS op ON oi.order_product_id = op.id " +
-                        "JOIN User AS u ON op.customer = u.id " +
+                        "JOIN user AS u ON op.customer = u.id " +
                         "WHERE oi.shop_boat_id = :shopBoatId", nativeQuery = true)
         Page<Object[]> getAllListOrderItem(
                         @Param("shopBoatId") int shopBoatId,
@@ -173,7 +171,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get order item by id shop
         @Query(value = "SELECT ot.*, u.name, u.phone_number, u.address " +
                         "FROM item AS ot " +
-                        "JOIN User AS u ON ot.customer = u.id " +
+                        "JOIN user AS u ON ot.customer = u.id " +
                         "WHERE op.id = :orderId", nativeQuery = true)
         List<Object[]> getOrderProductById(@Param("orderId") int orderId);
 
@@ -198,24 +196,24 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         List<Object[]> getOrderProductByCustomer(@Param("customerId") int customerId);
 
         // get order item by order product id
-        @Query(value = "SELECT oi.*, p.name, p.slug FROM order_item oi JOIN Product p ON oi.product_id = p.id " +
+        @Query(value = "SELECT oi.*, p.name, p.slug FROM order_item oi JOIN product p ON oi.product_id = p.id " +
                         "WHERE oi.order_product_id = :orderProductId", nativeQuery = true)
         List<Object[]> getOrderItemByOrderProductId(@Param("orderProductId") int orderProductId);
 
         // search order product b
         @Query(value = "SELECT " +
                         "order_product.*, " +
-                        "User.name AS customer_name, " +
-                        "User.phone_number AS customer_phone_number, " +
-                        "User.address AS customer_address, " +
+                        "user.name AS customer_name, " +
+                        "user.phone_number AS customer_phone_number, " +
+                        "user.address AS customer_address, " +
                         "order_item.status AS orderitem_status " +
                         "FROM order_product " +
                         "INNER JOIN order_item ON order_product.id = order_item.order_product_id " +
-                        "INNER JOIN User ON order_product.customer = User.id " +
+                        "INNER JOIN user ON order_product.customer = user.id " +
                         "WHERE order_item.shop_boat_id = :shopBoatId AND " +
-                        "(:customerName IS NULL OR User.name LIKE %:customerName%) AND " +
-                        "(:customerPhoneNumber IS NULL OR User.phone_number LIKE %:customerPhoneNumber%) AND " +
-                        "(:customerAddress IS NULL OR User.address LIKE %:customerAddress%) AND " +
+                        "(:customerName IS NULL OR user.name LIKE %:customerName%) AND " +
+                        "(:customerPhoneNumber IS NULL OR user.phone_number LIKE %:customerPhoneNumber%) AND " +
+                        "(:customerAddress IS NULL OR user.address LIKE %:customerAddress%) AND " +
                         "(:dateFrom IS NULL OR DATE(order_product.created_at) >= :dateFrom) AND " +
                         "(:dateTo IS NULL OR DATE(order_product.created_at) <= :dateTo) AND " +
                         "(:priceFrom IS NULL OR order_product.total >= :priceFrom) AND " +
@@ -338,14 +336,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get top 5 product by revenue in today
         @Query(value = "SELECT " +
                         "ROW_NUMBER() OVER (ORDER BY SUM(order_item.price) DESC) AS STT, " +
-                        "Product.name, " +
-                        "Product.image, " +
+                        "product.name, " +
+                        "product.image, " +
                         "SUM(order_item.quantity) AS total_quantity, " +
                         "SUM(order_item.price) AS total_revenue " +
                         "FROM " +
                         "order_item " +
                         "INNER JOIN " +
-                        "Product ON order_item.product_id = Product.id " +
+                        "product ON order_item.product_id = product.id " +
                         "INNER JOIN " +
                         "order_product ON order_item.order_product_id = order_product.id " +
                         "WHERE " +
@@ -353,7 +351,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "AND order_item.status = 'completed' " +
                         "AND order_item.shop_boat_id = :shopBoatId " +
                         "GROUP BY " +
-                        "Product.id " +
+                        "product.id " +
                         "ORDER BY " +
                         "total_revenue DESC " +
                         "LIMIT 5", nativeQuery = true)
@@ -363,14 +361,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get total price of order item by id shop boat in this week
         @Query(value = "SELECT " +
                         "ROW_NUMBER() OVER (ORDER BY SUM(order_item.price) DESC) AS STT, " +
-                        "Product.name, " +
-                        "Product.image, " +
+                        "product.name, " +
+                        "product.image, " +
                         "SUM(order_item.quantity) AS total_quantity, " +
                         "SUM(order_item.price) AS total_revenue " +
                         "FROM " +
                         "order_item " +
                         "INNER JOIN " +
-                        "Product ON order_item.product_id = Product.id " +
+                        "product ON order_item.product_id = product.id " +
                         "INNER JOIN " +
                         "order_product ON order_item.order_product_id = order_product.id " +
                         "WHERE " +
@@ -378,7 +376,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "AND order_item.status = 'completed' " +
                         "AND order_item.shop_boat_id = :shopBoatId " +
                         "GROUP BY " +
-                        "Product.id " +
+                        "product.id " +
                         "ORDER BY " +
                         "total_revenue DESC " +
                         "LIMIT 5", nativeQuery = true)
@@ -388,14 +386,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get total price of order item by id shop boat in this month
         @Query(value = "SELECT " +
                         "ROW_NUMBER() OVER (ORDER BY SUM(order_item.price) DESC) AS STT, " +
-                        "Product.name, " +
-                        "Product.image, " +
+                        "product.name, " +
+                        "product.image, " +
                         "SUM(order_item.quantity) AS total_quantity, " +
                         "SUM(order_item.price) AS total_revenue " +
                         "FROM " +
                         "order_item " +
                         "INNER JOIN " +
-                        "Product ON order_item.product_id = Product.id " +
+                        "product ON order_item.product_id = product.id " +
                         "INNER JOIN " +
                         "order_product ON order_item.order_product_id = order_product.id " +
                         "WHERE " +
@@ -404,7 +402,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "AND order_item.status = 'completed' " +
                         "AND order_item.shop_boat_id = :shopBoatId " +
                         "GROUP BY " +
-                        "Product.id " +
+                        "product.id " +
                         "ORDER BY " +
                         "total_revenue DESC " +
                         "LIMIT 5", nativeQuery = true)
@@ -414,14 +412,14 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // get total price of order item by id shop boat in this year
         @Query(value = "SELECT " +
                         "ROW_NUMBER() OVER (ORDER BY SUM(order_item.price) DESC) AS STT, " +
-                        "Product.name, " +
-                        "Product.image, " +
+                        "product.name, " +
+                        "product.image, " +
                         "SUM(order_item.quantity) AS total_quantity, " +
                         "SUM(order_item.price) AS total_revenue " +
                         "FROM " +
                         "order_item " +
                         "INNER JOIN " +
-                        "Product ON order_item.product_id = Product.id " +
+                        "product ON order_item.product_id = product.id " +
                         "INNER JOIN " +
                         "order_product ON order_item.order_product_id = order_product.id " +
                         "WHERE " +
@@ -429,7 +427,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         "AND order_item.status = 'completed' " +
                         "AND order_item.shop_boat_id = :shopBoatId " +
                         "GROUP BY " +
-                        "Product.id " +
+                        "product.id " +
                         "ORDER BY " +
                         "total_revenue DESC " +
                         "LIMIT 5", nativeQuery = true)
@@ -437,7 +435,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("shopBoatId") int shopBoatId);
 
         // search product by name
-        @Query("SELECT p FROM Product p WHERE :name IS NULL OR p.name LIKE %:name%")
+        @Query(value = "SELECT * FROM product WHERE :name IS NULL OR name LIKE %:name%", nativeQuery = true)
 
         Page<Product> searchProductByName(@Param("name") String name, Pageable pageable);
 
@@ -446,7 +444,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         @Query(value = "SELECT sb.id AS shop_boat_id, sb.name AS shop_name, SUM(oi.price) AS total_revenue " +
                         "FROM order_item oi " +
                         "INNER JOIN order_product op ON oi.order_product_id = op.id " +
-                        "INNER JOIN ShopBoat sb ON oi.shop_boat_id = sb.id " +
+                        "INNER JOIN shopboat sb ON oi.shop_boat_id = sb.id " +
                         "WHERE MONTH(op.created_at) = MONTH(CURDATE()) AND YEAR(op.created_at) = YEAR(CURDATE()) AND oi.status = 'completed' "
                         +
                         "GROUP BY sb.id, sb.name " +
@@ -457,7 +455,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         @Query(value = "SELECT sb.id AS shop_boat_id, sb.name AS shop_name, SUM(oi.price) AS total_revenue " +
                         "FROM order_item oi " +
                         "INNER JOIN order_product op ON oi.order_product_id = op.id " +
-                        "INNER JOIN ShopBoat sb ON oi.shop_boat_id = sb.id " +
+                        "INNER JOIN shopboat sb ON oi.shop_boat_id = sb.id " +
                         "WHERE YEAR(op.created_at) = YEAR(CURDATE()) AND oi.status = 'completed' " +
                         "GROUP BY sb.id, sb.name " +
                         "ORDER BY sb.id", nativeQuery = true)

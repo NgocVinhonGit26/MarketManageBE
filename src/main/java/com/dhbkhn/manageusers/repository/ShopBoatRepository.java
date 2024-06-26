@@ -25,31 +25,31 @@ public interface ShopBoatRepository
 
         // get all shop boat
         // @Query(value = "SELECT * FROM ShopBoat", nativeQuery = true)
-        @Query(value = "SELECT ShopBoat.*, User.name AS owner_name FROM ShopBoat INNER JOIN User ON ShopBoat.owner=User.id", nativeQuery = true)
+        @Query(value = "SELECT shopboat.*, user.name AS owner_name FROM shopboat INNER JOIN user ON shopboat.owner=user.id", nativeQuery = true)
         public List<Object[]> getListShopBoats();
 
         // get all shop boat with pagination
-        @Query(value = "SELECT ShopBoat.*, User.name AS owner_name FROM ShopBoat INNER JOIN User ON ShopBoat.owner=User.id", nativeQuery = true)
+        @Query(value = "SELECT shopboat.*, user.name AS owner_name FROM shopboat INNER JOIN user ON shopboat.owner=user.id", nativeQuery = true)
         Page<Object[]> findAllCC(Pageable pageable);
 
         // find shop boat by id
         // @Modifying
-        @Query("SELECT sb FROM ShopBoat sb WHERE sb.id = :id")
+        @Query(value = "SELECT * FROM shopboat WHERE id = :id", nativeQuery = true)
         public ShopBoat findById(int id);
 
         // update status by id
         // @Query(value = "UPDATE ShopBoat SET status = ?1 WHERE id = ?2", nativeQuery =
         // true)
         @Modifying
-        @Query("UPDATE ShopBoat sb SET sb.status = :status WHERE sb.id = :id")
+        @Query(value = "UPDATE shopboat sb SET sb.status = :status WHERE sb.id = :id", nativeQuery = true)
         public void updateStatusById(
                         @Param("status") int status,
                         @Param("id") int id);
 
         // Query search by Name or status or code
         @Query(value = "SELECT sb.*, u.name AS owner_name " +
-                        "FROM ShopBoat sb " +
-                        "INNER JOIN User u ON sb.owner = u.id " +
+                        "FROM shopboat sb " +
+                        "INNER JOIN user u ON sb.owner = u.id " +
                         "WHERE " +
                         "(:name IS NULL OR sb.name like %:name%) AND " +
                         "(:code IS NULL OR sb.code = :code) AND " +
@@ -66,7 +66,7 @@ public interface ShopBoatRepository
 
         // update name, description, type, avatar by id
         @Modifying
-        @Query("UPDATE ShopBoat sb SET sb.name = :name, sb.description = :description, sb.type = :type, sb.avatar = :avatar WHERE sb.id = :id")
+        @Query(value = "UPDATE shopboat sb SET sb.name = :name, sb.description = :description, sb.type = :type, sb.avatar = :avatar WHERE sb.id = :id", nativeQuery = true)
         public void updateShopBoatById(
                         @Param("name") String name,
                         @Param("description") String description,
@@ -75,7 +75,7 @@ public interface ShopBoatRepository
                         @Param("id") int id);
 
         // get shop boat by id user
-        @Query(value = "SELECT * FROM ShopBoat WHERE owner = :id", nativeQuery = true)
+        @Query(value = "SELECT * FROM shopboat WHERE owner = :id", nativeQuery = true)
         public ShopBoat getShopBoatByIdUser(@Param("id") int id);
 
 }
