@@ -19,7 +19,23 @@ public interface ShopBoatRepository
                 extends JpaRepository<ShopBoat, Integer> {
         // save shop boat
         // public ShopBoat save(ShopBoat shopBoat);
+        @Modifying
+        @Query(value = "INSERT INTO shopboat (name, address, owner, description, avatar, phone_number, status, code, type) "
+                        + "VALUES (:name, :address, :owner, :description, :avatar, :phoneNumber, :status, :code, :type)", nativeQuery = true)
+        void createNewSB(
+                        @Param("name") String name,
+                        @Param("address") String address,
+                        @Param("owner") int owner,
+                        @Param("description") String description,
+                        @Param("avatar") String avatar,
+                        @Param("phoneNumber") String phoneNumber,
+                        @Param("status") int status,
+                        @Param("code") String code,
+                        @Param("type") String type);
 
+        // find by code
+        @Query(value = "SELECT * FROM shopboat WHERE code = :code", nativeQuery = true)
+        public ShopBoat findByCode(@Param("code") String code);
         // get all shop boat
         // use query to get all shop boat
 

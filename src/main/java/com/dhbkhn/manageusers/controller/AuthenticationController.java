@@ -10,17 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dhbkhn.manageusers.DTO.AuthenticationResponse;
+import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.service.AuthenticationService;
+import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 
 @RestController
 @CrossOrigin(origins = "https://market-manage-fe.vercel.app")
 public class AuthenticationController {
 
     private final AuthenticationService authService;
+    private final ShopBoatService shopBoatService;
 
-    public AuthenticationController(AuthenticationService authService) {
+    public AuthenticationController(AuthenticationService authService, ShopBoatService shopBoatService) {
         this.authService = authService;
+        this.shopBoatService = shopBoatService;
     }
 
     @GetMapping("/signup/checkEmail/{email}")
@@ -46,5 +50,11 @@ public class AuthenticationController {
     @GetMapping("/signout")
     public ResponseEntity<String> logout() {
         return ResponseEntity.ok("Logout successfully");
+    }
+
+    @PostMapping("/signup/isMerchant")
+    public ResponseEntity<ShopBoat> saveShopBoat(
+            @RequestBody ShopBoat request) {
+        return ResponseEntity.ok(shopBoatService.createNewSB(request));
     }
 }

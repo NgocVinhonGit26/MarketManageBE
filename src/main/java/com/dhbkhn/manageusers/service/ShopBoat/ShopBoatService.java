@@ -9,6 +9,9 @@ import com.dhbkhn.manageusers.model.ShopBoat;
 
 public interface ShopBoatService {
 
+    // save shop boat
+    public ShopBoat createNewSB(ShopBoat shopBoat);
+
     public List<ShopBoatDTO> getAllShopBoats();
 
     public Page<Object[]> getAllShopBoatWithPagination(int page);

@@ -25,6 +25,18 @@ public class ShopBoatServiceImpl implements ShopBoatService {
         this.shopBoatRepository = shopBoatRepository;
     }
 
+    // save shop boat
+    @Override
+    @Transactional
+    public ShopBoat createNewSB(ShopBoat shopBoat) {
+        shopBoatRepository.createNewSB(shopBoat.getName(), shopBoat.getAddress(), shopBoat.getOwner(),
+                shopBoat.getDescription(), shopBoat.getAvatar(), shopBoat.getPhoneNumber(),
+                shopBoat.getStatus(), shopBoat.getCode(), shopBoat.getType());
+        // Assuming there's a method to find the shopBoat by the unique code or other
+        // identifier
+        return shopBoatRepository.findByCode(shopBoat.getCode());
+    }
+
     @Override
     public List<ShopBoatDTO> getAllShopBoats() {
         List<Object[]> listShopBoats = shopBoatRepository.getListShopBoats();
