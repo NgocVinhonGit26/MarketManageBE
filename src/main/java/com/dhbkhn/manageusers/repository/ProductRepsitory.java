@@ -127,6 +127,11 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         @Query(value = "UPDATE order_product SET total = :total WHERE id = :id", nativeQuery = true)
         void updateTotalOrderProductById(@Param("total") BigDecimal total, @Param("id") int id);
 
+        // update quantity product by id
+        @Modifying
+        @Query(value = "UPDATE Product SET count_in_stock = count_in_stock - :orderQuantity WHERE id = :id", nativeQuery = true)
+        void updateQuantityProductById(@Param("orderQuantity") int countInStock, @Param("id") int id);
+
         // ORDER PRODUCT---------------------------------------------
         // insert order product
 

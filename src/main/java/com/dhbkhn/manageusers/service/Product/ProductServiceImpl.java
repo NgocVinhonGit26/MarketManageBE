@@ -110,6 +110,23 @@ public class ProductServiceImpl implements ProductService {
         return productRepsitory.findBySlug(slug);
     }
 
+    // update quantity product by id
+    @Override
+    @Transactional
+    public void updateQuantityProductById(int orderQuantity, int productId) {
+        productRepsitory.updateQuantityProductById(orderQuantity, productId);
+    }
+
+    // get product by id
+    @Override
+    public Product getProductById(int id) {
+        try {
+            return productRepsitory.findById(id).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     // insert order product
     @Transactional
     @Override

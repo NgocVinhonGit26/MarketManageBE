@@ -110,7 +110,8 @@ public class AdminController {
 
     // update status by id
     @PostMapping("/updateStatusById/{id}")
-    public ResponseEntity<ShopBoat> updateStatusById(@PathVariable int id, @RequestBody ShopBoat shopBoat) {
+    public ResponseEntity<ShopBoat> updateStatusById(
+            @PathVariable int id, @RequestBody ShopBoat shopBoat) {
         shopBoatService.updateStatusById(shopBoat.getStatus(), id);
         ShopBoat updatedShopBoat = shopBoatService.getShopBoatById(id);
         if (updatedShopBoat != null) {

@@ -152,6 +152,19 @@ public class ShopBoatController {
 
     // ---------------------- MANAGE PRODUCT----------------------------
 
+    // update quantity product by id
+    @PostMapping("/updateQuantityProductById/{id}/{orderQuantity}")
+    public ResponseEntity<Product> updateQuantityProductById(@PathVariable int orderQuantity, @PathVariable int id) {
+        productService.updateQuantityProductById(orderQuantity, id);
+        Product updatedProduct = productService.getProductById(id);
+        if (updatedProduct != null) {
+            System.out.println("Product: update quantity successfully!");
+            return ResponseEntity.ok(updatedProduct);
+        }
+        System.out.println("Product: update quantity failed!");
+        return ResponseEntity.notFound().build();
+    }
+
     // create new product
     @PostMapping("/createNewProduct")
     public ResponseEntity<Product> createNewProduct(@RequestBody Product product) {

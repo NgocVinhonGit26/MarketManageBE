@@ -53,6 +53,12 @@ public interface ProductService {
         // update total order product by id
         public void updateTotalOrderProductById(BigDecimal total, int orderProductId);
 
+        // update quantity product by id
+        public void updateQuantityProductById(int orderQuantity, int productId);
+
+        // get product by id
+        public Product getProductById(int id);
+
         // ORDER ITEM---------------------------------------------
 
         // insert order item
