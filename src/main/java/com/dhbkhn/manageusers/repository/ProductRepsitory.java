@@ -68,7 +68,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // delete a product by id
         @Transactional
         @Modifying
-        @Query(value = "UPDATE Product SET isdeleted = 1 WHERE id = :id", nativeQuery = true)
+        @Query(value = "UPDATE product SET isdeleted = 1 WHERE id = :id", nativeQuery = true)
         void deleteProductByIdPr(@Param("id") int id);
 
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
