@@ -68,6 +68,9 @@ public class Product {
     @Column(name = "video_infor", nullable = true)
     private String video_infor;
 
+    @Column(name = "isdeleted")
+    private boolean isdeleted;
+
     // Getters và Setters
 
     public Product() {
@@ -216,6 +219,14 @@ public class Product {
 
     public void setVideoInfor(String videoInfor) {
         this.video_infor = videoInfor;
+    }
+
+    public boolean isIsdeleted() {
+        return isdeleted;
+    }
+
+    public void setIsdeleted(boolean isdeleted) {
+        this.isdeleted = isdeleted;
     }
 
 }

@@ -67,11 +67,13 @@ public class ProductController {
         Map<String, List<Product>> productsByCategory = new HashMap<>();
 
         for (Product product : listProduct) {
-            String category = product.getCategory();
-            if (!productsByCategory.containsKey(category)) {
-                productsByCategory.put(category, new ArrayList<>());
+            if (product.isIsdeleted() == false) {
+                String category = product.getCategory();
+                if (!productsByCategory.containsKey(category)) {
+                    productsByCategory.put(category, new ArrayList<>());
+                }
+                productsByCategory.get(category).add(product);
             }
-            productsByCategory.get(category).add(product);
         }
         return productsByCategory;
     }

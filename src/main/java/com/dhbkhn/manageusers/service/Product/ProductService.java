@@ -26,6 +26,9 @@ public interface ProductService {
 
         public List<Product> getAllProduct();
 
+        // delete product by id
+        public void deleteProductById(int id);
+
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
         public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Boolean countInStock,
                         String category, Double sale, int page, int shopBoatId);

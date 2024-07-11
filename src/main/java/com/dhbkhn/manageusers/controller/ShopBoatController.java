@@ -196,6 +196,13 @@ public class ShopBoatController {
         return ResponseEntity.notFound().build();
     }
 
+    // delete product by id
+    @PostMapping("/deleteProductById/{id}")
+    public ResponseEntity<String> deleteProductById(@PathVariable int id) {
+        productService.deleteProductById(id);
+        return ResponseEntity.ok("Delete product successfully!");
+    }
+
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
     @GetMapping("/searchProduct/{page}/{shopBoatId}")
     public List<Product> searchProduct(

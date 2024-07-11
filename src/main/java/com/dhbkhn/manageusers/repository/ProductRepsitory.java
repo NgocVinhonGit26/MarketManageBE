@@ -65,6 +65,12 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("videoInfor") String videoInfor,
                         @Param("id") int id);
 
+        // delete a product by id
+        @Transactional
+        @Modifying
+        @Query(value = "UPDATE Product SET isdeleted = 1 WHERE id = :id", nativeQuery = true)
+        void deleteProductByIdPr(@Param("id") int id);
+
         // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
         @Query(value = "SELECT * FROM product "
                         + "WHERE shop_boat_id = :shopBoatId "
@@ -73,7 +79,8 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "AND (:priceTo IS NULL OR price <= :priceTo) "
                         + "AND (:countInStock IS NULL OR count_in_stock > 0) "
                         + "AND (:category IS NULL OR category = :category) "
-                        + "AND (:sale IS NULL OR sale >= :sale)", nativeQuery = true)
+                        + "AND (:sale IS NULL OR sale >= :sale) "
+                        + "AND (isdeleted = 0)", nativeQuery = true)
         Page<Product> searchProduct(
                         @Param("name") String name,
                         @Param("priceFrom") Double priceFrom,
@@ -93,7 +100,8 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         + "AND (:priceTo IS NULL OR price <= :priceTo) "
                         + "AND (:countInStock IS NULL OR count_in_stock = :countInStock) "
                         + "AND (:category IS NULL OR category = :category) "
-                        + "AND (:sale IS NULL OR sale = :sale)", nativeQuery = true)
+                        + "AND (:sale IS NULL OR sale = :sale) "
+                        + "AND (isdeleted = 0)", nativeQuery = true)
         Page<Product> searchProductForUser(
                         @Param("name") String name,
                         @Param("priceFrom") Double priceFrom,
@@ -440,7 +448,7 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("shopBoatId") int shopBoatId);
 
         // search product by name
-        @Query(value = "SELECT * FROM product WHERE :name IS NULL OR name LIKE %:name%", nativeQuery = true)
+        @Query(value = "SELECT * FROM product WHERE (:name IS NULL OR name LIKE %:name%) AND isdeleted = 0", nativeQuery = true)
 
         Page<Product> searchProductByName(@Param("name") String name, Pageable pageable);
 

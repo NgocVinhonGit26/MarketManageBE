@@ -65,6 +65,13 @@ public class ProductServiceImpl implements ProductService {
         return productRepsitory.findAll();
     }
 
+    // delete product by id
+    @Override
+    @Transactional
+    public void deleteProductById(int id) {
+        productRepsitory.deleteProductByIdPr(id);
+    }
+
     // search product by name, priceFrom, PriceTo ,CountInStock, Category, sale
     @Override
     public Page<Product> searchProduct(String name, Double priceFrom, Double priceTo, Boolean countInStock,
