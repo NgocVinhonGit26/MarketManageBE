@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dhbkhn.manageusers.DTO.OrderTourDTO;
 import com.dhbkhn.manageusers.DTO.ShopBoatDTO;
 import com.dhbkhn.manageusers.enums.Role;
+import com.dhbkhn.manageusers.model.ReportShopboat;
 import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.model.Tour.OrderTour;
 import com.dhbkhn.manageusers.model.Tour.Tour;
 import com.dhbkhn.manageusers.service.Imgqr.ImgqrService;
 import com.dhbkhn.manageusers.service.Product.ProductService;
+import com.dhbkhn.manageusers.service.ReportShopboat.ReportShopboatService;
 import com.dhbkhn.manageusers.service.ShopBoat.ShopBoatService;
 import com.dhbkhn.manageusers.service.Tour.TourService;
 import com.dhbkhn.manageusers.service.User.UserService;
@@ -41,15 +43,17 @@ public class AdminController {
     private UserService userService;
     private ProductService productService;
     private ImgqrService imgqrService;
+    private ReportShopboatService reportShopboatService;
 
     @Autowired
     public AdminController(ShopBoatService shopBoatService, TourService tourService, UserService userService,
-            ProductService productService, ImgqrService imgqrService) {
+            ProductService productService, ImgqrService imgqrService, ReportShopboatService reportShopboatService) {
         this.shopBoatService = shopBoatService;
         this.tourService = tourService;
         this.userService = userService;
         this.productService = productService;
         this.imgqrService = imgqrService;
+        this.reportShopboatService = reportShopboatService;
     }
 
     @GetMapping("/admin_only")
@@ -110,8 +114,7 @@ public class AdminController {
 
     // update status by id
     @PostMapping("/updateStatusById/{id}")
-    public ResponseEntity<ShopBoat> updateStatusById(
-            @PathVariable int id, @RequestBody ShopBoat shopBoat) {
+    public ResponseEntity<ShopBoat> updateStatusById(@PathVariable int id, @RequestBody ShopBoat shopBoat) {
         shopBoatService.updateStatusById(shopBoat.getStatus(), id);
         ShopBoat updatedShopBoat = shopBoatService.getShopBoatById(id);
         if (updatedShopBoat != null) {
@@ -480,4 +483,22 @@ public class AdminController {
         return resultPage.getTotalPages();
     }
 
+    // get list report
+    @GetMapping("/getListReportSB/{page}")
+    public Page<Object[]> getListReport(@PathVariable int page) {
+        return reportShopboatService.getListReportSB(page);
+    }
+
+    // get total page list report
+    @GetMapping("/getTotalPageReportSB/{page}")
+    public int getTotalPageReport(@PathVariable int page) {
+        return reportShopboatService.getListReportSB(page).getTotalPages();
+    }
+
+    // update status report
+    @PostMapping("/updateStatusReport/{id}/{status}")
+    public ReportShopboat updateStatusReport(@PathVariable int id, @PathVariable String status) {
+        reportShopboatService.updateStatusReport(status, id);
+        return reportShopboatService.getReportShopboatById(id);
+    }
 }

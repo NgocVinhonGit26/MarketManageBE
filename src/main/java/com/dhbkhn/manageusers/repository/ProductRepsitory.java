@@ -20,9 +20,9 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
         // create a new product
         @Transactional
         @Modifying
-        @Query(value = "INSERT INTO product (name, slug, description, price, sale, count_in_stock, image, unit, category, shop_boat_id, created_at, updated_at, video_infor) "
+        @Query(value = "INSERT INTO product (name, slug, description, price, sale, count_in_stock, image, unit, category, shop_boat_id, created_at, updated_at, video_infor, isdeleted) "
                         +
-                        "VALUES (:name, :slug, :description, :price, :sale, :countInStock, :image, :unit, :category, :shopBoatId, :createdAt, :updatedAt, :videoInfor)", nativeQuery = true)
+                        "VALUES (:name, :slug, :description, :price, :sale, :countInStock, :image, :unit, :category, :shopBoatId, :createdAt, :updatedAt, :videoInfor, false)", nativeQuery = true)
         void createNewProduct(@Param("name") String name, @Param("slug") String slug,
                         @Param("description") String description,
                         @Param("price") BigDecimal price, @Param("sale") BigDecimal sale,
@@ -110,6 +110,18 @@ public interface ProductRepsitory extends JpaRepository<Product, Integer> {
                         @Param("category") String category,
                         @Param("sale") Double sale,
                         Pageable pageable);
+
+        @Query(value = "SELECT * FROM product WHERE isdeleted = 0 ORDER BY price ASC", nativeQuery = true)
+        Page<Product> findAllByOrderByPriceAsc(Pageable pageable);
+
+        @Query(value = "SELECT * FROM product WHERE isdeleted = 0 ORDER BY price DESC", nativeQuery = true)
+        Page<Product> findAllByOrderByPriceDesc(Pageable pageable);
+
+        @Query(value = "SELECT * FROM product WHERE isdeleted = 0 ORDER BY created_at DESC", nativeQuery = true)
+        Page<Product> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+        @Query(value = "SELECT * FROM product WHERE isdeleted = 0 ORDER BY created_at ASC", nativeQuery = true)
+        Page<Product> findAllByOrderByCreatedAtAsc(Pageable pageable);
 
         List<Product> findAllByOrderByCategory();
 

@@ -54,6 +54,50 @@ public class ProductController {
         return productService.searchProductForUser(name, priceFrom, priceTo, countInStock, category, sale, page);
     }
 
+    // get total page search product for user
+    @GetMapping("/getTotalPageSearchProductForUser/{page}")
+    public int getTotalPageSearchProductForUser(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double priceFrom,
+            @RequestParam(required = false) Double priceTo,
+            @RequestParam(required = false) Integer countInStock,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Double sale,
+            @PathVariable int page) {
+        return productService.searchProductForUser(name, priceFrom, priceTo, countInStock, category, sale, page)
+                .getTotalPages();
+    }
+
+    // findAllByOrderByPriceAsc
+    @GetMapping("/findAllByOrderByPriceAsc/{page}")
+    public Page<Product> findAllByOrderByPriceAsc(@PathVariable int page) {
+        return productService.findAllByOrderByPriceAsc(page);
+    }
+
+    // get total findAllByOrderByPriceAsc
+    @GetMapping("/getTotalPageFindAllByOrderByPriceAsc/{page}")
+    public int getTotalPageFindAllByOrderByPriceAsc(@PathVariable int page) {
+        return productService.findAllByOrderByPriceAsc(page).getTotalPages();
+    }
+
+    // findAllByOrderByPriceDesc
+    @GetMapping("/findAllByOrderByPriceDesc/{page}")
+    public Page<Product> findAllByOrderByPriceDesc(@PathVariable int page) {
+        return productService.findAllByOrderByPriceDesc(page);
+    }
+
+    // findAllByOrderByCreatedAtDesc
+    @GetMapping("/findAllByOrderByCreatedAtDesc/{page}")
+    public Page<Product> findAllByOrderByCreatedAtDesc(@PathVariable int page) {
+        return productService.findAllByOrderByCreatedAtDesc(page);
+    }
+
+    // findAllByOrderByCreatedAtAsc
+    @GetMapping("/findAllByOrderByCreatedAtAsc/{page}")
+    public Page<Product> findAllByOrderByCreatedAtAsc(@PathVariable int page) {
+        return productService.findAllByOrderByCreatedAtAsc(page);
+    }
+
     // get all products
     @GetMapping("/getAllProduct")
     public List<Product> getAllProduct() {

@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dhbkhn.manageusers.DTO.BillDetail;
+import com.dhbkhn.manageusers.model.ReportShopboat;
 import com.dhbkhn.manageusers.model.ShopBoat;
 import com.dhbkhn.manageusers.model.User;
 import com.dhbkhn.manageusers.model.Product.OrderProduct;
 import com.dhbkhn.manageusers.model.Product.Product;
 import com.dhbkhn.manageusers.service.Product.ProductService;
+import com.dhbkhn.manageusers.service.ReportShopboat.ReportShopboatService;
 import com.dhbkhn.manageusers.service.User.UserService;
 
 import jakarta.websocket.server.PathParam;
@@ -35,12 +37,15 @@ import jakarta.websocket.server.PathParam;
 public class UserController {
     private UserService userService;
     private ProductService productService;
+    private ReportShopboatService reportShopboatService;
 
     @Autowired
-    public UserController(UserService userService, ProductService productService) {
+    public UserController(UserService userService, ProductService productService,
+            ReportShopboatService reportShopboatService) {
 
         this.userService = userService;
         this.productService = productService;
+        this.reportShopboatService = reportShopboatService;
     }
 
     @PostMapping("/add")
@@ -175,6 +180,16 @@ public class UserController {
         userResult.setUsername(user.getUsername());
         userResult.setRole(user.getRole());
         return ResponseEntity.ok(userResult);
+    }
+
+    // create new report
+    @PostMapping("/createNewReport")
+    public ResponseEntity<String> createNewReport(@RequestBody ReportShopboat reportShopboat) {
+        reportShopboatService.createNewReport(reportShopboat.getShop_boat_id(), reportShopboat.getUser_id(),
+                reportShopboat.getDescription(), reportShopboat.getImgrp(), reportShopboat.getCode_order_product(),
+                reportShopboat.getStatus(),
+                reportShopboat.getCreated_at());
+        return ResponseEntity.ok("Report created successfully");
     }
 
 }

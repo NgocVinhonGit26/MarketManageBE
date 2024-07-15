@@ -107,6 +107,58 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findAllByOrderByPriceAsc(int page) {
+        int pageSize = 8;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Product> pageResult = productRepsitory.findAllByOrderByPriceAsc(pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
+    @Override
+    public Page<Product> findAllByOrderByPriceDesc(int page) {
+        int pageSize = 8;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Product> pageResult = productRepsitory.findAllByOrderByPriceDesc(pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
+    @Override
+    public Page<Product> findAllByOrderByCreatedAtDesc(int page) {
+        int pageSize = 8;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Product> pageResult = productRepsitory.findAllByOrderByCreatedAtDesc(pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
+    @Override
+    public Page<Product> findAllByOrderByCreatedAtAsc(int page) {
+        int pageSize = 8;
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            Page<Product> pageResult = productRepsitory.findAllByOrderByCreatedAtAsc(pageable);
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Page.empty();
+        }
+    }
+
+    @Override
     public List<Product> findAllByOrderByCategory() {
         return productRepsitory.findAllByOrderByCategory();
     }

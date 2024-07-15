@@ -38,6 +38,14 @@ public interface ProductService {
         public Page<Product> searchProductForUser(String name, Double priceFrom, Double priceTo, Integer countInStock,
                         String category, Double sale, int page);
 
+        public Page<Product> findAllByOrderByPriceAsc(int page);
+
+        public Page<Product> findAllByOrderByPriceDesc(int page);
+
+        public Page<Product> findAllByOrderByCreatedAtDesc(int page);
+
+        public Page<Product> findAllByOrderByCreatedAtAsc(int page);
+
         public List<Product> findAllByOrderByCategory();
 
         // get product by slug
