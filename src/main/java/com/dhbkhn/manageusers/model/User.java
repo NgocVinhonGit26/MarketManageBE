@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private Role role;
 
     @Column(name = "isdeleted")
-    private boolean isdeleted;
+    private Boolean isdeleted;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
@@ -87,22 +87,22 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
+    public Boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public Boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public Boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return true;
     }
 
@@ -148,11 +148,11 @@ public class User implements UserDetails {
         this.avatar = avatar;
     }
 
-    public boolean isIsdeleted() {
+    public Boolean isIsdeleted() {
         return isdeleted;
     }
 
-    public void setIsdeleted(boolean isdeleted) {
+    public void setIsdeleted(Boolean isdeleted) {
         this.isdeleted = isdeleted;
     }
 }
@@ -218,25 +218,25 @@ public class User implements UserDetails {
 // }
 
 // @Override
-// public boolean isAccountNonExpired() {
+// public Boolean isAccountNonExpired() {
 // // TODO Auto-generated method stub
 // return true;
 // }
 
 // @Override
-// public boolean isAccountNonLocked() {
+// public Boolean isAccountNonLocked() {
 // // TODO Auto-generated method stub
 // return true;
 // }
 
 // @Override
-// public boolean isCredentialsNonExpired() {
+// public Boolean isCredentialsNonExpired() {
 // // TODO Auto-generated method stub
 // return true;
 // }
 
 // @Override
-// public boolean isEnabled() {
+// public Boolean isEnabled() {
 // // TODO Auto-generated method stub
 // return true;
 // }

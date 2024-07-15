@@ -28,10 +28,10 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isValid(String token, UserDetails user) {
+    public Boolean isValid(String token, UserDetails user) {
         String username = extractUsername(token);
 
-        boolean validToken = tokenRepository
+        Boolean validToken = tokenRepository
                 .findByToken(token)
                 .map(t -> !t.isLoggedOut())
                 .orElse(false);
@@ -39,7 +39,7 @@ public class JwtService {
         return (username.equals(user.getUsername())) && !isTokenExpired(token) && validToken;
     }
 
-    private boolean isTokenExpired(String token) {
+    private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

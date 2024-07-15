@@ -15,7 +15,7 @@ public class Token {
     private String token;
 
     @Column(name = "is_logged_out")
-    private boolean loggedOut;
+    private Boolean loggedOut;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -37,11 +37,11 @@ public class Token {
         this.token = token;
     }
 
-    public boolean isLoggedOut() {
+    public Boolean isLoggedOut() {
         return loggedOut;
     }
 
-    public void setLoggedOut(boolean loggedOut) {
+    public void setLoggedOut(Boolean loggedOut) {
         this.loggedOut = loggedOut;
     }
 
